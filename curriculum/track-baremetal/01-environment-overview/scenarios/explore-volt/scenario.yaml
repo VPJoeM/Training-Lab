@@ -1,0 +1,50 @@
+title: "Explore VOLT Dashboard"
+description: "Navigate VOLT and find key information about a node"
+difficulty: beginner
+time_estimate: "5 minutes"
+runs_on: web
+
+objectives:
+  - Open VOLT dashboard
+  - Search for a hostname
+  - Find datacenter, cluster, and customer info
+  - Locate the iDRAC IP
+
+example_output: |
+  **Open VOLT:** https://volt.lightning.ai
+  
+  **Search for a hostname (e.g., g377):**
+  
+  ```
+  DC: SEA1 | Cluster: C2 | Hostname: g377 | Customer: Acme ML Inc
+  Public IP: 159.26.81.123 | iDRAC: 10.x.x.x
+  ```
+  
+  **Key fields:**
+  
+  - **DC** → Which datacenter (SEA1, DFW1, IAD1) - needed for Redfish script
+  - **Cluster** → Nodes in same cluster work together
+  - **Customer** → Who to contact, what workload they're running
+  - **Public IP** → For SSH access
+  - **iDRAC IP** → For out-of-band access (or just use Redfish script)
+  
+  **Click on a row** to see more details:
+  
+  - Hardware specs
+  - GPU configuration  
+  - Network interfaces
+  - Rental history
+  
+  **This is your first stop** when a ticket comes in.
+
+hints:
+  - "Use the search bar to find by hostname"
+  - "Click a row for full details"
+  - "DC tells you which datacenter"
+  - "iDRAC IP is for out-of-band access"
+
+success_message: |
+  You explored VOLT!
+  
+  Remember: VOLT is the single source of truth.
+  Start every investigation here.

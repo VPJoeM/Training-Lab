@@ -1,0 +1,13 @@
+#!/bin/bash
+echo ""
+echo "✓ Lab complete!"
+echo ""
+echo "  Node Toolkit advantages:"
+echo "  • Handles DCGM install automatically"
+echo "  • Clears GPU processes before running"
+echo "  • Runs in screen (survives disconnect)"
+echo "  • Saves results to ~/Reports/"
+echo ""
+echo "  Use this method for day-to-day work."
+echo "  Use manual install when toolkit isn't available."
+echo ""

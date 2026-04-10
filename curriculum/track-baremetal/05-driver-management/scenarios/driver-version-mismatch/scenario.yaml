@@ -1,0 +1,53 @@
+title: "Identify Driver Version Mismatch"
+description: "Find and diagnose a driver vs Fabric Manager version mismatch"
+difficulty: beginner
+time_estimate: "5 minutes"
+runs_on: node
+
+objectives:
+  - Check driver version with nvidia-smi
+  - Check Fabric Manager version
+  - Identify the mismatch
+
+example_output: |
+  **Step 1: Check driver version**
+  ```
+  $ nvidia-smi --query-gpu=driver_version --format=csv,noheader
+  550.54.15
+  ```
+  
+  **Step 2: Check Fabric Manager version**
+  ```
+  $ dpkg -l | grep fabricmanager
+  ii  nvidia-fabricmanager-535  535.129.03-1  amd64  Fabric Manager for NVSwitch
+  ```
+  
+  **The Problem:**
+  - Driver: **550**.54.15
+  - Fabric Manager: **535**.129.03
+  
+  Major versions don't match! (550 vs 535)
+  
+  **This causes:**
+  - Single GPU works fine
+  - Multi-GPU training fails
+  - NVLink communication broken
+  
+  **Fix:** Install matching Fabric Manager
+  ```
+  sudo apt-get install -y nvidia-fabricmanager-550
+  sudo systemctl restart nvidia-fabricmanager
+  ```
+
+hints:
+  - "nvidia-smi shows driver version in top right"
+  - "dpkg -l | grep fabricmanager shows FM version"
+  - "Major versions must match (e.g., both 550.x)"
+
+success_message: |
+  You identified the version mismatch!
+  
+  This is one of the most common GPU issues. Always check:
+  • Driver version (nvidia-smi)
+  • Fabric Manager version (dpkg -l)
+  • They must share the same major version

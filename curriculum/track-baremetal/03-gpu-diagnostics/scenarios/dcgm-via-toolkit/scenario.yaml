@@ -1,0 +1,54 @@
+title: "DCGM via Node Toolkit"
+description: "Run DCGM diagnostics the recommended way - through Node Toolkit"
+difficulty: beginner
+time_estimate: "5-10 minutes"
+runs_on: laptop
+startup_command: "cd ~/Github/Support-Tooling && ./scripts/sshv/start-node-toolkit.sh"
+
+objectives:
+  - Launch Node Toolkit from your laptop
+  - Navigate to Log Collection menu (option 14)
+  - Run DCGMI Diagnostics (option 11)
+  - Select L1 test level
+  - Review the results
+
+example_output: |
+  **Main Menu → 14 (Log Collection) → 11 (DCGMI Diagnostics)**
+  ```
+  Select DCGM diagnostic level:
+    1) Level 1 - Quick (1 min)   ← start here
+    2) Level 2 - Medium (2 min)
+    3) Level 3 - Extended (3 min)  
+    4) Level 4 - Full stress (12 min)
+  ```
+  
+  **Toolkit handles the hard parts:**
+  ```
+  [*] Checking DCGM installation...
+  [*] DCGM not found, installing...
+  [*] Checking for GPU processes...
+  [!] Found 3 processes using GPUs - kill them? (y/n)
+  [*] Starting DCGM diag in screen session...
+  ```
+  
+  **Results saved to:**
+  ```
+  ✓ ~/Reports/g377/dcgm_diag_L1_2024-01-15_14-30.log
+  ```
+  
+  You can disconnect and the test keeps running in `screen`.
+
+hints:
+  - "Start toolkit: ./scripts/sshv/start-node-toolkit.sh"
+  - "Main menu → 14 (Log Collection) → 11 (DCGMI Diagnostics)"
+  - "Select level 1 for quick test"
+  - "Toolkit handles install, process cleanup, and runs in screen"
+
+success_message: |
+  Node Toolkit DCGM workflow complete!
+  
+  This is the preferred method because:
+  • Auto-installs DCGM if missing
+  • Kills conflicting GPU processes
+  • Runs in screen (can disconnect)
+  • Saves results to ~/Reports/

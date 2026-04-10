@@ -1,0 +1,59 @@
+title: "Identify a Hot GPU"
+description: "Use nvidia-smi to find a GPU running hotter than expected"
+difficulty: beginner
+time_estimate: "5 minutes"
+runs_on: node
+
+objectives:
+  - Run nvidia-smi to check temperatures
+  - Identify which GPU is running hot
+  - Compare against expected thresholds
+
+example_output: |
+  **Check GPU temperatures:**
+  ```
+  $ nvidia-smi --query-gpu=index,temperature.gpu,power.draw --format=csv
+  index, temperature.gpu, power.draw [W]
+  0, 72, 695.00
+  1, 74, 698.00
+  2, 71, 692.00
+  3, 86, 678.00     ← GPU 3 is 86°C - TOO HOT
+  4, 73, 697.00
+  5, 72, 694.00
+  6, 74, 699.00
+  7, 73, 696.00
+  ```
+  
+  **Thresholds for H100:**
+  | State | Temperature |
+  |-------|-------------|
+  | Normal | 65-75°C |
+  | Warm | 75-80°C |
+  | Hot | 80-83°C |
+  | Throttling | >83°C |
+  | Shutdown | >90°C |
+  
+  **GPU 3 analysis:**
+  - Temp: 86°C (above throttle point)
+  - Power: 678W (lower than others at ~695W)
+  - The GPU is throttling due to heat
+  
+  **Possible causes:**
+  - Blocked airflow
+  - Failed/degraded fan
+  - Bad thermal paste
+  - Ambient temp too high
+
+hints:
+  - "nvidia-smi --query-gpu=index,temperature.gpu,power.draw --format=csv"
+  - "Normal H100 temp is 65-80°C under load"
+  - "Above 83°C = thermal throttling"
+  - "Lower power + high temp = throttling"
+
+success_message: |
+  You identified the hot GPU!
+  
+  Thermal issues often manifest as:
+  • Reduced performance (throttling)
+  • Lower power draw than siblings
+  • Training job slowdowns

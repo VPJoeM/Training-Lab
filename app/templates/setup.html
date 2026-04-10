@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup - Lightning Training Lab</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: {
+                'lab-dark': '#110F1F', 'lab-darker': '#0A0914',
+                'lab-accent': '#8B5CF6', 'lab-green': '#4ade80',
+                'lab-warn': '#fbbf24', 'lab-error': '#f87171', 'lab-purple': '#7C3AED',
+            }}}
+        }
+    </script>
+</head>
+<body class="h-full bg-lab-darker text-gray-100">
+<div class="max-w-2xl mx-auto px-6 py-10">
+
+    <!-- header -->
+    <div class="text-center mb-10">
+        <div class="inline-flex items-center gap-3 mb-3">
+            <div class="w-12 h-12 rounded-xl bg-lab-accent/20 flex items-center justify-center">
+                <svg class="w-7 h-7 text-lab-accent" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/></svg>
+            </div>
+            <div class="text-left">
+                <h1 class="text-2xl font-bold text-white">Training Lab</h1>
+                <p class="text-xs text-lab-accent font-medium">Lightning AI</p>
+            </div>
+        </div>
+        <p class="text-gray-400 mt-4">New here? This will walk you through everything from a fresh Mac to your first training session.</p>
+    </div>
+
+    <!-- ═══ STEP 1: tools ═══ -->
+    <div class="mb-8" id="step-tools">
+        <div class="flex items-center gap-3 mb-3">
+            <div id="badge-tools" class="w-8 h-8 rounded-lg bg-lab-accent/20 flex items-center justify-center text-sm font-bold text-lab-accent">1</div>
+            <h2 class="text-lg font-semibold text-white">Install Tools</h2>
+            <button onclick="checkPrereqs()" class="ml-auto text-xs text-gray-500 hover:text-lab-accent transition-colors px-3 py-1 rounded border border-gray-800 hover:border-lab-accent/30">Re-check</button>
+        </div>
+        <div id="tool-checks" class="ml-11 space-y-2">
+            <div class="text-sm text-gray-500 animate-pulse">Scanning your system...</div>
+        </div>
+    </div>
+
+    <!-- ═══ STEP 2: SSH key + 1Password ═══ -->
+    <div class="mb-8" id="step-ssh">
+        <div class="flex items-center gap-3 mb-3">
+            <div id="badge-ssh" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">2</div>
+            <h2 class="text-lg font-semibold text-white">SSH Key &amp; 1Password</h2>
+        </div>
+        <div class="ml-11 bg-lab-dark rounded-xl border border-gray-800 p-5 space-y-4">
+            <p class="text-sm text-gray-300">Your SSH key lives in 1Password and gets served through its SSH agent. If you already have keys loaded (Step 1 shows green), skip ahead.</p>
+
+            <div class="bg-yellow-500/5 rounded-xl border border-yellow-500/20 p-4 space-y-2 mb-4">
+                <h3 class="text-sm font-semibold text-yellow-400">1Password v8 Required</h3>
+                <p class="text-sm text-gray-400">Make sure you're running <strong class="text-white">1Password version 8</strong> — older versions don't have the SSH agent or CLI features we need.</p>
+            </div>
+
+            <div class="border-l-2 border-lab-accent/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Create an SSH key in 1Password</h3>
+                <ol class="text-sm text-gray-400 space-y-2 list-decimal list-inside">
+                    <li>Open <strong class="text-white">1Password</strong> → click <strong class="text-white">+ New Item → SSH Key</strong></li>
+                    <li>Choose <strong class="text-white">Ed25519</strong> (recommended) and give it a name like <em class="text-gray-300">Work Laptop</em></li>
+                    <li>Save it — 1Password now manages this key for you</li>
+                </ol>
+            </div>
+
+            <div class="border-l-2 border-lab-accent/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Enable SSH Agent &amp; CLI</h3>
+                <ol class="text-sm text-gray-400 space-y-2 list-decimal list-inside">
+                    <li>In 1Password → <strong class="text-white">Settings → Developer</strong></li>
+                    <li>Turn on <strong class="text-white">"Use the SSH agent"</strong></li>
+                    <li>Turn on <strong class="text-white">"Enable CLI"</strong> (also called "Integrate with 1Password CLI")</li>
+                </ol>
+            </div>
+
+            <div class="border-l-2 border-lab-accent/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Configure your SSH config</h3>
+                <p class="text-xs text-gray-500">Add this to <code class="text-violet-400">~/.ssh/config</code> so all SSH tools use the 1Password agent:</p>
+                <div class="bg-gray-900/50 rounded-lg border border-gray-700 overflow-hidden">
+                    <div class="flex items-center justify-between px-3 py-1.5 border-b border-gray-700/50">
+                        <span class="text-xs text-gray-500 font-mono">~/.ssh/config</span>
+                        <button onclick="copyText(this, 'Host *\n    IdentityAgent &quot;~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock&quot;')" class="text-xs text-gray-500 hover:text-lab-accent">copy</button>
+                    </div>
+                    <pre class="px-3 py-2.5 text-xs text-violet-400 font-mono overflow-x-auto"><code>Host *
+    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ STEP 3: GitHub access ═══ -->
+    <div class="mb-8" id="step-github">
+        <div class="flex items-center gap-3 mb-3">
+            <div id="badge-github" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">3</div>
+            <h2 class="text-lg font-semibold text-white">GitHub Access</h2>
+        </div>
+        <div class="ml-11 bg-lab-dark rounded-xl border border-gray-800 p-5 space-y-4">
+            <div id="github-status" class="text-sm"></div>
+
+            <div class="border-l-2 border-lab-accent/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Add your SSH key to GitHub</h3>
+                <ol class="text-sm text-gray-400 space-y-2 list-decimal list-inside">
+                    <li>In 1Password, find your SSH key → click <strong class="text-white">"Copy Public Key"</strong></li>
+                    <li>Go to <a href="https://github.com/settings/ssh/new" target="_blank" class="text-lab-accent hover:underline">github.com/settings/ssh/new</a></li>
+                    <li>Paste the public key, give it a title, and save</li>
+                </ol>
+            </div>
+
+            <div class="bg-yellow-500/5 rounded-xl border border-yellow-500/20 p-4 space-y-2">
+                <h3 class="text-sm font-semibold text-yellow-400">Can't access the repos?</h3>
+                <p class="text-sm text-gray-400">You need to be added to both the <strong class="text-white">Lightning AI</strong> and <strong class="text-white">VoltagePark</strong> GitHub orgs — particularly <a href="https://github.com/voltagepark/sshv" target="_blank" class="text-lab-accent hover:underline">sshv</a> and <a href="https://github.com/VPJoeM/Support-Tooling" target="_blank" class="text-lab-accent hover:underline">Support-Tooling</a>. Reach out to <strong class="text-white">Lawrence Chu</strong> on Slack and ask for access.</p>
+                <p class="text-xs text-gray-500">Message him directly or post in <strong class="text-gray-400">#question-ops</strong> in the Lightning AI Slack.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ STEP 4: Tailscale ═══ -->
+    <div class="mb-8" id="step-tailscale">
+        <div class="flex items-center gap-3 mb-3">
+            <div id="badge-tailscale" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">4</div>
+            <h2 class="text-lg font-semibold text-white">Tailscale VPN</h2>
+        </div>
+        <div class="ml-11 bg-lab-dark rounded-xl border border-gray-800 p-5 space-y-4">
+            <div id="tailscale-status" class="text-sm"></div>
+
+            <p class="text-sm text-gray-300">Tailscale is required to reach the jump hosts and internal infrastructure. You need a Voltage Park Tailscale account.</p>
+
+            <div class="border-l-2 border-lab-accent/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Install Tailscale</h3>
+                <ol class="text-sm text-gray-400 space-y-2 list-decimal list-inside">
+                    <li>Download from <a href="https://tailscale.com/download/mac" target="_blank" class="text-lab-accent hover:underline">tailscale.com/download/mac</a> or install via Homebrew:</li>
+                </ol>
+                <div class="bg-gray-900/50 rounded-lg border border-gray-700 overflow-hidden">
+                    <div class="flex items-center justify-between px-3 py-1.5 border-b border-gray-700/50">
+                        <span class="text-xs text-gray-500 font-mono">terminal</span>
+                        <button onclick="copyText(this, 'brew install --cask tailscale')" class="text-xs text-gray-500 hover:text-lab-accent">copy</button>
+                    </div>
+                    <pre class="px-3 py-2.5 text-xs text-violet-400 font-mono overflow-x-auto"><code>brew install --cask tailscale</code></pre>
+                </div>
+            </div>
+
+            <div class="border-l-2 border-lab-accent/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Connect to Voltage Park network</h3>
+                <ol class="text-sm text-gray-400 space-y-2 list-decimal list-inside">
+                    <li>Open Tailscale from your Applications folder</li>
+                    <li>Click <strong class="text-white">"Log in"</strong></li>
+                    <li>Sign in with your <strong class="text-white">Voltage Park Google account</strong></li>
+                    <li>Make sure you see the Tailscale icon in your menu bar (connected)</li>
+                </ol>
+            </div>
+
+            <div class="bg-yellow-500/5 rounded-xl border border-yellow-500/20 p-4 space-y-2">
+                <h3 class="text-sm font-semibold text-yellow-400">Don't have access?</h3>
+                <p class="text-sm text-gray-400">Ask <strong class="text-white">Lawrence Chu</strong> or your manager to add you to the Voltage Park Tailscale organization.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ STEP 5: LDAP/SSP Password ═══ -->
+    <div class="mb-8" id="step-ldap">
+        <div class="flex items-center gap-3 mb-3">
+            <div id="badge-ldap" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">5</div>
+            <h2 class="text-lg font-semibold text-white">LDAP Password (SSP)</h2>
+        </div>
+        <div class="ml-11 bg-lab-dark rounded-xl border border-gray-800 p-5 space-y-4">
+            <p class="text-sm text-gray-300">When you first connect via <code class="text-violet-400">sshv</code>, it will prompt for your LDAP credentials. You need to set these up first.</p>
+
+            <div class="border-l-2 border-lab-accent/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Set up your LDAP password</h3>
+                <ol class="text-sm text-gray-400 space-y-2 list-decimal list-inside">
+                    <li>Go to the SSP Portal: <a href="https://ssp-ext.voltagepark.net" target="_blank" class="text-lab-accent hover:underline">ssp-ext.voltagepark.net</a></li>
+                    <li>Sign in using your <strong class="text-white">Voltage Park Google identity</strong></li>
+                    <li>Enter your username (the part before <code class="text-violet-400">@voltagepark.com</code>) and your Voltage Park email address</li>
+                    <li>Click <strong class="text-white">"Send"</strong> to receive a password reset link</li>
+                    <li>Follow the link in your email to set your LDAP password</li>
+                    <li><em class="text-gray-500">(Optional)</em> Add your public SSH key in the <strong class="text-white">>_ SSH Key</strong> section</li>
+                </ol>
+            </div>
+
+            <div class="bg-blue-500/5 rounded-xl border border-blue-500/20 p-4 space-y-2">
+                <h3 class="text-sm font-semibold text-blue-400">What's LDAP?</h3>
+                <p class="text-sm text-gray-400">LDAP is the authentication system for SSH access to servers. When <code class="text-violet-400">sshv</code> prompts for credentials, use your Voltage Park username (e.g., <code class="text-violet-400">jmannix</code>) and the password you set in SSP.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ STEP 6: Install & Configure sshv ═══ -->
+    <div class="mb-8" id="step-sshv">
+        <div class="flex items-center gap-3 mb-3">
+            <div id="badge-sshv" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">6</div>
+            <h2 class="text-lg font-semibold text-white">Install &amp; Configure sshv</h2>
+        </div>
+        <div class="ml-11 bg-lab-dark rounded-xl border border-gray-800 p-5 space-y-4">
+            <div id="sshv-status" class="text-sm"></div>
+
+            <p class="text-sm text-gray-300"><code class="text-violet-400">sshv</code> is our SSH wrapper — it handles Vault authentication, jump hosts, and key management. Without it, nothing else works.</p>
+
+            <div class="border-l-2 border-lab-accent/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Install sshv</h3>
+                <p class="text-sm text-gray-400">It's a private binary, so you need GitHub access (Step 3) before you can download it:</p>
+                <ol class="text-sm text-gray-400 space-y-2 list-decimal list-inside">
+                    <li>Go to <a href="https://github.com/voltagepark/sshv/releases" target="_blank" class="text-lab-accent hover:underline">github.com/voltagepark/sshv/releases</a></li>
+                    <li>Download the latest release for your platform (<strong class="text-white">darwin_arm64</strong> for Apple Silicon Macs)</li>
+                    <li>Install it:</li>
+                </ol>
+                <div class="bg-gray-900/50 rounded-lg border border-gray-700 overflow-hidden">
+                    <div class="flex items-center justify-between px-3 py-1.5 border-b border-gray-700/50">
+                        <span class="text-xs text-gray-500 font-mono">terminal</span>
+                        <button onclick="copyText(this, 'sudo mv ~/Downloads/sshv_*_darwin_arm64 /usr/local/bin/sshv && sudo chmod +x /usr/local/bin/sshv && sudo xattr -dr com.apple.quarantine /usr/local/bin/sshv')" class="text-xs text-gray-500 hover:text-lab-accent">copy</button>
+                    </div>
+                    <pre class="px-3 py-2.5 text-xs text-violet-400 font-mono overflow-x-auto"><code>sudo mv ~/Downloads/sshv_*_darwin_arm64 /usr/local/bin/sshv
+sudo chmod +x /usr/local/bin/sshv
+sudo xattr -dr com.apple.quarantine /usr/local/bin/sshv</code></pre>
+                </div>
+                <p class="text-xs text-gray-500">The <code class="text-violet-400">xattr</code> command removes the macOS quarantine flag so it can run.</p>
+            </div>
+
+            <div class="border-l-2 border-lab-accent/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Configure sshv with the portal script</h3>
+                <p class="text-sm text-gray-400">Run the sshv portal script to set up your token. This will prompt for your LDAP credentials (from Step 5):</p>
+                <div class="bg-gray-900/50 rounded-lg border border-gray-700 overflow-hidden">
+                    <div class="flex items-center justify-between px-3 py-1.5 border-b border-gray-700/50">
+                        <span class="text-xs text-gray-500 font-mono">terminal</span>
+                        <button onclick="copyText(this, '~/Github/Support-Tooling/scripts/sshv/connect-to-sshv-portal.sh')" class="text-xs text-gray-500 hover:text-lab-accent">copy</button>
+                    </div>
+                    <pre class="px-3 py-2.5 text-xs text-violet-400 font-mono overflow-x-auto"><code>~/Github/Support-Tooling/scripts/sshv/connect-to-sshv-portal.sh</code></pre>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">The script will guide you through authentication. Once complete, your token is stored and <code class="text-violet-400">sshv</code> will work automatically.</p>
+            </div>
+
+            <div class="border-l-2 border-lab-accent/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Create an alias (optional but handy)</h3>
+                <div class="bg-gray-900/50 rounded-lg border border-gray-700 overflow-hidden">
+                    <div class="flex items-center justify-between px-3 py-1.5 border-b border-gray-700/50">
+                        <span class="text-xs text-gray-500 font-mono">terminal</span>
+                        <button onclick="copyText(this, '~/Github/Support-Tooling/scripts/sshv/connect-to-sshv-portal.sh --create-alias')" class="text-xs text-gray-500 hover:text-lab-accent">copy</button>
+                    </div>
+                    <pre class="px-3 py-2.5 text-xs text-violet-400 font-mono overflow-x-auto"><code>~/Github/Support-Tooling/scripts/sshv/connect-to-sshv-portal.sh --create-alias</code></pre>
+                </div>
+                <p class="text-xs text-gray-500">This creates a <code class="text-violet-400">connecttosshvportal</code> alias for quick access.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ STEP 7: VOLT API Key ═══ -->
+    <div class="mb-8" id="step-volt">
+        <div class="flex items-center gap-3 mb-3">
+            <div id="badge-volt" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">7</div>
+            <h2 class="text-lg font-semibold text-white">VOLT API Key</h2>
+        </div>
+        <div class="ml-11 bg-lab-dark rounded-xl border border-gray-800 p-5 space-y-4">
+            <p class="text-sm text-gray-300"><strong class="text-white">Node Toolkit</strong> uses the VOLT API to discover nodes by hostname. You'll need an API key to use discovery features.</p>
+
+            <div class="border-l-2 border-lab-accent/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Generate your API key</h3>
+                <ol class="text-sm text-gray-400 space-y-2 list-decimal list-inside">
+                    <li>Go to <a href="https://volt.lightning.ai/settings" target="_blank" class="text-lab-accent hover:underline">volt.lightning.ai/settings</a></li>
+                    <li>Click <strong class="text-white">"Generate API Key"</strong></li>
+                    <li>Copy the key — you'll only see it once</li>
+                </ol>
+            </div>
+
+            <div class="border-l-2 border-lab-accent/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Storage (automatic)</h3>
+                <p class="text-sm text-gray-400">Node Toolkit handles this for you — on first run it will:</p>
+                <ol class="text-sm text-gray-400 space-y-1 list-decimal list-inside">
+                    <li>Check for 1Password CLI (install if missing)</li>
+                    <li>Prompt you to paste your API key</li>
+                    <li>Store it securely in your 1Password vault</li>
+                </ol>
+                <p class="text-xs text-gray-500 mt-2">The key is stored in 1Password under <code class="text-violet-400">VOLT API Token</code> and retrieved automatically on future runs.</p>
+            </div>
+
+            <div class="bg-blue-500/5 rounded-xl border border-blue-500/20 p-4 space-y-2">
+                <h3 class="text-sm font-semibold text-blue-400">What's VOLT?</h3>
+                <p class="text-sm text-gray-400">VOLT is the infrastructure dashboard — it's the single source of truth for node info (hostnames, IPs, iDRAC addresses, GPU types, customer assignments). When you use Node Toolkit's discovery feature, it queries VOLT to find nodes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ STEP 8: Support-Tooling repo ═══ -->
+    <div class="mb-8" id="step-repo">
+        <div class="flex items-center gap-3 mb-3">
+            <div id="badge-repo" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">8</div>
+            <h2 class="text-lg font-semibold text-white">Support-Tooling Repo</h2>
+        </div>
+        <div class="ml-11 bg-lab-dark rounded-xl border border-gray-800 p-5 space-y-3">
+            <p class="text-sm text-gray-300">The training modules reference scripts from this repo. Clone it next to your Training-Lab directory:</p>
+            <div class="flex items-center justify-between bg-gray-900/50 rounded-lg p-3 border border-gray-700">
+                <code id="clone-cmd" class="text-sm text-violet-400 font-mono">git clone git@github.com:VPJoeM/Support-Tooling.git ~/Github/Support-Tooling</code>
+                <button onclick="copyCmd('clone-cmd')" class="text-xs text-gray-500 hover:text-lab-accent ml-3 flex-shrink-0">copy</button>
+            </div>
+            <div id="repo-status" class="text-sm"></div>
+            <p class="text-xs text-gray-500">If <code class="text-violet-400">git clone</code> gives you a permission error, go back to Step 3 — you need GitHub access first.</p>
+        </div>
+    </div>
+
+    <!-- ═══ STEP 9: Target server ═══ -->
+    <div class="mb-8" id="step-target">
+        <div class="flex items-center gap-3 mb-3">
+            <div id="badge-target" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm font-bold text-gray-500">9</div>
+            <h2 class="text-lg font-semibold text-white">Target Server</h2>
+        </div>
+        <div class="ml-11 bg-lab-dark rounded-xl border border-gray-800 p-5">
+            <p class="text-sm text-gray-400 mb-4">Which H100 server should you practice on? Your trainer will give you the IP, or check Slack for the current lab server.</p>
+
+            <form id="setup-form" class="space-y-4">
+                <div>
+                    <label for="host" class="block text-sm font-medium text-gray-300 mb-1">Server IP</label>
+                    <input type="text" id="host" name="host"
+                           value="{{ settings.LAB_TARGET_HOST if settings.is_configured else '' }}"
+                           placeholder="159.26.81.123"
+                           class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-lab-accent focus:ring-1 focus:ring-lab-accent/50 focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="port" class="block text-sm font-medium text-gray-300 mb-1">SSH Port</label>
+                        <input type="number" id="port" name="port" value="{{ settings.LAB_TARGET_PORT or 4747 }}" placeholder="4747"
+                               class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-lab-accent focus:ring-1 focus:ring-lab-accent/50 focus:outline-none">
+                    </div>
+                    <div>
+                        <label for="user" class="block text-sm font-medium text-gray-300 mb-1">Username</label>
+                        <input type="text" id="user" name="user" value="{{ settings.LAB_TARGET_USER or 'vpsupport' }}" placeholder="vpsupport"
+                               class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-lab-accent focus:ring-1 focus:ring-lab-accent/50 focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label for="ssh_cmd" class="block text-sm font-medium text-gray-300 mb-1">SSH Command</label>
+                    <input type="text" id="ssh_cmd" name="ssh_cmd" value="{{ settings.LAB_SSH_CMD or 'sshv' }}" placeholder="sshv"
+                           class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-lab-accent focus:ring-1 focus:ring-lab-accent/50 focus:outline-none">
+                    <p class="text-xs text-gray-500 mt-1">We use <code class="text-violet-400">sshv</code> — it handles jump hosts and auth for you</p>
+                </div>
+
+                <div id="setup-feedback"></div>
+
+                <div class="flex items-center gap-3 pt-2">
+                    <button type="button" onclick="testConnection()"
+                            class="flex-1 px-4 py-2.5 bg-white/5 border border-gray-700 text-gray-300 rounded-lg hover:bg-white/10 transition-colors text-sm font-medium">
+                        Test Connection
+                    </button>
+                    <button type="button" onclick="saveConfig()"
+                            class="flex-1 px-4 py-2.5 bg-lab-accent text-white rounded-lg hover:bg-lab-purple transition-colors text-sm font-medium">
+                        Save &amp; Start Training
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ═══ TOOL ACCESS REFERENCE ═══ -->
+    <div class="mb-8 mt-12 pt-8 border-t border-gray-800" id="tool-access">
+        <div class="flex items-center gap-3 mb-3">
+            <div class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-sm font-bold text-blue-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            </div>
+            <h2 class="text-lg font-semibold text-white">Tool Access Checklist</h2>
+        </div>
+        <div class="ml-11 bg-lab-dark rounded-xl border border-gray-800 p-5 space-y-5">
+            <p class="text-sm text-gray-400">Make sure you have access to these tools before starting training. Contact IT or your CX lead if anything is missing.</p>
+
+            <div class="border-l-2 border-blue-500/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">1Password Vaults</h3>
+                <p class="text-sm text-gray-400">You need access to these shared vaults:</p>
+                <ul class="text-sm text-gray-400 space-y-1 list-disc list-inside">
+                    <li><strong class="text-white">Support</strong> — customer credentials and escalation contacts</li>
+                    <li><strong class="text-white">Infrastructure</strong> — internal service accounts</li>
+                    <li><strong class="text-white">Customer Handover</strong> — onboarding docs per customer</li>
+                </ul>
+            </div>
+
+            <div class="border-l-2 border-blue-500/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">GitHub Repositories</h3>
+                <p class="text-sm text-gray-400">Mandatory repos — verify you can clone these:</p>
+                <ul class="text-sm text-gray-400 space-y-1 list-disc list-inside">
+                    <li><a href="https://github.com/voltagepark/Support-Tooling" target="_blank" class="text-lab-accent hover:underline">Support-Tooling</a> — all support scripts</li>
+                    <li><a href="https://github.com/voltagepark/vpadmin-api" target="_blank" class="text-lab-accent hover:underline">vpadmin-api</a> — internal admin API</li>
+                    <li><a href="https://github.com/voltagepark/vp-admin-cli" target="_blank" class="text-lab-accent hover:underline">vp-admin-cli</a> — CLI for admin operations</li>
+                    <li><a href="https://github.com/voltagepark/sshv" target="_blank" class="text-lab-accent hover:underline">sshv</a> — SSH wrapper binary</li>
+                </ul>
+                <p class="text-xs text-gray-500">Test with: <code class="text-violet-400">ssh -T git@github.com</code></p>
+            </div>
+
+            <div class="border-l-2 border-blue-500/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Internal Tools (Google SSO)</h3>
+                <p class="text-sm text-gray-400">Sign in with your Voltage Park Google account:</p>
+                <ul class="text-sm text-gray-400 space-y-1 list-disc list-inside">
+                    <li><a href="https://app.plain.com/workspace/w_01HZ0961YN3D2W0HYHQKPHCHBV/threads/all/?sort=status-changed-asc" target="_blank" class="text-lab-accent hover:underline">Plain</a> — customer support threads</li>
+                    <li><a href="https://volt.lightning.ai" target="_blank" class="text-lab-accent hover:underline">VOLT</a> — infrastructure dashboard</li>
+                    <li><a href="https://clusterview.usw2.voltagepark.net" target="_blank" class="text-lab-accent hover:underline">ClusterView</a> — cluster visualization</li>
+                    <li><a href="https://acs.usw2.voltagepark.net/input" target="_blank" class="text-lab-accent hover:underline">ACS Manager</a> — access control</li>
+                    <li>Metabase — analytics dashboards</li>
+                    <li>Grafana — metrics and monitoring</li>
+                    <li>Rootly — incident management</li>
+                    <li>Stripe — billing (view only)</li>
+                </ul>
+            </div>
+
+            <div class="border-l-2 border-blue-500/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Project Management</h3>
+                <ul class="text-sm text-gray-400 space-y-1 list-disc list-inside">
+                    <li>Jira — ticket tracking</li>
+                    <li>Confluence — documentation wiki</li>
+                    <li>Linear — engineering tasks</li>
+                    <li>Google Docs/Sheets/Drive — customer onboarding sheets</li>
+                </ul>
+            </div>
+
+            <div class="border-l-2 border-blue-500/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Infrastructure Access</h3>
+                <ul class="text-sm text-gray-400 space-y-1 list-disc list-inside">
+                    <li><strong class="text-white">MAAS</strong> — bare metal provisioning</li>
+                    <li><strong class="text-white">iDRAC</strong> — server management (uses LDAP credentials from Step 5)</li>
+                    <li><strong class="text-white">Tailscale</strong> — VPN (Step 4)</li>
+                </ul>
+            </div>
+
+            <div class="border-l-2 border-blue-500/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Customer-Facing Resources</h3>
+                <p class="text-sm text-gray-400">Know what customers see — helpful for support context:</p>
+                <ul class="text-sm text-gray-400 space-y-1 list-disc list-inside">
+                    <li><a href="https://www.voltagepark.com" target="_blank" class="text-lab-accent hover:underline">Voltage Park</a> — main website and customer portal</li>
+                    <li><a href="https://support.voltagepark.com" target="_blank" class="text-lab-accent hover:underline">Help Center</a> — customer documentation (On Demand, Dedicated Reserve, FAQs)</li>
+                    <li><a href="https://status.voltagepark.com" target="_blank" class="text-lab-accent hover:underline">Status Page</a> — public incident/maintenance status</li>
+                </ul>
+            </div>
+
+            <div class="border-l-2 border-blue-500/30 pl-4 space-y-3">
+                <h3 class="text-sm font-semibold text-white">Other</h3>
+                <ul class="text-sm text-gray-400 space-y-1 list-disc list-inside">
+                    <li>ChatGPT (company private instance)</li>
+                    <li>Cursor or GitHub Copilot (your choice)</li>
+                    <li>NVIDIA Training account — vendor certifications</li>
+                    <li>GitBooks — legacy docs (still useful sometimes)</li>
+                </ul>
+            </div>
+
+            <div class="bg-yellow-500/5 rounded-xl border border-yellow-500/20 p-4 space-y-2">
+                <h3 class="text-sm font-semibold text-yellow-400">Missing Access?</h3>
+                <p class="text-sm text-gray-400">For GitHub org access, contact <strong class="text-white">Lawrence Chu</strong> or IT. For other tools, ask your CX lead or post in <strong class="text-white">#question-ops</strong> on Slack.</p>
+            </div>
+        </div>
+    </div>
+
+    <p class="text-center text-gray-600 text-xs mt-6">
+        Stuck? DM <strong class="text-gray-400">Joe Mannix</strong> on Slack or run <code class="text-gray-500">./setup.sh</code> from the terminal.
+    </p>
+</div>
+
+<script>
+// ── badge helper ──
+function setBadge(id, status) {
+    const el = document.getElementById(id);
+    if (status === 'ok') {
+        el.className = 'w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center text-sm font-bold text-green-400';
+        el.innerHTML = '✓';
+    } else if (status === 'warn') {
+        el.className = 'w-8 h-8 rounded-lg bg-yellow-500/20 flex items-center justify-center text-sm font-bold text-yellow-400';
+    } else if (status === 'active') {
+        el.className = 'w-8 h-8 rounded-lg bg-lab-accent/20 flex items-center justify-center text-sm font-bold text-lab-accent';
+    }
+}
+
+// ── prereq row builder ──
+function prereqRow(ok, name, detail, cmd, hint) {
+    const dot = ok ? 'bg-green-400' : 'bg-yellow-400';
+    const text = ok ? 'text-green-400' : 'text-yellow-400';
+    let h = `<div class="flex items-start gap-3 p-3 rounded-lg bg-gray-900/30 border border-gray-800/50">
+        <span class="inline-block w-2 h-2 rounded-full ${dot} mt-1.5 flex-shrink-0"></span>
+        <div class="flex-1 min-w-0">
+            <div class="flex items-baseline justify-between gap-2">
+                <span class="text-sm font-medium text-white">${name}</span>
+                <span class="text-xs ${text} font-mono truncate">${detail}</span>
+            </div>`;
+    if (!ok && cmd) {
+        h += `<div class="mt-2 flex items-center gap-2 bg-gray-900/50 rounded px-3 py-1.5 border border-gray-700">
+            <code class="text-xs text-violet-400 font-mono flex-1 truncate">${cmd}</code>
+            <button onclick="copyText(this, '${cmd.replace(/'/g, "\\'")}')" class="text-xs text-gray-500 hover:text-lab-accent flex-shrink-0">copy</button>
+        </div>`;
+    }
+    if (!ok && hint) h += `<div class="mt-1 text-xs text-gray-500">${hint}</div>`;
+    h += `</div></div>`;
+    return h;
+}
+
+// ── run prereq checks ──
+async function checkPrereqs() {
+    const container = document.getElementById('tool-checks');
+    container.innerHTML = '<div class="text-sm text-gray-500 animate-pulse">Scanning your system...</div>';
+
+    try {
+        const res = await fetch('/api/setup/check-prereqs');
+        const data = await res.json();
+        renderChecks(data);
+    } catch(e) {
+        container.innerHTML = '<div class="text-sm text-red-400">Could not run checks. Is the server running?</div>';
+    }
+}
+
+function renderChecks(data) {
+    const container = document.getElementById('tool-checks');
+    let html = '';
+
+    html += prereqRow(data.homebrew.installed, 'Homebrew', data.homebrew.installed ? data.homebrew.version : 'Not installed', data.homebrew.install_cmd, null);
+
+    const bashOk = data.bash.installed;
+    html += prereqRow(bashOk, 'Bash 5+',
+        data.bash.needs_upgrade ? `v${data.bash.version} (needs 5+)` : (bashOk ? `v${data.bash.version}` : 'Not found'),
+        data.bash.install_cmd, null);
+
+    html += prereqRow(data.onepassword_cli.installed, '1Password CLI (op)',
+        data.onepassword_cli.installed ? `v${data.onepassword_cli.version}` : 'Not installed',
+        data.onepassword_cli.install_cmd, null);
+
+    html += prereqRow(data.ssh_agent.has_keys, 'SSH Agent Keys',
+        data.ssh_agent.has_keys ? `${data.ssh_agent.key_count} key(s) loaded via ${data.ssh_agent.agent_source}` : 'No keys loaded',
+        null, data.ssh_agent.has_keys ? null : 'Complete Step 2 below to set up your SSH key');
+
+    html += prereqRow(data.sshv && data.sshv.installed, 'sshv',
+        (data.sshv && data.sshv.installed) ? data.sshv.path : 'Not installed',
+        null, (data.sshv && data.sshv.installed) ? null : 'See Step 6 below — need GitHub access first');
+
+    html += prereqRow(data.tailscale && data.tailscale.installed, 'Tailscale',
+        (data.tailscale && data.tailscale.connected) ? 'Connected' : ((data.tailscale && data.tailscale.installed) ? 'Installed (not connected)' : 'Not installed'),
+        'brew install --cask tailscale', (data.tailscale && data.tailscale.installed) ? null : 'See Step 4 below');
+
+    container.innerHTML = html;
+
+    // tools badge
+    const sshvOk = data.sshv && data.sshv.installed;
+    const tailscaleOk = data.tailscale && data.tailscale.installed;
+    const toolsOk = data.homebrew.installed && bashOk && data.onepassword_cli.installed && data.ssh_agent.has_keys && sshvOk && tailscaleOk;
+    setBadge('badge-tools', toolsOk ? 'ok' : 'active');
+
+    // SSH badge
+    setBadge('badge-ssh', data.ssh_agent.has_keys ? 'ok' : 'warn');
+
+    // GitHub badge + status
+    const ghEl = document.getElementById('github-status');
+    if (data.github_ssh && data.github_ssh.authenticated) {
+        setBadge('badge-github', 'ok');
+        ghEl.innerHTML = `<div class="p-3 rounded-lg bg-green-500/10 border border-green-500/30 text-green-300 text-sm">
+            ✓ Authenticated to GitHub as <strong>${data.github_ssh.username || 'unknown'}</strong></div>`;
+    } else {
+        setBadge('badge-github', 'warn');
+        ghEl.innerHTML = `<div class="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-yellow-300 text-sm">
+            SSH to GitHub not working yet — follow the steps below to add your key.</div>`;
+    }
+
+    // Tailscale badge + status
+    const tsEl = document.getElementById('tailscale-status');
+    if (data.tailscale && data.tailscale.connected) {
+        setBadge('badge-tailscale', 'ok');
+        if (tsEl) tsEl.innerHTML = `<div class="p-3 rounded-lg bg-green-500/10 border border-green-500/30 text-green-300 text-sm">✓ Connected to Tailscale</div>`;
+    } else if (data.tailscale && data.tailscale.installed) {
+        setBadge('badge-tailscale', 'warn');
+        if (tsEl) tsEl.innerHTML = `<div class="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-yellow-300 text-sm">Tailscale installed but not connected — open Tailscale and log in</div>`;
+    } else {
+        setBadge('badge-tailscale', 'warn');
+        if (tsEl) tsEl.innerHTML = `<div class="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-yellow-300 text-sm">Not installed — follow the steps below</div>`;
+    }
+
+    // LDAP badge (no automatic check, just set to neutral)
+    setBadge('badge-ldap', 'warn');
+
+    // sshv badge + status
+    const sshvEl = document.getElementById('sshv-status');
+    if (data.sshv && data.sshv.installed) {
+        setBadge('badge-sshv', 'ok');
+        if (sshvEl) sshvEl.innerHTML = `<div class="p-3 rounded-lg bg-green-500/10 border border-green-500/30 text-green-300 text-sm">✓ Installed at ${data.sshv.path}</div>`;
+    } else {
+        setBadge('badge-sshv', 'warn');
+        if (sshvEl) sshvEl.innerHTML = `<div class="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-yellow-300 text-sm">Not installed — follow the steps below</div>`;
+    }
+
+    // Repo badge + status
+    const repoEl = document.getElementById('repo-status');
+    if (data.support_tooling.found) {
+        setBadge('badge-repo', 'ok');
+        repoEl.innerHTML = `<span class="text-green-400 text-sm">✓ Found at ${data.support_tooling.path}</span>`;
+    } else {
+        setBadge('badge-repo', 'warn');
+        repoEl.innerHTML = `<span class="text-yellow-400 text-sm">Not found yet — clone it with the command above</span>`;
+    }
+}
+
+// ── copy helpers ──
+function copyText(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'copied!';
+        btn.classList.add('text-green-400');
+        setTimeout(() => { btn.textContent = orig; btn.classList.remove('text-green-400'); }, 1500);
+    });
+}
+function copyCmd(id) {
+    const el = document.getElementById(id);
+    copyText(el.parentElement.querySelector('button'), el.textContent);
+}
+
+// ── connection test + save ──
+const feedback = document.getElementById('setup-feedback');
+function getFormData() {
+    return {
+        host: document.getElementById('host').value.trim(),
+        port: parseInt(document.getElementById('port').value) || 4747,
+        user: document.getElementById('user').value.trim() || 'vpsupport',
+        ssh_cmd: document.getElementById('ssh_cmd').value.trim() || 'sshv',
+    };
+}
+function showFeedback(msg, type) {
+    const c = { success: 'bg-green-500/10 border-green-500/30 text-green-300', error: 'bg-red-500/10 border-red-500/30 text-red-300',
+                info: 'bg-violet-500/10 border-violet-500/30 text-violet-300', warn: 'bg-yellow-500/10 border-yellow-500/30 text-yellow-300' };
+    feedback.innerHTML = `<div class="p-3 rounded-lg border ${c[type]||c.info} text-sm">${msg}</div>`;
+}
+async function testConnection() {
+    const data = getFormData();
+    if (!data.host) { showFeedback('Enter a server IP first.', 'warn'); return; }
+    showFeedback(`Testing via ${data.ssh_cmd}...`, 'info');
+    try {
+        const res = await fetch('/api/setup/test', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
+        const r = await res.json();
+        if (r.connected) {
+            showFeedback(`Connected to <strong>${r.hostname || data.host}</strong>`, 'success');
+            setBadge('badge-target', 'ok');
+            // cache so sidebar shows green immediately
+            localStorage.setItem('conn-check', JSON.stringify({
+                ts: Date.now(),
+                data: {connected: true, message: r.hostname || data.host}
+            }));
+        } else {
+            showFeedback(`Failed: ${r.message}<br><span class="text-xs opacity-70">Make sure 1Password SSH agent is enabled and you have access to this server.</span>`, 'warn');
+        }
+    } catch(e) { showFeedback('Could not reach the training lab server.', 'error'); }
+}
+async function saveConfig() {
+    const data = getFormData();
+    if (!data.host) { showFeedback('Enter a server IP first.', 'warn'); document.getElementById('host').focus(); return; }
+    showFeedback('Saving...', 'info');
+    try {
+        const res = await fetch('/api/setup/save', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
+        const r = await res.json();
+        if (r.status === 'ok') {
+            // store a successful connection result so the sidebar shows green immediately
+            localStorage.setItem('conn-check', JSON.stringify({
+                ts: Date.now(),
+                data: {connected: true, message: data.host}
+            }));
+            showFeedback('Saved! Launching dashboard...', 'success');
+            setTimeout(() => { window.location.href = '/track/baremetal'; }, 800);
+        } else { showFeedback(r.message || 'Save failed.', 'error'); }
+    } catch(e) { showFeedback('Failed to save.', 'error'); }
+}
+
+// kick off checks on page load
+checkPrereqs();
+</script>
+</body>
+</html>

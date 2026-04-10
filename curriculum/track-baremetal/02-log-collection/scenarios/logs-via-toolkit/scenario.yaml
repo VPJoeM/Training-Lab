@@ -1,0 +1,50 @@
+title: "Log Collection via Node Toolkit"
+description: "Collect logs the recommended way - through Node Toolkit"
+difficulty: beginner
+time_estimate: "5-10 minutes"
+runs_on: laptop
+startup_command: "cd ~/Github/Support-Tooling && ./scripts/sshv/start-node-toolkit.sh"
+
+objectives:
+  - Launch Node Toolkit from your laptop
+  - Navigate to Log Collection menu (option 14)
+  - Collect dmesg and journalctl logs
+  - Find where logs are saved
+
+example_output: |
+  **Main Menu → Option 14 (Log Collection)**
+  ```
+  ╔══════════════════════════════════════════════════════╗
+  ║              LOG COLLECTION MENU                      ║
+  ╠══════════════════════════════════════════════════════╣
+  ║  1) Collect dmesg                                     ║
+  ║  2) Collect journalctl                                ║
+  ║  3) Collect nvidia-bug-report                         ║
+  ║  4) Collect all logs                                  ║
+  ║ 11) Run DCGMI Diagnostics                             ║
+  ║  q) Back to main menu                                 ║
+  ╚══════════════════════════════════════════════════════╝
+  ```
+  
+  **After collecting logs:**
+  ```
+  ✓ dmesg saved to ~/Reports/g377/dmesg_2024-01-15_14-30.log
+  ✓ journalctl saved to ~/Reports/g377/journalctl_2024-01-15_14-30.log
+  ```
+  
+  **Logs are saved locally on your laptop** in `~/Reports/<hostname>/`
+
+hints:
+  - "Start toolkit: ./scripts/sshv/start-node-toolkit.sh"
+  - "Main menu → 14 (Log Collection)"
+  - "Options 1 and 2 for dmesg and journalctl"
+  - "Logs save to ~/Reports/<hostname>/"
+
+success_message: |
+  Node Toolkit log collection complete!
+  
+  This is the preferred method because:
+  • Organized output in ~/Reports/
+  • Parallel collection for speed
+  • Consistent naming conventions
+  • Easy to collect multiple log types at once

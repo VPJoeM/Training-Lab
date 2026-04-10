@@ -1,0 +1,9 @@
+- name: VOLT Dashboard
+  description: "The single source of truth for node info -- hostnames, IPs, iDRAC IPs, GPU types, cluster assignments, customer mappings. Start here, not with scripts."
+  path: https://volt.lightning.ai
+  runs_on: web
+
+- name: Support-Tooling README
+  description: "The repo's main README -- read this to understand the overall layout and what's available"
+  path: README.md
+  runs_on: docs

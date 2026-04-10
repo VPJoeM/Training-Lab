@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Lightning Training Lab{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'lab-dark': '#110F1F',
+                        'lab-darker': '#0A0914',
+                        'lab-accent': '#8B5CF6',
+                        'lab-green': '#4ade80',
+                        'lab-warn': '#fbbf24',
+                        'lab-error': '#f87171',
+                        'lab-purple': '#7C3AED',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-full bg-lab-darker text-gray-100">
+    {% if settings is defined and settings.DEBUG %}
+    <div class="bg-violet-500/10 border-b border-violet-500/30 px-4 py-1.5 text-xs text-violet-400 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <span class="font-mono font-bold">DEBUG MODE</span>
+            <span class="text-violet-500/60">|</span>
+            <span>Target: {{ settings.LAB_TARGET_HOST }}:{{ settings.LAB_TARGET_PORT }}</span>
+            <span class="text-violet-500/60">|</span>
+            <span>DB: {{ settings.DB_PATH }}</span>
+        </div>
+        <a href="/api/debug" class="text-violet-400 hover:text-violet-300 font-mono">debug info →</a>
+    </div>
+    {% endif %}
+    <div class="flex h-full">
+        <!-- sidebar nav -->
+        <aside class="w-64 bg-lab-dark border-r border-gray-800 flex flex-col flex-shrink-0">
+            <div class="p-4 border-b border-gray-800">
+                <a href="/" class="flex items-center gap-2 group">
+                    <div class="w-8 h-8 rounded-lg bg-lab-accent/20 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-lab-accent" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-white group-hover:text-lab-accent transition-colors">Training Lab</h1>
+                        <p class="text-xs text-gray-500">Lightning AI</p>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+                <!-- search -->
+                <div class="mb-4">
+                    <div class="relative">
+                        <input type="text" id="search-input" placeholder="Search lessons..."
+                               class="w-full bg-white/5 border border-gray-800 rounded-lg px-3 py-1.5 text-sm text-gray-300 placeholder-gray-600 focus:border-lab-accent/50 focus:outline-none focus:ring-1 focus:ring-lab-accent/30">
+                        <div id="search-results" class="hidden absolute z-50 top-full left-0 right-0 mt-1 bg-lab-dark border border-gray-700 rounded-lg shadow-xl max-h-80 overflow-y-auto"></div>
+                    </div>
+                </div>
+
+                {% if tracks is defined %}
+                {% for tname, t in tracks.items() %}
+                <div class="mb-4">
+                    <a href="/track/{{ tname }}"
+                       class="block px-3 py-1.5 text-xs uppercase tracking-wider transition-colors
+                              {% if track is defined and track.name == tname %}text-lab-accent{% else %}text-gray-500 hover:text-gray-300{% endif %}">
+                        {{ t.display_name }}
+                    </a>
+                    {% for m in t.modules %}
+                    <a href="/track/{{ tname }}/module/{{ m.id }}"
+                       class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors
+                              {% if module is defined and module.id == m.id %}bg-lab-accent/10 text-lab-accent font-medium{% else %}text-gray-400 hover:bg-white/5 hover:text-gray-200{% endif %}">
+                        <span class="text-xs text-gray-600 font-mono w-4">{{ m.number }}</span>
+                        <span class="truncate">{{ m.title }}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                <!-- reference pages -->
+                <div class="mb-4">
+                    <div class="block px-3 py-1.5 text-xs uppercase tracking-wider text-gray-500">Reference</div>
+                    <a href="/reference/cheat-sheet"
+                       class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-gray-400 hover:bg-white/5 hover:text-gray-200 transition-colors">
+                        <span class="text-xs">⚡</span>
+                        <span class="truncate">Cheat Sheet</span>
+                    </a>
+                    <a href="/reference/symptom-map"
+                       class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-gray-400 hover:bg-white/5 hover:text-gray-200 transition-colors">
+                        <span class="text-xs">🔍</span>
+                        <span class="truncate">Symptom Map</span>
+                    </a>
+                    <a href="/reference/sample-outputs"
+                       class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-gray-400 hover:bg-white/5 hover:text-gray-200 transition-colors">
+                        <span class="text-xs">📊</span>
+                        <span class="truncate">Sample Outputs</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="p-4 border-t border-gray-800 space-y-1">
+                {% if settings is defined and settings.is_configured %}
+                <a href="/terminal"
+                   class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800/50 hover:text-lab-green transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    Open Terminal
+                </a>
+                <div id="conn-status-wrap" class="px-3 py-2 text-sm text-gray-500 cursor-pointer" onclick="recheckConnection()" title="Click to re-check">
+                    <span id="conn-status">
+                        <span class="inline-block w-2 h-2 rounded-full bg-gray-600"></span>
+                        Loading...
+                    </span>
+                </div>
+                {% else %}
+                <a href="/setup"
+                   class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-lab-warn hover:bg-yellow-500/10 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    Configure Target Server
+                </a>
+                {% endif %}
+                {% if settings is defined and settings.is_configured %}
+                <a href="/setup"
+                   class="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-gray-600 hover:text-gray-400 transition-colors">
+                    <span class="font-mono">{{ settings.LAB_TARGET_HOST }}:{{ settings.LAB_TARGET_PORT }}</span>
+                </a>
+                {% endif %}
+            </div>
+        </aside>
+
+        <!-- main content area -->
+        <main class="flex-1 overflow-y-auto">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <!-- preview modal -->
+    <div id="preview-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="hidePreview()"></div>
+        <div class="absolute inset-4 md:inset-8 lg:inset-16 flex items-center justify-center">
+            <div class="relative bg-lab-dark rounded-2xl border border-gray-700 shadow-2xl max-w-full max-h-full overflow-hidden flex flex-col">
+                <div class="flex items-center justify-between px-4 py-3 border-b border-gray-800">
+                    <div class="flex items-center gap-2">
+                        <div class="flex gap-1.5">
+                            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                        </div>
+                        <h3 id="preview-title" class="font-mono text-sm text-white ml-2"></h3>
+                    </div>
+                    <button onclick="hidePreview()" class="text-gray-500 hover:text-white transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="preview-content" class="p-4 overflow-auto flex-1 flex items-center justify-center">
+                    <img id="preview-image" src="" alt="" class="max-w-full max-h-[70vh] rounded-lg shadow-lg hidden">
+                    <pre id="preview-terminal" class="hidden bg-gray-900 text-green-400 font-mono text-sm p-6 rounded-lg shadow-lg overflow-auto max-w-full max-h-[70vh] whitespace-pre"></pre>
+                </div>
+                <div class="px-4 py-2 border-t border-gray-800 text-xs text-gray-500 text-center">
+                    Press <kbd class="px-1.5 py-0.5 bg-gray-800 rounded">Esc</kbd> or click outside to close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // connection status -- persisted in localStorage (10 min cache), click to re-check
+        function renderConnStatus(data) {
+            const el = document.getElementById('conn-status');
+            if (!el) return;
+            if (data.connected) {
+                el.innerHTML = '<span class="inline-block w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> ' + (data.message || 'Connected');
+                el.className = 'text-green-400 text-sm';
+            } else {
+                el.innerHTML = '<span class="inline-block w-2 h-2 rounded-full bg-yellow-400"></span> Unreachable <span class="text-xs text-gray-600">(click to retry)</span>';
+                el.className = 'text-yellow-400 text-sm';
+            }
+        }
+
+        async function doConnectionCheck() {
+            const el = document.getElementById('conn-status');
+            if (!el) return;
+            el.innerHTML = '<span class="inline-block w-2 h-2 rounded-full bg-gray-600 animate-pulse"></span> Checking...';
+            el.className = 'text-gray-500 text-sm';
+            try {
+                const res = await fetch('/api/connection-test');
+                const data = await res.json();
+                localStorage.setItem('conn-check', JSON.stringify({ts: Date.now(), data}));
+                renderConnStatus(data);
+            } catch(e) {
+                const el = document.getElementById('conn-status');
+                if (el) {
+                    el.innerHTML = '<span class="inline-block w-2 h-2 rounded-full bg-gray-600"></span> Could not check';
+                    el.className = 'text-gray-500 text-sm';
+                }
+            }
+        }
+
+        function recheckConnection() {
+            // clear cache so we always do a fresh check on click
+            localStorage.removeItem('conn-check');
+            doConnectionCheck();
+        }
+
+        // on load: use cached if under 10 min old, otherwise check once
+        (function() {
+            const el = document.getElementById('conn-status');
+            if (!el) return;
+            const cached = localStorage.getItem('conn-check');
+            if (cached) {
+                try {
+                    const c = JSON.parse(cached);
+                    if (Date.now() - c.ts < 600000) { renderConnStatus(c.data); return; }
+                } catch(e) {}
+            }
+            doConnectionCheck();
+        })();
+
+        // search functionality
+        (function() {
+            const input = document.getElementById('search-input');
+            const results = document.getElementById('search-results');
+            if (!input || !results) return;
+
+            let debounce = null;
+            input.addEventListener('input', function() {
+                clearTimeout(debounce);
+                const q = this.value.trim();
+                if (q.length < 2) { results.classList.add('hidden'); return; }
+                debounce = setTimeout(async () => {
+                    try {
+                        const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+                        const data = await res.json();
+                        if (data.results.length === 0) {
+                            results.innerHTML = '<div class="p-3 text-sm text-gray-500">No results</div>';
+                        } else {
+                            results.innerHTML = data.results.map(r =>
+                                `<a href="${r.url}" class="block p-3 hover:bg-white/5 border-b border-gray-800 last:border-0">
+                                    <div class="text-sm font-medium text-white">${r.title}</div>
+                                    ${r.matches.map(m => `<div class="text-xs text-gray-500 truncate mt-0.5">${m.text}</div>`).join('')}
+                                </a>`
+                            ).join('');
+                        }
+                        results.classList.remove('hidden');
+                    } catch(e) {}
+                }, 300);
+            });
+            input.addEventListener('blur', () => setTimeout(() => results.classList.add('hidden'), 200));
+            input.addEventListener('focus', function() { if (this.value.trim().length >= 2) results.classList.remove('hidden'); });
+        })();
+
+        // open all external links in new tabs (covers markdown-rendered content too)
+        document.addEventListener('click', function(e) {
+            const a = e.target.closest('a');
+            if (a && a.hostname && a.hostname !== location.hostname) {
+                a.setAttribute('target', '_blank');
+                a.setAttribute('rel', 'noopener');
+            }
+        });
+
+        // preview modal for script screenshots and terminal previews
+        function showPreview(title, imageSrc, type) {
+            const modal = document.getElementById('preview-modal');
+            const titleEl = document.getElementById('preview-title');
+            const imageEl = document.getElementById('preview-image');
+            const terminalEl = document.getElementById('preview-terminal');
+            if (modal && titleEl && imageEl && terminalEl) {
+                titleEl.textContent = title;
+                imageEl.classList.add('hidden');
+                terminalEl.classList.add('hidden');
+                if (type === 'image') {
+                    imageEl.src = imageSrc;
+                    imageEl.alt = title;
+                    imageEl.classList.remove('hidden');
+                }
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function showTerminalPreview(title, content) {
+            const modal = document.getElementById('preview-modal');
+            const titleEl = document.getElementById('preview-title');
+            const imageEl = document.getElementById('preview-image');
+            const terminalEl = document.getElementById('preview-terminal');
+            if (modal && titleEl && imageEl && terminalEl) {
+                titleEl.textContent = title;
+                imageEl.classList.add('hidden');
+                terminalEl.textContent = content;
+                terminalEl.classList.remove('hidden');
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function hidePreview() {
+            const modal = document.getElementById('preview-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // close on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') hidePreview();
+        });
+    </script>
+</body>
+</html>

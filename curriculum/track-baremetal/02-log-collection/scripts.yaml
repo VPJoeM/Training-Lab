@@ -1,0 +1,39 @@
+- name: start-node-toolkit.sh
+  description: "SSHV node management toolkit -- connect via sshv, target nodes by hostname or discovery, fleet ops. Log collection submenu: dmesg, journalctl, nvidia-smi -q, ECC check, InfiniBand diagnostics, nvidia-bug-report, Dell TSR, SOS reports, DCGMI diagnostics, NCCL benchmark, plus a collect-all batch that runs the core log pulls in parallel"
+  path: scripts/sshv/start-node-toolkit.sh
+  runs_on: laptop
+  preview_type: terminal
+  preview_title: "Log Collection Menu (Option 14)"
+  preview_content: |
+    ┌─────────────────────────────────────────────────────────┐
+    │            LOG COLLECTION MENU                         │
+    │            Save to: ~/Reports                          │
+    └─────────────────────────────────────────────────────────┘
+
+    Quick Logs: (fast, parallel, ~5-10s)
+      1) Collect dmesg
+      2) Collect journalctl
+      8) Run PSB Check
+
+    GPU Diagnostics:
+      3) Collect nvidia-smi -q (~10s per node)
+      4) Collect ECC Check Report (~15s per node)
+      6) Collect NVIDIA Bug Report (~5 min per node)
+
+    Network Diagnostics:
+      5) Collect InfiniBand Diagnostics (~30s per node)
+
+    System Reports: (slow)
+      7) Collect Dell TSR Report (~10 min, requires iDRAC)
+     10) Collect SOS Report (~5-10 min per node)
+
+    GPU Stress Testing:
+     11) Run DCGMI Diagnostics (L1-L4: 2-30 min)
+     12) Run NCCL Benchmark (~5-20 min)
+
+    Batch Operations:
+      9) Collect All Standard Logs (1-5 in parallel)
+
+    0) Back to Main Menu
+    ────────────────────────────────────────
+    Select an option: _

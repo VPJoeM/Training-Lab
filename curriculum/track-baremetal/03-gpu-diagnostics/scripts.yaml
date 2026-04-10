@@ -1,0 +1,9 @@
+- name: check-ecc.sh
+  description: "Check ECC error counts across all GPUs -- quick way to spot bad memory"
+  path: scripts/gpu/check-ecc.sh
+  runs_on: node
+
+- name: Node Toolkit → DCGMI Diagnostics
+  description: "GPU stress testing via the node toolkit (option 14 → 11). Installs DCGM, kills conflicting processes, runs L1-L4 tests in screen, collects results. The recommended way to stress test."
+  path: scripts/sshv/start-node-toolkit.sh
+  runs_on: laptop

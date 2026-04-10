@@ -1,0 +1,50 @@
+title: "Check PCIe Width for HCAs"
+description: "Find an HCA with degraded PCIe link width (x8 instead of x16)"
+difficulty: intermediate
+time_estimate: "5-10 minutes"
+runs_on: node
+
+objectives:
+  - Use lspci to check PCIe link status
+  - Identify the HCA with degraded width
+  - Understand LnkSta vs LnkCap
+
+example_output: |
+  **Step 1: Find the Mellanox devices**
+  ```
+  $ lspci | grep Mellanox
+  3b:00.0 Infiniband controller: Mellanox Technologies MT2910 [ConnectX-7]
+  86:00.0 Infiniband controller: Mellanox Technologies MT2910 [ConnectX-7]
+  af:00.0 Infiniband controller: Mellanox Technologies MT2910 [ConnectX-7]
+  ```
+  
+  **Step 2: Check each one's PCIe link**
+  ```
+  $ sudo lspci -vv -s 3b:00.0 | grep -i lnk
+      LnkCap: Speed 16GT/s, Width x16    ← Capable of x16
+      LnkSta: Speed 16GT/s, Width x16    ← Running at x16 ✓
+  
+  $ sudo lspci -vv -s 86:00.0 | grep -i lnk
+      LnkCap: Speed 16GT/s, Width x16    ← Capable of x16
+      LnkSta: Speed 16GT/s, Width x8     ← Running at x8 ✗ DEGRADED
+  ```
+  
+  The problem is **86:00.0** - LnkSta shows x8 but LnkCap shows x16.
+  Card isn't using full PCIe bandwidth.
+
+hints:
+  - "Run: lspci | grep Mellanox"
+  - "Then: sudo lspci -vv -s <address> | grep -i lnk"
+  - "LnkCap shows max capability, LnkSta shows current"
+  - "Width x16 is expected, x8 is degraded"
+
+success_message: |
+  You found the degraded PCIe link!
+  
+  PCIe width issues usually indicate:
+  • Card not fully seated in slot
+  • Dirty PCIe connector
+  • Motherboard slot issue
+  • Thermal throttling (rare)
+  
+  Resolution usually requires physical reseating.

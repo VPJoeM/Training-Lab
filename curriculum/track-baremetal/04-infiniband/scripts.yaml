@@ -1,0 +1,9 @@
+- name: start-ib-toolkit.sh
+  description: "Interactive IB diagnostics toolkit -- ibstat, error counters, mlxlink, cable checks, all in one menu"
+  path: scripts/infiniband/start-ib-toolkit.sh
+  runs_on: laptop
+
+- name: get-ib-stat-summary.sh
+  description: "Formatted ibstat summary for the local node -- clean columnar output of port states, speeds, and GUIDs"
+  path: scripts/infiniband/get-ib-stat-summary.sh
+  runs_on: node

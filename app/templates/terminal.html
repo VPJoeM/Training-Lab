@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}Terminal - Lightning Training Lab{% endblock %}
+
+{% block content %}
+<div class="p-8 max-w-4xl mx-auto">
+
+    <!-- header -->
+    <div class="mb-8">
+        <h2 class="text-3xl font-bold text-white">Terminal</h2>
+        <p class="text-gray-400 mt-2">Launch a terminal session to the lab server. Sessions are logged so we can track your progress.</p>
+    </div>
+
+    {% if settings.is_configured %}
+    <!-- launch button -->
+    <div class="bg-lab-dark rounded-xl border border-gray-800 p-6 mb-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="flex items-center gap-3 mb-1">
+                    <svg class="w-5 h-5 text-lab-green" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span class="text-white font-semibold">{{ settings.LAB_TARGET_USER }}@{{ settings.LAB_TARGET_HOST }}</span>
+                </div>
+                <p class="text-sm text-gray-500 ml-8">via {{ settings.LAB_SSH_CMD }} on port {{ settings.LAB_TARGET_PORT }}</p>
+            </div>
+            <button onclick="launchTerminal()"
+                    class="px-6 py-3 bg-lab-accent text-white rounded-lg hover:bg-lab-purple transition-colors font-medium flex items-center gap-2">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/></svg>
+                Launch Terminal
+            </button>
+        </div>
+        <div id="launch-feedback" class="mt-3"></div>
+    </div>
+
+    <!-- manual command (copy fallback) -->
+    <div class="bg-lab-dark rounded-xl border border-gray-800 p-5 mb-6">
+        <p class="text-sm text-gray-400 mb-2">Or connect manually from any terminal:</p>
+        <div class="flex items-center justify-between bg-gray-900/50 rounded-lg p-3 border border-gray-700">
+            <code id="ssh-cmd" class="text-sm text-violet-400 font-mono">{{ settings.LAB_SSH_CMD }} -p {{ settings.LAB_TARGET_PORT }} {{ settings.LAB_TARGET_USER }}@{{ settings.LAB_TARGET_HOST }}</code>
+            <button onclick="copyText(this)" class="text-xs text-gray-500 hover:text-lab-accent ml-3 flex-shrink-0">copy</button>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- not configured -->
+    <div class="bg-yellow-500/10 rounded-xl border border-yellow-500/20 p-6 mb-6">
+        <p class="text-yellow-300 mb-2">No target server configured yet.</p>
+        <a href="/setup" class="text-lab-accent hover:underline text-sm">Complete setup first →</a>
+    </div>
+    {% endif %}
+
+    <!-- session logs -->
+    {% if sessions %}
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold text-white mb-3">Recent Sessions</h3>
+        <div class="space-y-2">
+            {% for session in sessions %}
+            <div class="bg-lab-dark rounded-lg border border-gray-800 p-3 flex items-center justify-between group hover:border-gray-700 transition-colors">
+                <div class="flex items-center gap-3">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <div>
+                        <span class="text-sm text-white font-mono">{{ session.name }}</span>
+                        <span class="text-xs text-gray-500 ml-2">{{ session.modified }}</span>
+                    </div>
+                </div>
+                <button onclick="viewSession('{{ session.name }}')"
+                        class="text-xs text-gray-500 hover:text-lab-accent transition-colors opacity-0 group-hover:opacity-100">
+                    view log
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- session viewer -->
+    <div id="session-viewer" class="hidden mb-6">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="text-lg font-semibold text-white">Session Log</h3>
+            <button onclick="document.getElementById('session-viewer').classList.add('hidden')"
+                    class="text-xs text-gray-500 hover:text-lab-accent">close</button>
+        </div>
+        <pre id="session-content" class="bg-gray-900 rounded-xl border border-gray-700 p-4 text-xs text-gray-300 font-mono overflow-auto max-h-96 whitespace-pre-wrap"></pre>
+    </div>
+</div>
+
+<script>
+async function launchTerminal() {
+    const fb = document.getElementById('launch-feedback');
+    fb.innerHTML = '<div class="text-sm text-violet-400 animate-pulse">Opening terminal...</div>';
+
+    try {
+        const res = await fetch('/api/terminal/open', {method: 'POST'});
+        const data = await res.json();
+        if (data.status === 'ok') {
+            fb.innerHTML = `<div class="p-2 rounded-lg bg-green-500/10 border border-green-500/30 text-green-300 text-sm">${data.message}</div>`;
+        } else {
+            fb.innerHTML = `<div class="p-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm">${data.message}</div>`;
+        }
+    } catch(e) {
+        fb.innerHTML = '<div class="p-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm">Failed to launch terminal</div>';
+    }
+}
+
+async function viewSession(name) {
+    const viewer = document.getElementById('session-viewer');
+    const content = document.getElementById('session-content');
+    viewer.classList.remove('hidden');
+    content.textContent = 'Loading...';
+
+    try {
+        const res = await fetch(`/api/terminal/session/${name}`);
+        const data = await res.json();
+        content.textContent = data.content || '(empty session)';
+        content.scrollTop = content.scrollHeight;
+    } catch(e) {
+        content.textContent = 'Failed to load session log.';
+    }
+}
+
+function copyText(btn) {
+    const cmd = document.getElementById('ssh-cmd').textContent;
+    navigator.clipboard.writeText(cmd).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'copied!';
+        btn.classList.add('text-green-400');
+        setTimeout(() => { btn.textContent = orig; btn.classList.remove('text-green-400'); }, 1500);
+    });
+}
+</script>
+{% endblock %}

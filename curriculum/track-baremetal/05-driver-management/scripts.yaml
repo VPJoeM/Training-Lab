@@ -1,0 +1,4 @@
+- name: install-drivers.sh
+  description: "Full NVIDIA driver installation -- handles driver, CUDA, Fabric Manager, and validation"
+  path: scripts/gpu/install-drivers.sh
+  runs_on: node

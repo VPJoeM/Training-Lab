@@ -1,0 +1,37 @@
+# env and secrets
+.env
+*.pem
+*.key
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.pytest_cache/
+
+# data (SQLite progress DB lives here)
+data/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# IDE / editor
+.vscode/
+.cursor/
+*.swp
+*.swo
+
+# runtime
+.server.pid
+.playwright-mcp/
+
+# local notes
+.chat_summary.md
+context_logs/
+Todays threads/

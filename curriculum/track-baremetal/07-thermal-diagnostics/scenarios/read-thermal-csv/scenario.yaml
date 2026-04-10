@@ -1,0 +1,57 @@
+title: "Read Thermal Results CSV"
+description: "Interpret a thermal diagnostics CSV to check for issues"
+difficulty: intermediate
+time_estimate: "5 minutes"
+runs_on: node
+
+objectives:
+  - Open a thermal results CSV
+  - Identify key columns (temp, power, utilization)
+  - Check if any GPU exceeded thresholds
+  - Understand pass/fail criteria
+
+example_output: |
+  **Thermal results CSV format:**
+  ```
+  timestamp,gpu_id,gpu_temp,mem_temp,power_draw,gpu_util
+  2024-01-15 10:30:00,0,72,68,695,100
+  2024-01-15 10:30:00,1,74,70,698,100
+  2024-01-15 10:30:00,2,71,67,692,100
+  2024-01-15 10:30:00,3,85,81,680,100    ← GPU 3 is HOT
+  2024-01-15 10:30:00,4,73,69,697,100
+  2024-01-15 10:30:00,5,72,68,694,100
+  2024-01-15 10:30:00,6,74,70,699,100
+  2024-01-15 10:30:00,7,73,69,696,100
+  ```
+  
+  **Key columns:**
+  | Column | Normal Range | Red Flag |
+  |--------|-------------|----------|
+  | gpu_temp | 65-80°C | >83°C |
+  | mem_temp | 60-75°C | >85°C |
+  | power_draw | ~700W | <650W (not stressed) |
+  | gpu_util | 100% | <95% (not fully loaded) |
+  
+  **What's wrong here:**
+  - GPU 3: temp 85°C exceeds 83°C threshold
+  - GPU 3: power 680W is lower than siblings
+  - Possible cooling issue on GPU 3 position
+  
+  **Next steps:**
+  - Check airflow at that GPU position
+  - Verify thermal paste/heatsink
+  - Check fan profile in iDRAC
+
+hints:
+  - "Look at gpu_temp column first"
+  - "H100 threshold is typically 83°C"
+  - "Compare power draw across all GPUs"
+  - "Low power + high temp = cooling problem"
+
+success_message: |
+  You can read thermal CSV results!
+  
+  Key things to check:
+  • Max temp vs threshold
+  • Outliers compared to siblings
+  • Power draw consistency

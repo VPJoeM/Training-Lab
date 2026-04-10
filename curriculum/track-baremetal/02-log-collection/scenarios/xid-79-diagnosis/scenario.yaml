@@ -1,0 +1,41 @@
+title: "Find the XID 79 Error"
+description: "A GPU has fallen off the bus. Find which one and identify the timestamp."
+difficulty: beginner
+time_estimate: "10-15 min"
+runs_on: node
+
+objectives:
+  - Find the XID 79 error in dmesg
+  - Identify which GPU (by PCI address) fell off the bus
+  - Note the timestamp of the error
+
+example_output: |
+  **Run the command:**
+  ```
+  $ sudo dmesg | grep -i xid
+  [14523.892341] NVRM: Xid (PCI:0000:86:00): 79, pid=12345, GPU has fallen off the bus.
+  [14523.892342] NVRM: Xid (PCI:0000:86:00): 79, GPU has fallen off the bus.
+  ```
+  
+  **What this tells you:**
+  - **PCI:0000:86:00** - This is the GPU's PCI address (slot 86:00)
+  - **XID 79** - "GPU has fallen off the bus" = PCIe communication failure
+  - **[14523.892341]** - Timestamp in seconds since boot
+  
+  **Is it fresh or stale?**
+  ```
+  $ uptime
+  14:32:15 up 4 days, 2:15, ...
+  
+  $ echo $((14523 / 3600)) hours
+  4 hours
+  ```
+  The error happened ~4 hours after boot, so it's about 4 days old.
+
+hints:
+  - "Start with `sudo dmesg | grep -i xid` to find XID errors"
+  - "XID 79 means 'GPU has fallen off the bus' - a PCIe communication failure"
+  - "Check the timestamp - is this from the current boot or an old error?"
+  - "The PCI address tells you which GPU slot had the issue"
+
+success_message: "You found the XID 79 error and identified the affected GPU."

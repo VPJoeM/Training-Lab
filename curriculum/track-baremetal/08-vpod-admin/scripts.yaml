@@ -1,0 +1,39 @@
+- name: VPOD Admin Interface
+  path: scripts/api/start-vpod-admin-interface.sh
+  runs_on: laptop
+  description: "Menu-driven interface for VPAdmin API -- customer lookup, balance checks, transactions, rentals, refunds. Built on vpadmin-cli with 1Password credential storage."
+  preview_type: terminal
+  preview_title: "VPOD Admin Menu Structure"
+  preview_content: |
+    ┌─────────────────────────────────────────────────────────┐
+    │              VPOD ADMIN INTERFACE                       │
+    │              Voltage Park Operations                     │
+    └─────────────────────────────────────────────────────────┘
+    
+    1) Admin API — user/org/transaction management
+    2) Configuration — settings, troubleshoot
+    3) Show Status — current configuration
+    4) Quit
+    
+    ═══════════════════════════════════════
+    Admin API Menu:
+    ═══════════════════════════════════════
+    1) Users — lookup, roles, verification
+    2) Organizations — balance, rentals, pricing
+    3) Transactions — create credits/debits
+    4) Locations — datacenter info
+    5) Baremetal — rental rates, termination
+    6) Virtual Machines — VM management
+    7) SQL Queries — read-only database
+    8) Run Custom Command
+    b) Back
+
+- name: vp-admin-cli
+  path: https://github.com/voltagepark/vp-admin-cli
+  runs_on: laptop
+  description: "The underlying CLI tool by Mark Wagner -- auto-installed by the interface script"
+
+- name: Metabase
+  path: https://metabase.voltagepark.com
+  runs_on: web
+  description: "Analytics dashboards -- alternative way to look up customer/org info via SQL queries"

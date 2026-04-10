@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% block title %}{{ scenario.title }} - Lightning Training Lab{% endblock %}
+
+{% block content %}
+<div class="flex flex-col h-full">
+
+    <!-- scenario header bar -->
+    <div class="p-4 border-b border-gray-800 bg-lab-dark">
+        <nav class="flex items-center gap-2 text-sm text-gray-400 mb-2">
+            <a href="/track/{{ track.name }}" class="hover:text-lab-accent">{{ track.display_name }}</a>
+            <span class="text-gray-600">/</span>
+            <a href="/track/{{ track.name }}/module/{{ module.id }}" class="hover:text-lab-accent">{{ module.title }}</a>
+            <span class="text-gray-600">/</span>
+            <span class="text-white">{{ scenario.title }}</span>
+        </nav>
+
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-xl font-bold text-white">{{ scenario.title }}</h2>
+                <div class="flex items-center gap-4 mt-1 text-sm text-gray-500">
+                    {% if scenario.difficulty %}<span>{{ scenario.difficulty }}</span>{% endif %}
+                    {% if scenario.time_estimate %}<span>~{{ scenario.time_estimate }}</span>{% endif %}
+                    <span id="attempt-count"></span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2" id="scenario-controls">
+                {% set status = scenario.state.get('status', 'ready') %}
+                {% if status == 'ready' %}
+                <button onclick="startScenario()"
+                        class="px-4 py-2 bg-lab-accent text-lab-darker rounded-lg hover:bg-lab-accent/90 transition-colors font-medium text-sm">
+                    Start Lab
+                </button>
+                {% elif status == 'active' %}
+                <button onclick="verifyScenario()"
+                        class="px-4 py-2 bg-lab-green text-lab-darker rounded-lg hover:bg-lab-green/90 transition-colors font-medium text-sm">
+                    Check My Work
+                </button>
+                <button onclick="teardownScenario()"
+                        class="px-4 py-2 bg-gray-800 text-gray-400 rounded-lg hover:bg-gray-700 transition-colors text-sm">
+                    Give Up
+                </button>
+                {% elif status == 'passed' %}
+                <span class="px-4 py-2 bg-lab-green/10 text-lab-green rounded-lg text-sm font-medium">
+                    Completed
+                </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- two-panel layout: instructions | terminal -->
+    <div class="flex-1 flex overflow-hidden">
+
+        <!-- left: instructions -->
+        <div class="w-1/2 p-6 overflow-y-auto border-r border-gray-800">
+            <div id="scenario-feedback" class="mb-4"></div>
+
+            {% if scenario.description %}
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-white mb-2">The Situation</h3>
+                <p class="text-gray-300">{{ scenario.description }}</p>
+            </div>
+            {% endif %}
+
+            {% if scenario.instructions %}
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-white mb-2">Your Task</h3>
+                <div class="prose prose-invert prose-cyan prose-sm max-w-none">
+                    {{ scenario.instructions }}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if scenario.relevant_scripts %}
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-white mb-2">Relevant Scripts</h3>
+                <div class="space-y-2">
+                    {% for script in scenario.relevant_scripts %}
+                    <div class="bg-gray-900 rounded-lg px-3 py-2 font-mono text-sm text-lab-accent">{{ script }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div id="hints-section"></div>
+        </div>
+
+        <!-- right: terminal panel -->
+        <div class="w-1/2 bg-lab-darker flex flex-col items-center justify-center p-8">
+            <svg class="w-12 h-12 text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-gray-400 text-sm mb-4 text-center">Open a terminal session to work on this lab.</p>
+            <button onclick="openLabTerminal()"
+                    class="px-6 py-3 bg-lab-accent text-white rounded-lg hover:bg-lab-purple transition-colors font-medium flex items-center gap-2">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/></svg>
+                Launch Terminal
+            </button>
+            <div id="terminal-feedback" class="mt-3 text-sm"></div>
+            <div class="mt-6 bg-gray-900/50 rounded-lg p-3 border border-gray-700 w-full max-w-md">
+                <p class="text-xs text-gray-500 mb-1">Or copy the command:</p>
+                <code class="text-xs text-violet-400 font-mono">{{ settings.LAB_SSH_CMD }} -p {{ settings.LAB_TARGET_PORT }} {{ settings.LAB_TARGET_USER }}@{{ settings.LAB_TARGET_HOST }}</code>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const SCENARIO_ID = "{{ scenario.id }}";
+
+async function openLabTerminal() {
+    const fb = document.getElementById('terminal-feedback');
+    fb.innerHTML = '<span class="text-violet-400 animate-pulse">Opening...</span>';
+    try {
+        const res = await fetch('/api/terminal/open', {method: 'POST'});
+        const data = await res.json();
+        fb.innerHTML = data.status === 'ok'
+            ? `<span class="text-green-400">${data.message}</span>`
+            : `<span class="text-red-400">${data.message}</span>`;
+    } catch(e) { fb.innerHTML = '<span class="text-red-400">Failed to launch</span>'; }
+}
+const feedback = document.getElementById('scenario-feedback');
+const controls = document.getElementById('scenario-controls');
+const hintsEl = document.getElementById('hints-section');
+
+function showFeedback(msg, type) {
+    const colors = {
+        success: 'bg-lab-green/10 border-lab-green/30 text-green-300',
+        error: 'bg-lab-error/10 border-lab-error/30 text-red-300',
+        info: 'bg-lab-accent/10 border-lab-accent/30 text-cyan-300',
+        warn: 'bg-lab-warn/10 border-lab-warn/30 text-yellow-300',
+    };
+    feedback.innerHTML = `<div class="p-3 rounded-lg border ${colors[type] || colors.info} text-sm">${msg}</div>`;
+}
+
+function setControls(html) {
+    controls.innerHTML = html;
+}
+
+async function startScenario() {
+    showFeedback('Setting up the lab environment...', 'info');
+    setControls('<span class="text-gray-400 text-sm animate-pulse">Starting...</span>');
+
+    try {
+        const res = await fetch(`/api/scenario/${SCENARIO_ID}/start`, {method: 'POST'});
+        const data = await res.json();
+        if (data.status === 'active') {
+            showFeedback(data.message, 'success');
+            setControls(`
+                <button onclick="verifyScenario()" class="px-4 py-2 bg-lab-green text-lab-darker rounded-lg hover:bg-lab-green/90 transition-colors font-medium text-sm">Check My Work</button>
+                <button onclick="teardownScenario()" class="px-4 py-2 bg-gray-800 text-gray-400 rounded-lg hover:bg-gray-700 transition-colors text-sm">Give Up</button>
+            `);
+        } else {
+            showFeedback(data.message || 'Setup failed', 'error');
+            setControls(`<button onclick="startScenario()" class="px-4 py-2 bg-lab-accent text-lab-darker rounded-lg hover:bg-lab-accent/90 transition-colors font-medium text-sm">Retry</button>`);
+        }
+    } catch(e) {
+        showFeedback('Failed to reach the training server.', 'error');
+    }
+}
+
+async function verifyScenario() {
+    showFeedback('Checking your work...', 'info');
+
+    try {
+        const res = await fetch(`/api/scenario/${SCENARIO_ID}/verify`, {method: 'POST'});
+        const data = await res.json();
+
+        if (data.status === 'passed') {
+            showFeedback(data.message, 'success');
+            setControls('<span class="px-4 py-2 bg-lab-green/10 text-lab-green rounded-lg text-sm font-medium">Completed</span>');
+        } else {
+            showFeedback(data.message, 'warn');
+            if (data.attempts) {
+                document.getElementById('attempt-count').textContent = `Attempt ${data.attempts}`;
+            }
+            if (data.hints && data.hints.length > 0) {
+                let html = '<h3 class="text-lg font-semibold text-white mb-2">Hints</h3>';
+                data.hints.forEach((hint, i) => {
+                    html += `<div class="bg-gray-900 rounded-lg p-3 mb-2 text-sm text-gray-300 border border-gray-700">
+                        <span class="text-lab-warn font-medium">Hint ${i+1}:</span> ${hint}
+                    </div>`;
+                });
+                hintsEl.innerHTML = html;
+            }
+        }
+    } catch(e) {
+        showFeedback('Failed to reach the training server.', 'error');
+    }
+}
+
+async function teardownScenario() {
+    showFeedback('Cleaning up...', 'info');
+
+    try {
+        await fetch(`/api/scenario/${SCENARIO_ID}/teardown`, {method: 'POST'});
+        showFeedback('Lab environment cleaned up.', 'info');
+        setControls(`<button onclick="startScenario()" class="px-4 py-2 bg-lab-accent text-lab-darker rounded-lg hover:bg-lab-accent/90 transition-colors font-medium text-sm">Start Lab</button>`);
+        hintsEl.innerHTML = '';
+    } catch(e) {
+        showFeedback('Teardown had an issue -- check with your trainer.', 'error');
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,60 @@
+title: "Pull System Health via Redfish"
+description: "Use the Redfish script to check server health status"
+difficulty: beginner
+time_estimate: "5 minutes"
+runs_on: laptop
+startup_command: "cd ~/Github/Support-Tooling && ./scripts/api/connect-idrac-via-redfish.sh"
+
+objectives:
+  - Launch the Redfish script
+  - Select a datacenter and enter hostname
+  - Pull system health info
+  - Identify any degraded components
+
+example_output: |
+  **Launch the script:**
+  ```
+  $ ./scripts/api/connect-idrac-via-redfish.sh
+  
+  Select Datacenter:
+  1) SEA1    2) DFW1    3) IAD1    4) Custom
+  > 1
+  
+  Enter hostname(s): g377
+  
+  Connecting to g377-i.sea1.voltagepark.net...
+  ```
+  
+  **Main Menu → System Info & Health**
+  ```
+  ╔══════════════════════════════════════════════════════╗
+  ║              SYSTEM HEALTH OVERVIEW                   ║
+  ╠══════════════════════════════════════════════════════╣
+  ║  Overall Status: OK                                   ║
+  ║  Power State: On                                      ║
+  ╠══════════════════════════════════════════════════════╣
+  ║  CPU Health:        OK                                ║
+  ║  Memory Health:     OK                                ║
+  ║  Storage Health:    OK                                ║
+  ║  Fan Health:        Warning ← check this              ║
+  ║  PSU Health:        OK                                ║
+  ║  Temperature:       OK                                ║
+  ╚══════════════════════════════════════════════════════╝
+  ```
+  
+  **If something shows Warning or Critical:**
+  - Drill into that subsystem for details
+  - Check iDRAC event log for specifics
+  - Example: Fan Warning might mean one fan is degraded but redundancy is OK
+
+hints:
+  - "Run: ./scripts/api/connect-idrac-via-redfish.sh"
+  - "Pick datacenter, enter hostname"
+  - "Main Menu → System Info & Health"
+  - "Look for anything not 'OK'"
+
+success_message: |
+  You pulled system health via Redfish!
+  
+  This is your out-of-band view of server health.
+  Even if the OS is down, iDRAC/Redfish works.

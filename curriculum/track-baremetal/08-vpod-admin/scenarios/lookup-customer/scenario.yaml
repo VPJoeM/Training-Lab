@@ -1,0 +1,71 @@
+title: "Look Up a Customer"
+description: "Find a customer by email and get their org details"
+difficulty: beginner
+time_estimate: "5 minutes"
+runs_on: laptop
+startup_command: "cd ~/Github/Support-Tooling && ./scripts/api/start-vpod-admin-interface.sh"
+
+objectives:
+  - Launch VPOD Admin Interface
+  - Look up a user by email
+  - Get their organization UUID
+  - View organization details
+
+example_output: |
+  **Launch VPOD Admin:**
+  ```
+  $ ./scripts/api/start-vpod-admin-interface.sh
+  
+  ╔══════════════════════════════════════════════════════╗
+  ║              VPOD ADMIN INTERFACE                     ║
+  ╠══════════════════════════════════════════════════════╣
+  ║  1) Admin API                                         ║
+  ║  2) Configuration                                     ║
+  ║  3) Show Status                                       ║
+  ║  q) Quit                                              ║
+  ╚══════════════════════════════════════════════════════╝
+  ```
+  
+  **Admin API → Users → Get User by Email**
+  ```
+  Enter email: customer@example.com
+  
+  ╔══════════════════════════════════════════════════════╗
+  ║  USER DETAILS                                         ║
+  ╠══════════════════════════════════════════════════════╣
+  ║  Email: customer@example.com                          ║
+  ║  User UUID: a1b2c3d4-e5f6-7890-abcd-ef1234567890     ║
+  ║  Org UUID: 4f39bb3c-6f32-4bda-9547-a6fa17469934      ║ ← copy this
+  ║  Role: owner                                          ║
+  ║  Email Verified: true                                 ║
+  ║  Created: 2024-01-10T15:30:00Z                        ║
+  ╚══════════════════════════════════════════════════════╝
+  ```
+  
+  **Admin API → Organizations → Get Organization by ID**
+  ```
+  Enter Org UUID: 4f39bb3c-6f32-4bda-9547-a6fa17469934
+  
+  ╔══════════════════════════════════════════════════════╗
+  ║  ORGANIZATION DETAILS                                 ║
+  ╠══════════════════════════════════════════════════════╣
+  ║  Name: Acme ML Corp                                   ║
+  ║  UUID: 4f39bb3c-6f32-4bda-9547-a6fa17469934          ║
+  ║  Balance: $12,450.00                                  ║
+  ║  Active Rentals: 2                                    ║
+  ╚══════════════════════════════════════════════════════╝
+  ```
+
+hints:
+  - "Admin API → Users → Get User by Email"
+  - "Copy the Org UUID from user details"
+  - "Admin API → Organizations → Get Organization by ID"
+  - "Or use: Get Organization by Email (shortcut)"
+
+success_message: |
+  You looked up a customer!
+  
+  This is the first step for any support ticket:
+  1. Get user by email
+  2. Get org UUID
+  3. Check balance and rentals

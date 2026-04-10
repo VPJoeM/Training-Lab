@@ -1,0 +1,55 @@
+title: "Manual DCGM Install & L1 Test"
+description: "Install DCGM manually and run a quick health check - for when Node Toolkit isn't available"
+difficulty: beginner
+time_estimate: "3-5 minutes"
+runs_on: node
+
+objectives:
+  - Check if DCGM is already installed
+  - Install DCGM if needed
+  - Run a DCGM L1 quick health check
+  - Interpret pass/fail results
+
+example_output: |
+  **Step 1: Check if DCGM is installed**
+  ```
+  $ which dcgmi
+  /usr/bin/dcgmi          ← installed
+  
+  $ which dcgmi
+                          ← not installed (empty output)
+  ```
+  
+  **Step 2: Run L1 quick test**
+  ```
+  $ sudo dcgmi diag -r 1
+  
+  +---------------------------+------------------------------------------------+
+  | Diagnostic                | Result                                         |
+  +===========================+================================================+
+  | Deployment                | Pass                                           |
+  +---------------------------+------------------------------------------------+
+  | GPU ID                    | 0        | 1        | 2        | 3             |
+  +---------------------------+------------------------------------------------+
+  | Memory                    | Pass     | Pass     | Pass     | Pass          |
+  | SM Stress                 | Pass     | Pass     | Pass     | Pass          |
+  | Targeted Stress           | Pass     | Pass     | Pass     | Pass          |
+  | Targeted Power            | Pass     | Pass     | Fail     | Pass          |  ← GPU 2 failed!
+  +---------------------------+------------------------------------------------+
+  ```
+  
+  **Interpreting results:**
+  - **Pass** = GPU subsystem is healthy
+  - **Fail** = Something wrong - check which test failed
+  - **Targeted Power Fail** often means thermal or power delivery issue
+
+hints:
+  - "Check with: which dcgmi"
+  - "Install needs the CUDA keyring first, then datacenter-gpu-manager package"
+  - "Run L1 with: sudo dcgmi diag -r 1"
+
+success_message: |
+  Manual DCGM workflow complete!
+  
+  You now know how to install and run DCGM from scratch.
+  Next lab: learn the faster way using Node Toolkit.

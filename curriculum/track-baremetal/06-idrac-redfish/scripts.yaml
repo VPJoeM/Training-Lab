@@ -1,0 +1,14 @@
+- name: connect-idrac-via-redfish.sh
+  description: "Interactive Redfish interface -- enter hostname + datacenter and it builds the iDRAC address for you. BIOS, fans, PSU, power, vBIOS updates, GPU tools, system info, job management, CSV export."
+  path: scripts/api/connect-idrac-via-redfish.sh
+  runs_on: laptop
+
+- name: start-node-toolkit.sh
+  description: "Node toolkit has TSR collection built in (option 7 in log collection) -- handles the full flow: trigger, monitor, download, and appends GPU slot report"
+  path: scripts/sshv/start-node-toolkit.sh
+  runs_on: laptop
+
+- name: VOLT Dashboard
+  description: "Search any hostname to find its iDRAC IP, public IP, datacenter, cluster, and customer -- the source of truth"
+  path: https://volt.lightning.ai
+  runs_on: web

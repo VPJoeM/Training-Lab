@@ -1,0 +1,42 @@
+title: "Find the Down IB Port"
+description: "Identify which InfiniBand port is down and report the HCA"
+difficulty: beginner
+time_estimate: "5 minutes"
+runs_on: node
+
+objectives:
+  - Run ibstat to check port states
+  - Identify the HCA with the down port
+  - Note the port number and physical state
+
+example_output: |
+  ```
+  CA 'mlx5_0'
+      Port 1:
+          State: Active        ← GOOD
+          Physical state: LinkUp
+          Rate: 400
+  
+  CA 'mlx5_2'
+      Port 1:
+          State: Down          ← BAD - this is the problem
+          Physical state: Polling
+          Rate: 40
+  ```
+  
+  The problem is **mlx5_2** - State is Down, Physical state is Polling.
+
+hints:
+  - "Run: sudo ibstat"
+  - "Look for State: Down (not Active)"
+  - "Note the CA name (mlx5_X) and port number"
+  - "Physical state will show Polling or Disabled"
+
+success_message: |
+  You found the down IB port!
+  
+  In production you'd:
+  • Check the switch port on the other end
+  • Verify cable is seated properly
+  • Check mlxlink for optical power levels
+  • Escalate if hardware replacement needed

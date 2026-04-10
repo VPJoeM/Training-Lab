@@ -1,0 +1,48 @@
+title: "Diagnose Degraded IB Link Speed"
+description: "Find an HCA running at reduced speed (HDR instead of NDR)"
+difficulty: intermediate
+time_estimate: "5-10 minutes"
+runs_on: node
+
+objectives:
+  - Run ibstat to check link rates
+  - Identify the HCA with degraded speed
+  - Understand the expected vs actual rate
+
+example_output: |
+  ```
+  CA 'mlx5_0'
+      Port 1:
+          State: Active
+          Rate: 400            ← GOOD (NDR speed)
+  
+  CA 'mlx5_1'
+      Port 1:
+          State: Active
+          Rate: 200            ← BAD (HDR, should be 400)
+  
+  CA 'mlx5_2'
+      Port 1:
+          State: Active
+          Rate: 400            ← GOOD
+  ```
+  
+  The problem is **mlx5_1** - Rate is 200 (HDR) instead of 400 (NDR).
+  This could be a bad cable or dirty fiber connector.
+
+hints:
+  - "Run: sudo ibstat"
+  - "NDR should be 400 Gb/s, HDR is 200 Gb/s"
+  - "A port showing Rate: 200 on an NDR system is degraded"
+  - "Could be cable issue, dirty connector, or switch port"
+
+success_message: |
+  You found the degraded IB link!
+  
+  Common causes of speed reduction:
+  • Dirty fiber connector (clean with IPA wipes)
+  • Cable bend radius exceeded
+  • Transceiver overheating
+  • Switch port issue
+  
+  Use mlxlink to check optical power levels.

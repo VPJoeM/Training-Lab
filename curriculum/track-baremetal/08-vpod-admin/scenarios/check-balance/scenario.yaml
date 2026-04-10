@@ -1,0 +1,72 @@
+title: "Check Balance & Rentals"
+description: "View a customer's balance and active server rentals"
+difficulty: beginner
+time_estimate: "5 minutes"
+runs_on: laptop
+startup_command: "cd ~/Github/Support-Tooling && ./scripts/api/start-vpod-admin-interface.sh"
+
+objectives:
+  - Look up an organization's balance
+  - View their active baremetal rentals
+  - Get IP addresses for their servers
+
+example_output: |
+  **Check Balance:**
+  ```
+  Admin API → Organizations → Get Balance by Org ID
+  
+  Enter Org UUID: 4f39bb3c-6f32-4bda-9547-a6fa17469934
+  
+  ╔══════════════════════════════════════════════════════╗
+  ║  ORGANIZATION BALANCE                                 ║
+  ╠══════════════════════════════════════════════════════╣
+  ║  Org UUID: 4f39bb3c-6f32-4bda-9547-a6fa17469934      ║
+  ║  Current Balance: $12,450.00                          ║
+  ║  Credit Remaining: $12,450.00                         ║
+  ╚══════════════════════════════════════════════════════╝
+  ```
+  
+  **View Rentals:**
+  ```
+  Admin API → Organizations → Baremetal Rentals by Org ID
+  
+  Filter: 1 (Active only)
+  
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  ACTIVE BAREMETAL RENTALS                                         ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║  Rental ID: rent_abc123                                           ║
+  ║  Server: g398 (SEA1)                                              ║
+  ║  Started: 2024-01-10T08:00:00Z                                    ║
+  ║  Rate: $2.50/hr                                                   ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║  Rental ID: rent_def456                                           ║
+  ║  Server: g402 (SEA1)                                              ║
+  ║  Started: 2024-01-12T14:30:00Z                                    ║
+  ║  Rate: $2.50/hr                                                   ║
+  ╚══════════════════════════════════════════════════════════════════╝
+  ```
+  
+  **Get Node IPs (for SSH):**
+  ```
+  Admin API → Organizations → Baremetal Nodes by Org ID
+  
+  [
+    {"public_ip": "147.185.40.145", "private_ip": "10.15.42.1", "hostname": "g398"},
+    {"public_ip": "147.185.40.150", "private_ip": "10.15.42.6", "hostname": "g402"}
+  ]
+  ```
+
+hints:
+  - "Get Balance: Organizations → Get Balance by Org ID"
+  - "View Rentals: Organizations → Baremetal Rentals by Org ID"
+  - "Get IPs: Organizations → Baremetal Nodes by Org ID"
+  - "Filter rentals: Active only / Terminated / All"
+
+success_message: |
+  You checked balance and rentals!
+  
+  Common support tasks:
+  • Customer asks "what's my balance?" → Get Balance
+  • Customer asks "what servers do I have?" → Baremetal Rentals
+  • You need to SSH to their server → Baremetal Nodes (for IPs)

@@ -1,0 +1,59 @@
+title: "Check Fabric Manager Status"
+description: "Verify Fabric Manager is running and healthy"
+difficulty: beginner
+time_estimate: "3 minutes"
+runs_on: node
+
+objectives:
+  - Check if Fabric Manager service is running
+  - Verify it started without errors
+  - Understand why it matters for multi-GPU
+
+example_output: |
+  **Check service status:**
+  ```
+  $ sudo systemctl status nvidia-fabricmanager
+  ● nvidia-fabricmanager.service - NVIDIA Fabric Manager Service
+       Loaded: loaded (/lib/systemd/system/nvidia-fabricmanager.service; enabled)
+       Active: active (running) since Mon 2024-01-15 10:30:00 UTC; 2 days ago
+     Main PID: 1234 (nv-fabricmanage)
+        Tasks: 6 (limit: 1234567)
+       Memory: 45.2M
+          CPU: 1min 23s
+       CGroup: /system.slice/nvidia-fabricmanager.service
+               └─1234 /usr/bin/nv-fabricmanager -c /etc/nvidia-fabricmanager/fabricmanager.cfg
+  
+  Jan 15 10:30:00 gpu001 nv-fabricmanager[1234]: Fabric Manager started
+  Jan 15 10:30:01 gpu001 nv-fabricmanager[1234]: NVSwitch devices: 4
+  Jan 15 10:30:01 gpu001 nv-fabricmanager[1234]: GPU devices: 8
+  ```
+  
+  **What good looks like:**
+  - `Active: active (running)` ← service is up
+  - `enabled` ← starts on boot
+  - `NVSwitch devices: 4` ← detected switches
+  - `GPU devices: 8` ← detected all GPUs
+  
+  **What bad looks like:**
+  ```
+  $ sudo systemctl status nvidia-fabricmanager
+  ● nvidia-fabricmanager.service - NVIDIA Fabric Manager Service
+       Active: failed (Result: exit-code) since ...
+  ```
+  
+  If failed, check: `journalctl -u nvidia-fabricmanager -n 50`
+
+hints:
+  - "systemctl status nvidia-fabricmanager"
+  - "Look for 'active (running)'"
+  - "If failed, journalctl shows why"
+
+success_message: |
+  You verified Fabric Manager status!
+  
+  Fabric Manager is essential for:
+  • NVLink communication between GPUs
+  • NVSwitch routing
+  • Multi-GPU training workloads
+  
+  If it's not running, multi-GPU jobs will fail.

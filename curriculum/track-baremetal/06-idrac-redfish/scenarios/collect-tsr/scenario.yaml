@@ -1,0 +1,65 @@
+title: "Collect a TSR (Tech Support Report)"
+description: "Trigger and download a Dell TSR via Node Toolkit"
+difficulty: intermediate
+time_estimate: "10-15 minutes"
+runs_on: laptop
+startup_command: "cd ~/Github/Support-Tooling && ./scripts/sshv/start-node-toolkit.sh"
+
+objectives:
+  - Launch Node Toolkit
+  - Navigate to Log Collection → TSR
+  - Trigger TSR collection via racadm
+  - Wait for and download the TSR
+
+example_output: |
+  **Main Menu → 14 (Log Collection) → 7 (Collect Dell TSR Report)**
+  ```
+  ╔══════════════════════════════════════════════════════╗
+  ║              TSR COLLECTION                           ║
+  ╠══════════════════════════════════════════════════════╣
+  ║  This will:                                           ║
+  ║  1. Trigger TSR collection via racadm                 ║
+  ║  2. Monitor the iDRAC job until complete              ║
+  ║  3. Download the TSR zip file                         ║
+  ║  4. Append GPU slot mapping                           ║
+  ╚══════════════════════════════════════════════════════╝
+  
+  Triggering TSR collection...
+  [*] Running: sudo racadm supportassist collect -t Debug
+  [*] Job created: JID_123456789
+  
+  Monitoring job progress...
+  [  5%] Collecting system inventory...
+  [ 25%] Collecting BIOS configuration...
+  [ 50%] Collecting iDRAC logs...
+  [ 75%] Collecting sensor data...
+  [100%] Job complete!
+  
+  Downloading TSR...
+  ✓ Saved to: ~/Reports/g377/TSR_g377_2024-01-15_143022.zip
+  
+  Appending GPU slot report...
+  ✓ GPU mapping added to zip
+  ```
+  
+  **TSR contents (what Dell gets):**
+  - Hardware inventory
+  - BIOS/firmware versions
+  - Event logs (SEL)
+  - Sensor data history
+  - Network config
+  - Storage health
+  
+  **When Dell asks for a TSR**, this is what they want.
+
+hints:
+  - "Node Toolkit: Main Menu → 14 → 7"
+  - "Takes 5-10 minutes to complete"
+  - "File saves to ~/Reports/<hostname>/"
+  - "You can disconnect - it runs in background"
+
+success_message: |
+  You collected a TSR!
+  
+  Dell uses this to diagnose hardware issues.
+  Always include the TSR when opening hardware cases.

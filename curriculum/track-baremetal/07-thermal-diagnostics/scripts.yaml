@@ -1,0 +1,9 @@
+- name: thermal-diagnostics-2.6.2-vp.sh
+  description: "Full Dell thermal validation workflow -- dcgmproftester stress, temp monitoring, TSR collection, result packaging"
+  path: scripts/gpu/thermal-diagnostics-2.6.2-vp.sh
+  runs_on: laptop
+
+- name: Node Toolkit → DCGMI Diagnostics
+  description: "Quick GPU stress test via the node toolkit (option 14 → 11). Handles install, process cleanup, runs in screen. Use this for day-to-day hardware validation."
+  path: scripts/sshv/start-node-toolkit.sh
+  runs_on: laptop

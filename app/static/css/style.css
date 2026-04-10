@@ -1,0 +1,228 @@
+html {
+    scroll-behavior: smooth;
+}
+
+/* dark scrollbars to match the theme */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #110F1F;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2D2640;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3D3555;
+}
+
+/* code blocks inside rendered markdown */
+.prose pre {
+    position: relative;
+    border-radius: 0.5rem;
+}
+
+.prose pre code {
+    font-size: 0.85rem;
+    line-height: 1.7;
+}
+
+/* keep iframes from showing borders */
+iframe {
+    border: none;
+    outline: none;
+}
+
+/* loading pulse for async actions */
+@keyframes lab-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.lab-loading {
+    animation: lab-pulse 1.5s ease-in-out infinite;
+}
+
+/* command safety labels */
+.cmd-safe {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+}
+
+.cmd-safe::before {
+    content: '';
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+}
+
+.cmd-safe.readonly {
+    background: rgba(74, 222, 128, 0.1);
+    color: #4ade80;
+}
+.cmd-safe.readonly::before {
+    background: #4ade80;
+}
+
+.cmd-safe.state {
+    background: rgba(251, 191, 36, 0.1);
+    color: #fbbf24;
+}
+.cmd-safe.state::before {
+    background: #fbbf24;
+}
+
+.cmd-safe.disruptive {
+    background: rgba(251, 146, 60, 0.1);
+    color: #fb923c;
+}
+.cmd-safe.disruptive::before {
+    background: #fb923c;
+}
+
+.cmd-safe.approval {
+    background: rgba(248, 113, 113, 0.1);
+    color: #f87171;
+}
+.cmd-safe.approval::before {
+    background: #f87171;
+}
+
+/* script runs_on badges */
+.runs-on-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.runs-on-badge.laptop {
+    background: rgba(168, 85, 247, 0.15);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.runs-on-badge.node {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.runs-on-badge.web {
+    background: rgba(34, 197, 94, 0.15);
+    color: #86efac;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.runs-on-badge.docs {
+    background: rgba(148, 163, 184, 0.15);
+    color: #cbd5e1;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+/* example output styling */
+.example-output {
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.example-output p {
+    color: #d1d5db;
+    margin-bottom: 0.75rem;
+}
+
+.example-output strong {
+    color: #f9fafb;
+}
+
+.example-output code {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.8125rem;
+    color: #a78bfa;
+}
+
+.example-output pre {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 0.75rem 0;
+}
+
+.example-output pre code {
+    background: none;
+    padding: 0;
+    color: #e6edf3;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+
+.example-output ul,
+.example-output ol {
+    margin: 0.75rem 0;
+    padding-left: 1.5rem;
+    color: #d1d5db;
+}
+
+.example-output ul {
+    list-style-type: disc;
+}
+
+.example-output ol {
+    list-style-type: decimal;
+}
+
+.example-output li {
+    margin-bottom: 0.375rem;
+}
+
+.example-output li strong {
+    color: #a78bfa;
+}
+
+.example-output table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.75rem 0;
+}
+
+.example-output th,
+.example-output td {
+    border: 1px solid #30363d;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    color: #d1d5db;
+}
+
+.example-output th {
+    background: rgba(0, 0, 0, 0.3);
+    color: #f9fafb;
+    font-weight: 600;
+}
+
+.example-output tr:nth-child(even) {
+    background: rgba(0, 0, 0, 0.15);
+}
