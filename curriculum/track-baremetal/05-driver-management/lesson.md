@@ -93,6 +93,16 @@ systemctl status nvidia-fabricmanager   # FM running
 nvidia-smi topo -m                      # NVLink topology intact
 ```
 
+After a driver install or upgrade, a reboot is usually required for the new kernel module to load. Don't skip this -- the old module stays resident in memory until you do.
+
+```bash
+# reboot to load the new kernel module (required after driver changes)
+sudo reboot
+# after reboot, verify everything loaded correctly
+nvidia-smi
+modinfo nvidia | grep ^version
+```
+
 **Step 5 -- Load on boot:**
 
 ```bash

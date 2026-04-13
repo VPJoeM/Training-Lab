@@ -88,7 +88,7 @@ When you need to stress-test GPUs, use **DCGM diagnostics** -- either through th
 # → Main Menu option 14 (Log Collection) → option 11 (Run DCGMI Diagnostics)
 ```
 
-The toolkit installs DCGM if missing, kills GPU processes, stops conflicting services, runs the test in a screen session (so you can disconnect), and collects the results. Supports L1 through L4:
+The toolkit installs DCGM if missing, kills GPU processes, stops conflicting services, runs the test in a screen session (so you can disconnect), and collects the results. The toolkit stops GPU-related services (like kubernetes, containerd, docker, and any gpu-operator services) before running DCGM, and restarts them after. Results are saved to the current directory as dcgm_stress.log. Supports L1 through L4:
 
 | Level | Time | What It Does |
 |-------|------|-------------|

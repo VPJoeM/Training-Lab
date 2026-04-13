@@ -86,9 +86,9 @@ nvidia-smi -q
 # ECC error check (toolkit option 4)
 nvidia-smi --query-gpu=index,name,ecc.errors.corrected.volatile.total,ecc.errors.uncorrected.volatile.total --format=csv
 
-# nvidia-bug-report -- NVIDIA's full diagnostic bundle (toolkit option 6)
+# NVIDIA's comprehensive diagnostic bundle (toolkit option 6)
 sudo nvidia-bug-report.sh
-# produces nvidia-bug-report.log.gz
+# produces nvidia-bug-report.log.gz in current directory
 
 # InfiniBand diagnostics (toolkit option 5)
 sudo ibstat
@@ -139,7 +139,7 @@ rsync -avz -e "sshv -p 4747" vpsupport@<server-ip>:/path/to/logs/ ~/Downloads/lo
 | File | Where it lives | What it is |
 |------|---------------|------------|
 | `nvidia-bug-report.log.gz` | Current dir where you ran it | NVIDIA's full diagnostic bundle |
-| TSR `.zip` | `/tmp/` or iDRAC specifies location | Dell Tech Support Report |
+| TSR `.zip` | iDRAC (racadm stores it on the iDRAC); the toolkit exports it to the node filesystem then downloads via sshv | Dell Tech Support Report (see [Module 06](../06-hardware-troubleshooting/lesson.md) for manual TSR collection) |
 | `sosreport-*.tar.xz` | `/var/tmp/` | Red Hat/Ubuntu system report |
 | dmesg output | Save it yourself: `sudo dmesg > /tmp/dmesg.log` | Kernel ring buffer |
 | DCGM results | `~/Reports/<hostname>/` if using toolkit | GPU stress test results |

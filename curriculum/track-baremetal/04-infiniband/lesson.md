@@ -43,7 +43,19 @@ If State is **Down** or Rate is lower than expected, something's wrong -- could 
 ./scripts/infiniband/get-ib-stat-summary.sh
 ```
 
+The IB toolkit menu maps directly to the manual commands below — option 1 runs ibstat, option 2 checks error counters, etc.
+
 For fleet-wide IB checks across multiple nodes, use `start-node-toolkit.sh` from the sshv scripts -- it can target multiple hosts and run any of these on them in parallel.
+
+### Fleet-Wide IB Check (Manual)
+
+```bash
+# check IB status across multiple nodes without the toolkit
+for host in gpu01 gpu02 gpu03; do
+    echo "=== $host ==="
+    sshv -p 4747 vpsupport@$host 'sudo ibstat | grep -E "State|Physical|Rate"'
+done
+```
 
 ## Manual IB Diagnostics
 

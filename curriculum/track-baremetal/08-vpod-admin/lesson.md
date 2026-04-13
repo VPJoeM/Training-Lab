@@ -63,6 +63,25 @@ On first run, the script will:
 3. Install 1Password CLI if needed
 4. Guide you through storing your API token in 1Password
 
+### Manual Setup (Fallback)
+
+If the auto-installer fails, you can build vpadmin-cli manually:
+
+```bash
+# install Go if missing
+brew install go  # macOS
+# or: sudo apt install golang-go  # Linux
+
+# clone and build
+git clone git@github.com:voltagepark/vpadmin-api.git ~/Github/vpadmin-api
+cd ~/Github/vpadmin-api
+go build -o vpadmin-cli .
+sudo mv vpadmin-cli /usr/local/bin/
+
+# verify
+vpadmin-cli --help
+```
+
 ### 1Password Credential Setup
 
 Store your credentials in 1Password:

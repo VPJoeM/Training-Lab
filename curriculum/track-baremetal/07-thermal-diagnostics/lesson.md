@@ -43,6 +43,92 @@ What the thermal script does on top of DCGM:
 - `TSR_*.zip` -- Dell Tech Support Report
 - Summary report with pass/fail per GPU
 
+> **Where do the files end up?** By default, the thermal script writes everything to `/tmp/thermal_results/` on the target node. To pull them to your laptop, use scp, rsync, or the sshv wrapper:
+> ```bash
+> scp -r user@<node>:/tmp/thermal_results/ ./results/
+> # or via rsync
+> rsync -avz user@<node>:/tmp/thermal_results/ ./results/
+> ```
+
+## Manual Thermal Test
+
+If you don't have the thermal diagnostics script handy, or you just want to understand what it's actually doing under the hood, you can run the full workflow manually. Same results, just more typing.
+
+### 1. Start the GPU stress test
+
+You need DCGM installed on the node first -- see [Module 03](../03-dcgm-basics/lesson.md) if you haven't set that up yet.
+
+Pick one of these depending on what you have available:
+
+```bash
+# option A: dcgmproftester (comes with DCGM, hammers the GPUs hard)
+dcgmproftester --no-dcgm-validation -t 1004 -d 600
+# runs for 600 seconds (~10 min), test ID 1004 is the standard FP64 stress
+
+# option B: dcgmi diag level 3 (built-in diagnostic suite)
+dcgmi diag -r 3
+# level 3 includes the stress test plus memory and PCIe checks
+```
+
+Run whichever one you pick in a tmux/screen session so it doesn't die if your SSH drops.
+
+### 2. Poll temperatures during the test
+
+In a separate terminal (or another tmux pane), loop nvidia-smi to capture temps while the stress test runs:
+
+```bash
+# poll every 5 seconds, log to csv
+while true; do
+  nvidia-smi --query-gpu=timestamp,index,gpu_name,temperature.gpu,temperature.memory,power.draw,utilization.gpu \
+    --format=csv,noheader >> /tmp/thermal_poll.csv
+  sleep 5
+done
+```
+
+Let this run for the entire duration of the stress test. Kill it with Ctrl+C when the test finishes.
+
+### 3. Collect a TSR from iDRAC
+
+Once the stress test completes, grab a Tech Support Report while the system is still warm. See [Module 06](../06-tsr-collection/lesson.md) for the full breakdown on TSR collection, but the short version:
+
+```bash
+# via racadm (replace with your iDRAC IP)
+racadm -r <idrac-ip> -u root -p <password> techsupreport collect
+# wait for it to finish, then export
+racadm -r <idrac-ip> -u root -p <password> techsupreport export -f /tmp/TSR_thermal.zip
+```
+
+### 4. Bundle the artifacts
+
+Package everything into a single tar for easy handling:
+
+```bash
+mkdir -p /tmp/thermal_results
+cp /tmp/thermal_poll.csv /tmp/thermal_results/
+cp /tmp/TSR_thermal.zip /tmp/thermal_results/
+# grab the dcgmproftester log if you used option A
+cp /tmp/dcgmproftester.log /tmp/thermal_results/ 2>/dev/null
+
+tar czf /tmp/thermal_bundle_$(hostname)_$(date +%Y%m%d).tar.gz -C /tmp thermal_results/
+```
+
+### 5. Download to your laptop
+
+Pull the bundle off the node:
+
+```bash
+# scp
+scp user@<node>:/tmp/thermal_bundle_*.tar.gz ./
+
+# rsync (handy if the file is large or connection is flaky)
+rsync -avz user@<node>:/tmp/thermal_bundle_*.tar.gz ./
+
+# or if you're using the sshv wrapper from the toolkit
+./scripts/sshv/pull-file.sh <node> /tmp/thermal_bundle_*.tar.gz ./results/
+```
+
+That's the whole thing. The thermal diagnostics script just automates these five steps, but knowing the manual path is useful when you're debugging or when the script isn't cooperating.
+
 ## Reading the Results
 
 The `thermal_results.*.csv` file is your primary output. Key columns:
