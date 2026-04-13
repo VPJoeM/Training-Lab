@@ -1,0 +1,44 @@
+- question: "A free-tier user used 7 of their 15 credits last month. How many credits do they receive this cycle?"
+  options:
+    - "15 — always a full refresh"
+    - "7 — only what was consumed gets replenished"
+    - "8 — the remaining unused credits"
+    - "22 — 15 new plus 7 unused"
+  correct: 1
+  explanation: "Lightning only replenishes credits equal to what the user consumed. Used 7, get 7 back."
+
+- question: "Account A gives credits to Account B's teamspace. Account B spends them. What happens to Account A's refresh?"
+  options:
+    - "Account A gets full credits next cycle as normal"
+    - "Account A's credits won't refresh because Account A didn't spend them"
+    - "Both accounts get credits refreshed"
+    - "Account B's credits get reduced instead"
+  correct: 1
+  explanation: "Credits only refresh for the account that actually consumed them. If Account B spent Account A's credits, Account A gets nothing back."
+
+- question: "A user says they can't find their free credits. What's the first thing to check?"
+  options:
+    - "Their subscription tier on Stripe"
+    - "Whether they have multiple accounts or are looking in the wrong teamspace"
+    - "The Lightning AI status page"
+    - "Their phone verification status"
+  correct: 1
+  explanation: "Most commonly, credits are sitting in a different teamspace or under a different account. Check ToolJet for all their accounts."
+
+- question: "How often do free credits refresh?"
+  options:
+    - "On the 1st of every calendar month"
+    - "Every 30 days from the user's sign-up date"
+    - "Weekly on Mondays"
+    - "Instantly when fully consumed"
+  correct: 1
+  explanation: "Credits refresh every 30 days from the user's account creation date, not on a fixed calendar schedule."
+
+- question: "A user's credits are draining faster than expected. Which hidden cost should you mention?"
+  options:
+    - "Network egress fees"
+    - "Storage charges for the Drive"
+    - "The monitoring CPU machine running alongside the GPU (~$0.43/hr)"
+    - "API rate limiting penalties"
+  correct: 2
+  explanation: "Running a GPU studio automatically spins up a monitoring CPU machine at ~$0.43/hr. Users often don't realize this."

@@ -1,0 +1,44 @@
+- question: "A user from India was auto-banned. What's the correct action?"
+  options:
+    - "Cannot unban — India is a sanctioned country"
+    - "Unban immediately without verification"
+    - "Ask for identity verification (LinkedIn/Scholar/ID), then unban if legit"
+    - "Escalate to engineering"
+  correct: 2
+  explanation: "India is a soft-block country. Users can be manually verified and unbanned after confirming their identity."
+
+- question: "A user banned for 'crypto mining' asks to be unbanned, saying it was a mistake. What do you do?"
+  options:
+    - "Ask for identity verification and unban"
+    - "Do not unban — use #suspicious-activity shortcut, offer data deletion"
+    - "Escalate to engineering for review"
+    - "Unban with a warning"
+  correct: 1
+  explanation: "Crypto mining is a hard ban. We don't unban. We can offer to delete their data if they request it."
+
+- question: "You notice 15 users got banned for the same reason this morning. What should you do?"
+  options:
+    - "Unban them all immediately"
+    - "Flag the trend in #customer-support-plg — could be a false positive wave"
+    - "Ignore it — the automation is always correct"
+    - "Delete all the accounts"
+  correct: 1
+  explanation: "Mass bans for the same reason often indicate a false positive in the automation. Flag it so engineering can investigate."
+
+- question: "Which of these countries is a HARD block (cannot unban under any circumstances)?"
+  options:
+    - "Vietnam"
+    - "India"
+    - "Cuba"
+    - "Philippines"
+  correct: 2
+  explanation: "Cuba is on the hard-block sanctioned list. Users cannot be unbanned. Vietnam, India, and Philippines are soft-block."
+
+- question: "A user's ban reason shows a complex GuardDuty DNS_REQUEST error. What should you do?"
+  options:
+    - "Google the domain name and decide yourself"
+    - "Unban the user — DNS errors are harmless"
+    - "Send the full error to an engineer in #customer-support-plg"
+    - "Delete the account immediately"
+  correct: 2
+  explanation: "Complex GuardDuty errors require engineering review. Don't try to interpret them yourself — escalate with the full error."

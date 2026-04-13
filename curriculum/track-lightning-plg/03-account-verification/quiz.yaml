@@ -1,0 +1,44 @@
+- question: "A user from the UK has a university email ending in .ac.uk and was auto-banned. What should you do?"
+  options:
+    - "Tell them they need a .edu email"
+    - "Google the domain, verify it's a real university, then unban"
+    - "Escalate to engineering immediately"
+    - "Ask them to create a new account with Gmail"
+  correct: 1
+  explanation: "Non-standard .edu domains (like .ac.uk) often trigger auto-bans. Google the domain to confirm it's legit, then verify and unban."
+
+- question: "How do you check if a phone number is a temp/VoIP number?"
+  options:
+    - "Use ToolJet's built-in phone validator"
+    - "Google the phone number"
+    - "Call the number yourself"
+    - "Check the user's IP address"
+  correct: 1
+  explanation: "Simply Google the phone number. Temp/VoIP numbers usually show up on known temporary number sites."
+
+- question: "A user outside the US provides a phone number starting with +1. What's the likely issue?"
+  options:
+    - "They're using a US VPN"
+    - "It's probably a temporary/VoIP number"
+    - "International numbers need special formatting"
+    - "The +1 prefix is normal for all countries"
+  correct: 1
+  explanation: "Non-US users sending +1 numbers are almost certainly using temporary phone numbers. Ask for their real local number."
+
+- question: "What does support code 03920104 indicate?"
+  options:
+    - "Phone verification needed"
+    - "Credit balance issue"
+    - "User has been shadowbanned"
+    - "Studio creation error"
+  correct: 2
+  explanation: "Support code 03920104 means the user has been shadowbanned. Check ToolJet for ban status and reason."
+
+- question: "A user is banned with reason 'crypto mining'. What do you do?"
+  options:
+    - "Unban them after verifying their identity"
+    - "Ask an engineer to review"
+    - "Do not unban — use #suspicious-activity shortcut"
+    - "Delete the account and tell them to create a new one"
+  correct: 2
+  explanation: "Crypto mining, torrenting, and inappropriate content are hard bans. We do not unban. Offer data deletion if requested."

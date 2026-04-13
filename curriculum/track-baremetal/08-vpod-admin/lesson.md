@@ -32,6 +32,7 @@ Before diving into the admin tools, understand what customers see:
 | [Status Page](https://status.voltagepark.com) | Public incident and maintenance status |
 
 **On Demand Features** (what customers expect):
+
 - **No minimums** — rent for as little as you need
 - **Fast deployment** — 15 minutes to spin up
 - **Bare metal access** — no virtualization, full hardware access
@@ -56,6 +57,7 @@ Run the interface script — it will auto-install everything:
 ```
 
 On first run, the script will:
+
 1. Install Go, Git, jq if missing
 2. Clone and build `vpadmin-cli` from source
 3. Install 1Password CLI if needed
@@ -64,6 +66,7 @@ On first run, the script will:
 ### 1Password Credential Setup
 
 Store your credentials in 1Password:
+
 - **Vault**: `Employee`
 - **Item Title**: `VPAdminCLI`
 - **Fields**:
@@ -137,6 +140,7 @@ Type 'confirm' to proceed: confirm
 ### Finding Organization by Email
 
 New shortcut: `Admin API → Organizations → Get Organization by Email`
+
 - Enter any user's email
 - Returns the organization UUID directly
 
@@ -176,6 +180,7 @@ Main Menu
 ## Safety Features
 
 All destructive operations require typing `confirm`:
+
 - Creating transactions
 - Updating pricing
 - Terminating rentals
@@ -186,17 +191,21 @@ The interface validates UUIDs and shows warnings before dangerous actions.
 ## Troubleshooting
 
 ### "vpadmin-cli not found"
+
 - Use Configuration → Manual Install/Repair → Install/Update vpadmin-cli
 - Restart your terminal to pick up PATH changes
 
 ### "403 Forbidden: Insufficient permissions"
+
 - Contact Mark Wagner for elevated access
 
 ### Connection timeout
+
 - Check you're connected to Tailscale/VPN
 - Use Configuration → Endpoint Health Check
 
 ### 1Password CLI issues
+
 - Run `op account add` manually first
 - Restart 1Password desktop app if TouchID keeps prompting
 
@@ -209,6 +218,7 @@ The interface validates UUIDs and shows warnings before dangerous actions.
 ## What's Next
 
 In the hands-on lab, you'll practice:
+
 - Looking up a customer by email
 - Checking their balance and rentals
 - Creating a test transaction (on a sandbox org if available)

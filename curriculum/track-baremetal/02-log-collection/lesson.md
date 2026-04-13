@@ -13,6 +13,7 @@ sudo nvidia-bug-report.sh
 This produces `nvidia-bug-report.log.gz` in the current directory -- a compressed dump of everything NVIDIA-related.
 
 **What's in it:**
+
 - Driver version and loaded kernel modules
 - Full `nvidia-smi -q` output for all GPUs
 - dmesg excerpts (especially XID errors)
@@ -39,6 +40,7 @@ less nvidia-bug-report.log
 ```
 
 **When to use it:**
+
 - NVIDIA support asks for it
 - You need a comprehensive snapshot of GPU state
 - Something weird is happening and you want everything in one file

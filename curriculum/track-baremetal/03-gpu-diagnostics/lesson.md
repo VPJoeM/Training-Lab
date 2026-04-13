@@ -16,6 +16,7 @@ nvidia-smi nvlink -s          # NVLink status
 ```
 
 Key things to check on every `nvidia-smi` output:
+
 1. **Driver version** -- does it match what we expect?
 2. **GPU count** -- are all 8 GPUs showing up?
 3. **Temperature** -- anything above 85°C under load is concerning
@@ -55,6 +56,7 @@ nvidia-smi -q -d PERFORMANCE | grep "Persistence Mode"
 ```
 
 **When to reset vs replace**:
+
 - Small number of single-bit errors → reset counters, monitor
 - Recurring single-bit on same GPU → start an RMA conversation
 - Any double-bit error → RMA
@@ -69,6 +71,7 @@ sudo dcgmi diag -r 3              # level 3 = full diagnostic (takes ~15 min)
 ```
 
 DCGM levels:
+
 - Level 1: Quick health check (~1 min)
 - Level 2: Hardware diagnostics (~2 min)
 - Level 3: Full stress test (~12 min)

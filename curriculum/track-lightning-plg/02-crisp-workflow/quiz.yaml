@@ -1,0 +1,44 @@
+- question: "A user emails support@lightning.ai. Where does the ticket appear?"
+  options:
+    - "Slack #customer-support-plg"
+    - "ToolJet inbox"
+    - "Crisp — routed to Paid or Free inbox"
+    - "Stripe support queue"
+  correct: 2
+  explanation: "Tickets from support@lightning.ai route into Crisp and are split between Paid Sub Users and Free Users inboxes."
+
+- question: "When escalating to engineering, which four pieces of info should you provide?"
+  options:
+    - "Username, studio name, error log, reproduction steps"
+    - "Paid/Free status, username/email, studio name, screenshot of message"
+    - "Ticket ID, user tier, credit balance, timestamps"
+    - "Email, phone number, subscription type, browser version"
+  correct: 1
+  explanation: "Post to #customer-support-plg with: 1) Paid or Free, 2) Username/email, 3) Studio name, 4) Full message screenshot."
+
+- question: "After verifying a user's phone number, should you wait for their confirmation before resolving the ticket?"
+  options:
+    - "Yes, always wait for confirmation"
+    - "No, resolve immediately after verification"
+    - "Only for paid users"
+    - "Wait 24 hours then auto-resolve"
+  correct: 1
+  explanation: "Phone/account verification tickets should be resolved immediately. No need to wait for the user to respond."
+
+- question: "What's the correct Crisp shortcut when a user asks where their credits went?"
+  options:
+    - "#need-account-email"
+    - "#how-do-credits-work"
+    - "#studio-name"
+    - "#product-question"
+  correct: 1
+  explanation: "Use #how-do-credits-work — it explains the credit refresh rules, that credits don't accumulate, and that the spending account matters."
+
+- question: "A user reports their studio is stuck but doesn't mention which one. What shortcut do you use?"
+  options:
+    - "#studio-stuck"
+    - "#studio-name"
+    - "#product-question"
+    - "#need-account-email"
+  correct: 0
+  explanation: "#studio-stuck acknowledges the issue and asks if they're still experiencing it plus requests the studio name."

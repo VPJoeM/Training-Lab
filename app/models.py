@@ -38,6 +38,18 @@ async def init_db(db_path: str):
                 attempts INTEGER DEFAULT 0
             )
         """)
+        await db.execute("""
+            CREATE TABLE IF NOT EXISTS quiz_results (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                track TEXT NOT NULL,
+                module TEXT NOT NULL,
+                score INTEGER DEFAULT 0,
+                total INTEGER DEFAULT 0,
+                answers TEXT DEFAULT '{}',
+                completed_at TEXT,
+                UNIQUE(track, module)
+            )
+        """)
         await db.commit()
 
 
@@ -131,9 +143,35 @@ async def get_active_scenarios():
         return [dict(r) for r in rows]
 
 
+async def get_quiz_result(track: str, module: str):
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        cursor = await db.execute(
+            "SELECT * FROM quiz_results WHERE track = ? AND module = ?",
+            (track, module),
+        )
+        row = await cursor.fetchone()
+        return dict(row) if row else None
+
+
+async def save_quiz_result(track: str, module: str, score: int, total: int, answers: str):
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute("""
+            INSERT INTO quiz_results (track, module, score, total, answers, completed_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+            ON CONFLICT(track, module) DO UPDATE SET
+                score = excluded.score,
+                total = excluded.total,
+                answers = excluded.answers,
+                completed_at = excluded.completed_at
+        """, (track, module, score, total, answers, datetime.now().isoformat()))
+        await db.commit()
+
+
 async def clear_all_progress():
     """nuke everything -- used by training-lab reset"""
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute("DELETE FROM progress")
         await db.execute("DELETE FROM scenario_state")
+        await db.execute("DELETE FROM quiz_results")
         await db.commit()

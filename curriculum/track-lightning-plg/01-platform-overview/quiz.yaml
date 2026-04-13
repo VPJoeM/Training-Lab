@@ -1,0 +1,44 @@
+- question: "What is the top-level entity in Lightning AI's account hierarchy?"
+  options:
+    - "Studio"
+    - "Team Space"
+    - "Organization"
+    - "Drive"
+  correct: 2
+  explanation: "The Organization is the top-level entity. Team Spaces, Studios, and Drives sit underneath it."
+
+- question: "How many free credits do Free tier users receive per month?"
+  options:
+    - "5 credits"
+    - "10 credits"
+    - "15 credits"
+    - "25 credits"
+  correct: 2
+  explanation: "Free tier users get 15 credits per month (roughly 22 GPU hours), refreshing every 30 days."
+
+- question: "A user signed up with GitHub. Can they log in with Google using the same email?"
+  options:
+    - "Yes, any login method works with the same email"
+    - "No, they must use the original auth provider"
+    - "Only if they link their Google account first"
+    - "Yes, but only on Pro tier"
+  correct: 1
+  explanation: "Users are locked to the auth provider they signed up with. Check the auth_provider field in ToolJet."
+
+- question: "If a user only uses 4 of their 15 free credits, how many credits do they receive next cycle?"
+  options:
+    - "15 — full refresh regardless"
+    - "4 — only what they used gets replenished"
+    - "11 — the remainder carries over"
+    - "0 — credits don't refresh automatically"
+  correct: 1
+  explanation: "Lightning only replenishes credits equal to what the user consumed. Use 4, get 4 back."
+
+- question: "Where do PLG customer support tickets come in?"
+  options:
+    - "Slack #customer-support-plg channel"
+    - "Crisp (via support@lightning.ai)"
+    - "Stripe dashboard"
+    - "Direct to engineering on-call"
+  correct: 1
+  explanation: "PLG tickets arrive via email (support@lightning.ai) and route into Crisp. Enterprise support uses Slack."

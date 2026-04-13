@@ -54,6 +54,9 @@
                         {% if module.scenarios %}
                         <span>{{ module.scenarios | length }} lab{{ 's' if module.scenarios | length != 1 }}</span>
                         {% endif %}
+                        {% if module.quiz %}
+                        <span>{{ module.quiz | length }} quiz question{{ 's' if module.quiz | length != 1 }}</span>
+                        {% endif %}
                         {% if module.scripts %}
                         <span>{{ module.scripts | length }} script{{ 's' if module.scripts | length != 1 }}</span>
                         {% endif %}

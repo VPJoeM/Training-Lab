@@ -30,12 +30,14 @@ If any GPU exceeds Dell's temperature thresholds during the stress test, the ser
 ```
 
 What the thermal script does on top of DCGM:
+
 - Runs DCGM stress test via dcgmproftester
 - Polls temperatures at regular intervals throughout the test
 - Triggers TSR collection from iDRAC via racadm
 - Packages everything into a results bundle for Dell
 
 **Artifacts produced**:
+
 - `thermal_results.*.csv` -- time-series GPU temperature, power, utilization
 - `dcgmproftester.log` -- DCGM stress test output
 - `TSR_*.zip` -- Dell Tech Support Report

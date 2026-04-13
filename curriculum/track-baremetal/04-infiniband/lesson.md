@@ -7,6 +7,7 @@ InfiniBand is how GPU nodes talk to each other for distributed training. When IB
 Each server has InfiniBand HCAs (Host Channel Adapters) -- usually Mellanox/NVIDIA ConnectX-7. Each HCA has one or more ports. The ports connect to IB switches via fiber cables.
 
 Key terms:
+
 - **HCA**: The InfiniBand network card
 - **Port**: Physical connection point on the HCA
 - **Link Layer**: InfiniBand (not Ethernet)

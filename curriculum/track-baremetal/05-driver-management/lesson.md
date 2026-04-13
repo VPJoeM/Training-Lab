@@ -34,6 +34,7 @@ Our script handles the full driver installation workflow:
 ```
 
 It manages:
+
 - Driver package download and installation
 - CUDA toolkit setup
 - Fabric Manager installation and version matching

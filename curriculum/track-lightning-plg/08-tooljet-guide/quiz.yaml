@@ -1,0 +1,44 @@
+- question: "Before responding to a Crisp ticket, what should you always do first?"
+  options:
+    - "Check the Lightning AI status page"
+    - "Look up the user in ToolJet"
+    - "Ask the user for more information"
+    - "Check Stripe for payment history"
+  correct: 1
+  explanation: "Always look up the user in ToolJet before responding. Check ban status, account info, credits — this context shapes your entire response."
+
+- question: "On ToolJet, what does the 'GA enabled' checkbox indicate?"
+  options:
+    - "Google Analytics is tracking the user"
+    - "The user has GPU access"
+    - "The user's account is verified"
+    - "Google Auth is their login method"
+  correct: 2
+  explanation: "GA enabled essentially means the account has been verified."
+
+- question: "When entering a phone number for verification on ToolJet, what format should you use?"
+  options:
+    - "Include country code with + prefix"
+    - "Use dashes between number groups"
+    - "No spaces or symbols — just digits"
+    - "Include parentheses around area code"
+  correct: 2
+  explanation: "Enter phone numbers with no spaces, dashes, or symbols — just the raw digits."
+
+- question: "What ToolJet tab should you check to see if a phone number has been used on too many accounts?"
+  options:
+    - "User Management"
+    - "Credit Management"
+    - "The Lookup tab (within Phone Verification)"
+    - "Account Deletion"
+  correct: 2
+  explanation: "The Lookup tab in the Phone Verification section shows how many accounts are linked to a given phone number."
+
+- question: "Which of these operations is done on ToolJet (not Stripe)?"
+  options:
+    - "Issuing a refund"
+    - "Adding credits to a user's teamspace"
+    - "Creating a custom invoice"
+    - "Cancelling a subscription"
+  correct: 1
+  explanation: "Credit management (adding/subtracting credits) is done on ToolJet. Refunds, invoices, and subscription changes happen on Stripe."

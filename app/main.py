@@ -23,6 +23,8 @@ from app.models import (
     update_scenario_state,
     get_active_scenarios,
     clear_all_progress,
+    get_quiz_result,
+    save_quiz_result,
 )
 from app.scenario_engine import scenario_engine
 
@@ -98,10 +100,14 @@ def load_curriculum() -> dict:
     for track_dir in sorted(base.iterdir()):
         if not track_dir.is_dir() or track_dir.name.startswith("."):
             continue
+        # reference/ is standalone content, not a track
+        if track_dir.name == "reference":
+            continue
 
         track_name = track_dir.name.replace("track-", "")
         display_names = {
             "baremetal": "Bare Metal H100",
+            "lightning-plg": "Lightning Platform (PLG)",
             "k8s": "Kubernetes",
         }
         modules = []
@@ -140,6 +146,13 @@ def load_curriculum() -> dict:
                 scripts = yaml.safe_load(scripts_file.read_text()) or []
                 logger.debug(f"  Scripts for {module_id}: {[s.get('name','?') for s in scripts]}")
 
+            # quiz questions (multiple choice)
+            quiz_file = module_dir / "quiz.yaml"
+            quiz = []
+            if quiz_file.exists():
+                quiz = yaml.safe_load(quiz_file.read_text()) or []
+                logger.debug(f"  Quiz for {module_id}: {len(quiz)} questions")
+
             scenarios = []
             scenarios_dir = module_dir / "scenarios"
             if scenarios_dir.exists():
@@ -166,6 +179,7 @@ def load_curriculum() -> dict:
                 "title": lesson_title,
                 "lesson_html": lesson_html,
                 "scripts": scripts,
+                "quiz": quiz,
                 "scenarios": scenarios,
                 "path": str(module_dir),
             })
@@ -189,10 +203,20 @@ async def health():
 
 
 @app.get("/", response_class=HTMLResponse)
-async def root():
-    if not settings.is_configured:
-        return RedirectResponse(url="/setup")
-    return RedirectResponse(url="/track/baremetal")
+async def root(request: Request):
+    tracks = load_curriculum()
+    if len(tracks) <= 1:
+        # single track - redirect straight to it (or setup if not configured)
+        if not settings.is_configured:
+            return RedirectResponse(url="/setup")
+        first = next(iter(tracks), "baremetal")
+        return RedirectResponse(url=f"/track/{first}")
+    # multiple tracks - show track selector
+    return templates.TemplateResponse("tracks.html", {
+        "request": request,
+        "tracks": tracks,
+        "settings": settings,
+    })
 
 
 @app.get("/track/{track_name}", response_class=HTMLResponse)
@@ -243,11 +267,17 @@ async def module_page(request: Request, track_name: str, module_id: str):
         state = await get_scenario_state(scenario["id"])
         scenario["state"] = state or {"status": "ready"}
 
+    # load quiz results if quiz exists
+    quiz_result = None
+    if module.get("quiz"):
+        quiz_result = await get_quiz_result(track_name, module_id)
+
     return templates.TemplateResponse("module.html", {
         "request": request,
         "track": track,
         "tracks": tracks,
         "module": module,
+        "quiz_result": quiz_result,
         "settings": settings,
     })
 
@@ -999,6 +1029,95 @@ async def force_complete_scenario(scenario_id: str):
     await update_progress(track, module_id, scenarios_completed=json.dumps(completed))
 
     return {"status": "ok", "message": "Marked complete (verification skipped)"}
+
+
+class QuizSubmission(BaseModel):
+    answers: dict  # {question_index: selected_option_index}
+
+
+@app.post("/api/quiz/{track_name}/{module_id}/submit")
+async def submit_quiz(track_name: str, module_id: str, submission: QuizSubmission):
+    """Grade a quiz and store the results"""
+    tracks = load_curriculum()
+    if track_name not in tracks:
+        raise HTTPException(404, "Track not found")
+
+    module = next((m for m in tracks[track_name]["modules"] if m["id"] == module_id), None)
+    if not module or not module.get("quiz"):
+        raise HTTPException(404, "No quiz found for this module")
+
+    quiz = module["quiz"]
+    total = len(quiz)
+    score = 0
+    results = []
+
+    for i, question in enumerate(quiz):
+        selected = submission.answers.get(str(i))
+        correct = question.get("correct", 0)
+        is_correct = selected == correct
+        if is_correct:
+            score += 1
+        results.append({
+            "question": question["question"],
+            "selected": selected,
+            "correct": correct,
+            "is_correct": is_correct,
+            "explanation": question.get("explanation", ""),
+        })
+
+    await save_quiz_result(
+        track_name, module_id, score, total,
+        json.dumps(submission.answers),
+    )
+
+    passed = score >= (total * 0.7)  # 70% to pass
+    if passed:
+        await update_progress(
+            track_name, module_id,
+            lesson_completed=1,
+            completed_at=datetime.now().isoformat(),
+        )
+
+    return {
+        "score": score,
+        "total": total,
+        "percentage": round(score / total * 100) if total > 0 else 0,
+        "passed": passed,
+        "results": results,
+    }
+
+
+@app.post("/api/quiz/{track_name}/{module_id}/check")
+async def check_quiz_answer(track_name: str, module_id: str, question: int = 0, answer: int = 0):
+    """Check a single quiz answer — returns correct/incorrect + explanation"""
+    tracks = load_curriculum()
+    if track_name not in tracks:
+        raise HTTPException(404, "Track not found")
+
+    module = next((m for m in tracks[track_name]["modules"] if m["id"] == module_id), None)
+    if not module or not module.get("quiz"):
+        raise HTTPException(404, "No quiz found")
+
+    quiz = module["quiz"]
+    if question < 0 or question >= len(quiz):
+        raise HTTPException(400, "Invalid question index")
+
+    q = quiz[question]
+    correct = q.get("correct", 0)
+    is_correct = answer == correct
+
+    return {
+        "is_correct": is_correct,
+        "correct_answer": correct,
+        "explanation": q.get("explanation", ""),
+    }
+
+
+@app.post("/api/quiz/{track_name}/{module_id}/reset")
+async def reset_quiz(track_name: str, module_id: str):
+    """Clear quiz results so the user can retake it"""
+    await save_quiz_result(track_name, module_id, 0, 0, "{}")
+    return {"status": "ok", "message": "Quiz reset"}
 
 
 @app.post("/api/scenario/{scenario_id}/reset")

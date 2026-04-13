@@ -1,0 +1,44 @@
+- question: "A free user has a studio stuck loading and they have 300GB+ of data. What's the likely fix?"
+  options:
+    - "Delete some data and retry"
+    - "Switch to a data prep machine"
+    - "Upgrade to Pro tier"
+    - "Clear browser cache"
+  correct: 1
+  explanation: "Free studios with large datasets (300GB+) should switch to a data prep machine to handle the volume."
+
+- question: "When should you attempt data recovery for a user who lost studio data?"
+  options:
+    - "Always — data recovery is a standard operation"
+    - "Only if the user has paid at least $100 (check Stripe)"
+    - "Only for Enterprise customers"
+    - "Never — data loss is permanent"
+  correct: 1
+  explanation: "Data recovery is an L2 operation. Only escalate if the user has paid at least $100. Otherwise, guide them to duplicate studios."
+
+- question: "After impersonating a user's account, how do you stop impersonating?"
+  options:
+    - "Close the browser tab"
+    - "Clear localStorage"
+    - "Sign out"
+    - "Refresh the page"
+  correct: 2
+  explanation: "Sign out to end impersonation. All changes made while impersonating are real, so be careful."
+
+- question: "A user asks for a static IP for their studio. What's the answer?"
+  options:
+    - "Each studio gets a permanent static IP"
+    - "Lightning does not have static IPs — each studio gets a new IP that changes on restart"
+    - "Static IPs are available on Enterprise tier only"
+    - "They can request one through support"
+  correct: 1
+  explanation: "Lightning doesn't provide static IPs. Each studio gets a new IP on startup. They can check it with 'curl https://ipinfo.io/ip' but it will change."
+
+- question: "How do you find the user's API key for account impersonation?"
+  options:
+    - "Ask the user directly"
+    - "Check the Crisp ticket"
+    - "Look in the User Management tab on ToolJet"
+    - "Run a Stripe query"
+  correct: 2
+  explanation: "The username and user API key are found in the User Management tab on ToolJet."
