@@ -23,7 +23,19 @@ Redfish is the REST API that iDRAC exposes. Our script wraps all the common oper
 ./scripts/api/connect-idrac-via-redfish.sh
 ```
 
-**How it works:** When you run the script, it asks you to pick a datacenter (SEA1, DFW1, IAD1, etc.) and enter hostnames. It automatically constructs the iDRAC FQDN using the pattern `{hostname}-i.{dc}.voltagepark.net` -- so you never need to manually look up or type iDRAC IPs. Just know the hostname from VOLT and which DC it's in.
+### Credential Management
+
+The Redfish script uses **1Password** for credential storage, same pattern as Node Toolkit. On first run it'll walk you through setup:
+
+1. **1Password (recommended)** -- stores your iDRAC credentials securely in the `Employee` vault under an item called "VP iDRAC Credentials". Uses `op` CLI with TouchID.
+2. **Legacy file** (`~/.redfish_creds`) -- older method, still works. If the script finds legacy creds and you have 1Password CLI installed, it'll offer to migrate them automatically.
+3. **One-time entry** -- just type username/password each time, nothing saved.
+
+If you already have legacy credentials saved, the script will prompt you to migrate to 1Password. You can also set up or change credential storage from the script's settings menu (option 9).
+
+### How It Works
+
+When you run the script, it asks you to pick a datacenter (SEA1, DFW1, IAD1, etc.) and enter hostnames. It automatically constructs the iDRAC FQDN using the pattern `{hostname}-i.{dc}.voltagepark.net` -- so you never need to manually look up or type iDRAC IPs. Just know the hostname from VOLT and which DC it's in.
 
 You can also enter full IPs or hostnames manually if needed.
 

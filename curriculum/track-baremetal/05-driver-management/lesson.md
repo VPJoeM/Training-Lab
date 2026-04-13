@@ -14,10 +14,11 @@ From bottom to top:
 
 ## Version Compatibility
 
-This is where most driver issues come from. The driver version, CUDA version, and Fabric Manager version all need to be compatible. NVIDIA publishes compatibility matrices, but the short version:
+This is where most driver issues come from. The driver version, CUDA version, and Fabric Manager version all need to be compatible. NVIDIA publishes compatibility matrices, but the short version is: **all three major versions need to match.**
+
+Check what's currently installed:
 
 ```bash
-# check what's installed
 nvidia-smi                     # shows driver + CUDA version
 cat /usr/local/cuda/version.txt  # CUDA toolkit version
 systemctl status nvidia-fabricmanager  # Fabric Manager status
