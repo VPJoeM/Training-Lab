@@ -116,11 +116,70 @@ The easiest way is through the **node toolkit** (`start-node-toolkit.sh`). From 
 
 The **thermal diagnostics script** also collects a TSR as part of its workflow (Module 7).
 
-If you're already on the node and just need a quick manual trigger:
+### Manual TSR Collection (racadm)
+
+If you're already SSH'd into the node:
 
 ```bash
+# 1. trigger the collection
 sudo racadm supportassist collect -t Debug
-sudo racadm jobqueue view   # monitor the job
+
+# 2. grab the job ID from the output (JID_XXXXXXXXX)
+# 3. monitor it -- takes 5-15 minutes depending on the server
+sudo racadm jobqueue view
+
+# 4. keep checking until it says "Completed"
+sudo racadm jobqueue view -i JID_XXXXXXXXX
+
+# 5. once complete, the TSR zip is stored on the iDRAC
+#    download it via the iDRAC web UI or via Redfish (see below)
+```
+
+If a previous TSR job is stuck or failed, clear the job queue first:
+
+```bash
+sudo racadm jobqueue delete -i JID_CLEARALL
+# wait a few seconds, then retry the collection
+sudo racadm supportassist collect -t Debug
+```
+
+### Manual TSR Collection (Redfish / curl)
+
+You can also trigger and download a TSR entirely over the network without SSH:
+
+```bash
+IDRAC="gpu020001-i.sea1.voltagepark.net"
+CREDS="user:password"
+
+# trigger SupportAssist collection
+curl -sk -u $CREDS -X POST \
+  https://$IDRAC/redfish/v1/Dell/Managers/iDRAC.Embedded.1/DellLCService/Actions/DellLCService.SupportAssistCollection \
+  -H "Content-Type: application/json" \
+  -d '{"ShareType": "Local", "DataSelectorArrayIn": ["HWData"]}'
+
+# check job status (grab the job URI from the response headers)
+curl -sk -u $CREDS https://$IDRAC/redfish/v1/Managers/iDRAC.Embedded.1/Oem/Dell/Jobs
+
+# once complete, export the TSR
+curl -sk -u $CREDS \
+  https://$IDRAC/redfish/v1/Dell/Managers/iDRAC.Embedded.1/DellLCService/Actions/DellLCService.ExportSupportAssistCollection \
+  -H "Content-Type: application/json" \
+  -d '{"ShareType": "Local"}' --output TSR_report.zip
+```
+
+### Downloading the TSR to Your Laptop
+
+Once collected, you need to get the file off the server. Three options:
+
+```bash
+# option 1: node toolkit file transfer (easiest)
+# Main Menu → option 15 (Download files from nodes)
+
+# option 2: scp via sshv
+sshv -p 4747 vpsupport@<node>:/tmp/TSR_*.zip ./
+
+# option 3: rsync for large files (can resume if interrupted)
+rsync -avz --progress -e "sshv -p 4747" vpsupport@<node>:/tmp/TSR_*.zip ./
 ```
 
 ## What's Next
