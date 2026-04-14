@@ -25,14 +25,14 @@
   correct: 1
   explanation: "Most commonly, credits are sitting in a different teamspace or under a different account. Check ToolJet for all their accounts."
 
-- question: "How often do free credits refresh?"
+- question: "When do free credits refresh?"
   options:
-    - "On the 1st of every calendar month"
+    - "On the 1st of each month"
     - "Every 30 days from the user's sign-up date"
     - "Weekly on Mondays"
     - "Instantly when fully consumed"
-  correct: 1
-  explanation: "Credits refresh every 30 days from the user's account creation date, not on a fixed calendar schedule."
+  correct: 0
+  explanation: "Credits refresh on the 1st of each month."
 
 - question: "A user's credits are draining faster than expected. Which hidden cost should you mention?"
   options:

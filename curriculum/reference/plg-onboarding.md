@@ -92,18 +92,24 @@ Organization (Org)
 | Tier | Cost | Key Details |
 |------|------|------------|
 | **Free** | $0 | 15 credits/month (~22 GPU hours), 1 studio at a time |
-| **Pro** | $9.99/month | Priority GPU access, more storage, faster startup |
-| **Teams** | $49.99/month | Multiple members, shared team space, admin controls |
+| **Pro (Monthly)** | Standard pricing | Priority GPU access, more storage, faster startup |
+| **Pro (Annual)** | Standard pricing (annual) | Same as Pro Monthly, billed annually |
+| **Pro (Academic)** | $9.99/month (annual billing) | Must be logged in with a university/academic email to access this discount |
+| **Teams** | $49.99/month (also offered annually) | Multiple members, shared team space, admin controls |
 | **Enterprise** | Custom | Dedicated support, SLAs — handled separately, not in scope here |
+
+See [lightning.ai/pricing](https://lightning.ai/pricing) for current pricing.
+
+> **Note:** Natalie Rand is recording a Loom on how to enable academic pricing for a specific domain — will be linked here when available.
 
 ### 3.3 How Credits Work
 
-This is the **most common source of confusion** for users. Memorize these rules:
+This is the most common source of confusion for users. Memorize these rules:
 
 1. Free tier gets **up to 15 credits** per month
-2. Credits refresh **every 30 days** from sign-up date (not calendar month)
+2. Credits refresh on the **1st of each month**
 3. **Only consumed credits are replenished** — use 4, get 4 back (not 15)
-4. Credits **do not roll over** or accumulate
+4. Credits **do not** roll over or accumulate
 5. Compute is billed **by the second**
 6. Running a GPU studio also starts a monitoring CPU at **~$0.43/hr**
 7. Free credits go to **one account per phone number** only
@@ -117,14 +123,14 @@ This is the **most common source of confusion** for users. Memorize these rules:
 | Google OAuth | Second most common |
 | Magic Link | Email-based, passwordless |
 
-> **Critical gotcha:** If a user signs up with GitHub, they **cannot** log in with Google or Magic Link — even if the email is the same. The `auth_provider` field in ToolJet tells you which method they used.
+> **Possible gotcha:** If a user signs up with GitHub, they may not be able to log in with Google or Magic Link — even if the email is the same. The `auth_provider` field in ToolJet tells you which method they used. *(Natalie Rand is confirming whether this is still the case — treat as likely but not guaranteed.)*
 
 ### Platform Verification Checklist
 
 - [ ] Can explain the account hierarchy (Org → Team Space → Studio)
-- [ ] Knows all four tiers and their costs
+- [ ] Knows all tiers and their costs (including Pro academic/annual variants)
 - [ ] Can explain the credit refresh rule correctly
-- [ ] Understands the login method lock-in
+- [ ] Understands the login method lock-in (pending confirmation)
 
 ---
 
@@ -138,9 +144,10 @@ Free user tickets can wait — we don't have the bandwidth to answer every one i
 
 ### 4.2 Responding to Tickets
 
-1. **Look up the user in ToolJet first.** Check ban status, account info, credits. Context shapes your response.
+1. **Look up the user in [ToolJet](https://tooljet.lightning.ai/applications/7b6a09f5-f91a-44a2-9e28-803a13eb8bf0) first.** Check ban status, account info, credits. If the user is banned, that's the cause of whatever issue they're having — regardless of what they're reporting. First step for every problem is checking ban status.
 2. **Use the correct shortcut (canned response).** These are pre-built in Crisp under Settings → Inbox Settings → Message Shortcuts.
 3. **If no shortcut exists for the issue, create one.** This helps us track issue types over time.
+4. **If a ticket requires engineering help**, add the **"eng help" segment** to the conversation in Crisp before escalating. This is how we track metrics on how many tickets require engineering involvement.
 
 ### 4.3 Most Used Shortcuts
 
@@ -168,9 +175,15 @@ Post to **#customer-support-plg** on Slack with:
 3. **Studio name** (or deployment name)
 4. **Screenshot of the full message**
 
+> **Important:** Before escalating, add the **"eng help" segment** to the conversation in Crisp so we can track how many tickets required engineering.
+
 ### 4.5 Duplicate Tickets
 
-Users often submit multiple tickets about the same issue. Consolidate and close duplicates.
+Users often submit multiple tickets about the same issue. To handle duplicates:
+
+1. Leave an **internal note** on the duplicate conversation in Crisp
+2. Write **"duplicate"** in the note
+3. Click **Resolve**
 
 ### Crisp Verification Checklist
 
@@ -178,6 +191,7 @@ Users often submit multiple tickets about the same issue. Consolidate and close 
 - [ ] Knows where to find message shortcuts
 - [ ] Can apply the correct shortcut for a given scenario
 - [ ] Knows what to include in an engineering escalation
+- [ ] Knows to add "eng help" segment before escalating
 
 ---
 
@@ -194,11 +208,11 @@ Enter a user's email to see:
 - Auth provider (GitHub / Google / Magic Link)
 - GA enabled (= verified)
 - Multiple accounts
-- API key (needed for impersonation)
+- API key (needed for impersonation — restricted access, see section 8.5)
 
 ### 5.2 Phone Verification
 
-**This is the #1 most common operation.** Steps:
+This is the #1 most common operation. Steps:
 
 1. Enter user's email
 2. Enter phone number — **digits only, no spaces or symbols**
@@ -206,7 +220,7 @@ Enter a user's email to see:
 4. Click **"Verify Phone"**
 5. Refresh to confirm
 
-> **Always Google the phone number first.** If it's a VoIP/temp number, ask for a real one. Non-US users sending +1 numbers are almost certainly using fake numbers.
+> **When to Google the phone number:** It's only critical to Google the number if it's a **US number (+1)**. People using US numbers that fail during phone verification often indicates a fake number. For non-US numbers, you don't need to Google every single one — there are too many of these queries to get hung up on it.
 
 **Loom:** [Phone verification walkthrough](https://www.loom.com/share/60cdbe172584497daa111a60ab8ab317)
 
@@ -224,7 +238,7 @@ Enter a user's email to see:
 
 - Scroll to "Monthly Free Credits Check" → enter email → see `refresh_date` and `free_credits_enabled`
 
-**Loom:** [Credit management walkthrough](https://www.loom.com/share/6a237b2cd1b24f8685b581f97438df61)
+> **Note:** The credit management Loom currently uses Retool (our old tool). Natalie Rand is recording a new one for ToolJet — will be linked here when available.
 
 ### 5.4 Account Deletion
 
@@ -249,6 +263,8 @@ Enter a user's email to see:
 
 ## 6. Handling Banned Users
 
+> **Note:** As of April 2026, the waitlist has been removed. We should see fewer and fewer users stuck in a waitlisted state going forward.
+
 ### 6.1 Soft Bans (Can Be Reversed)
 
 | Ban Reason | Action |
@@ -263,9 +279,11 @@ Enter a user's email to see:
 | Ban Reason | Action |
 |-----------|--------|
 | Crypto mining | `#suspicious-activity` — offer data deletion only |
-| Pornography | `#suspicious-activity` — no unban |
-| Torrenting | `#suspicious-activity` — no unban |
+| Pornography | `#suspicious-activity` — offer data deletion only |
+| Torrenting | `#suspicious-activity` — offer data deletion only |
 | Sanctioned country (hard block) | Cannot unban — legal restriction |
+
+> **For all hard ban cases:** We can offer to delete their data if they request it, but we do not unban.
 
 ### 6.3 Country Restrictions
 
@@ -274,6 +292,8 @@ Belarus, Cuba, Iran, North Korea, Russia, Syria, Venezuela, Crimea & Donbas regi
 
 **Soft Block (verify identity then allow):**
 Vietnam, Philippines, India, Singapore, Korea, Egypt, Pakistan
+
+> **University students:** If you can tell from the email domain that they're a university student (`.edu`, `.ac.uk`, etc.), you can always just verify them regardless of country.
 
 ### 6.4 False Positive Waves
 
@@ -287,7 +307,7 @@ If the ban reason contains AWS GuardDuty output (DNS requests, detector IDs, etc
 
 - [ ] Can distinguish soft bans from hard bans
 - [ ] Knows which countries are hard-blocked vs soft-blocked
-- [ ] Knows never to unban crypto miners / torrenting / inappropriate content
+- [ ] Knows to offer data deletion for all hard ban cases
 - [ ] Knows to escalate complex GuardDuty errors
 
 ---
@@ -300,19 +320,32 @@ If the ban reason contains AWS GuardDuty output (DNS requests, detector IDs, etc
 |----------|-------|
 | **Send receipt** | Stripe → Payments → search by email → Receipt History → Send Receipt |
 | **Create invoice** | Stripe → More → Invoices → create → **mark as "paid" after** |
-| **Refund** | User must have 50 credits in teamspace. Stripe refund + ToolJet credit subtraction |
 | **Cancel subscription** | Stripe → Subscriptions → search → Cancel Subscription |
-| **Update billing email** | Stripe → Customers → Details → edit. **Also update in HubSpot** |
+| **Update billing email** | Stripe → Customers → Details → edit |
 | **Update credit card** | Phone call with customer → set new card as default → update subscription payment method |
 
-### 7.2 Self-Serve Subscription Management
+### 7.2 Refunds
 
-Users can manage their own subscription. Share this Loom if they need help:
-[How to manage your subscription](https://www.loom.com/share/6934d653f0fd47dfb4ab729fe7c891ef)
+**All refund requests should be escalated to Natalie Rand.**
 
-### 7.3 Who Can Issue Refunds?
+Refunds are based on how many credits the user has consumed, not the flat subscription price. Example:
 
-Only Natalie Rand and select finance team members. Route refund requests through her until you have full Stripe access.
+> A user bought a $50 monthly Pro sub (40 credits per month). They're not satisfied and want to cancel and get a refund. They've used 30 credits and only have 10 left. We can only offer a **partial refund of $10** — proportional to the unused credits.
+
+### 7.3 Subscription Cancellation
+
+**Self-serve cancellation:** Users can cancel their own subscription, but it only cancels at the **end of the current billing period** (they keep access until then).
+
+Share this Loom if they need guidance: [How to manage your subscription](https://www.loom.com/share/6934d653f0fd47dfb4ab729fe7c891ef)
+
+**When we need to step in:**
+
+- **User wants immediate cancellation** — self-serve only does end-of-period. We have to cancel it for them on Stripe.
+- **Payment failure** — if their payment has failed, they won't be able to cancel self-serve. We have to do it for them on Stripe.
+
+### 7.4 Who Can Issue Refunds?
+
+Only Natalie Rand and select finance team members. Escalate all refund requests to Natalie Rand.
 
 ---
 
@@ -320,7 +353,15 @@ Only Natalie Rand and select finance team members. Route refund requests through
 
 ### 8.1 Studios Not Starting / Stuck
 
-- Ask: one studio or all? What's the studio name? What machine type?
+Questions to ask:
+
+- One studio or all?
+- What's the studio name?
+- What machine type?
+- **What cloud provider were they using?**
+
+Common causes:
+
 - **Free studio with 300GB+ data** → switch to data prep machine
 - **Random error** → escalate to engineering (flag Neil / Ethan)
 
@@ -337,61 +378,23 @@ Only Natalie Rand and select finance team members. Route refund requests through
 - Check **which teamspace** has the credits — users often look in the wrong one
 - Check phone number isn't shared across accounts
 
-### 8.4 CUDA Installation Issues
+### 8.4 Account Impersonation
 
-Docs: [Environments — Lightning AI](https://lightning.ai/docs/overview/studios/environments#drivers-and-cuda-versions)
+> **Restricted access.** Account impersonation is a sensitive operation. Natalie Rand is confirming with Neil who should have access to this. For now, only use this if you've been explicitly authorized.
 
-```bash
-# general install
-sudo apt-get -y install cudnn
-
-# specific version
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.1-1_all.deb
-sudo dpkg -i cuda-keyring_1.1-1_all.deb
-sudo apt-get update
-sudo apt-get install libcudnn8=8.9.7.29-1+cuda11.8
-```
-
-### 8.5 Account Impersonation
-
-When you need to see what a user sees, use the impersonation tool in Support-Tooling:
+If authorized, use the impersonation tool in Support-Tooling:
 
 ```bash
-# interactive menu
 ~/Github/Support-Tooling/scripts/plg/lightning-impersonate.sh
-
-# CLI mode — generate snippet, copy to clipboard, open browser
-~/Github/Support-Tooling/scripts/plg/lightning-impersonate.sh --user <username> --key <api_key> --copy --open
 ```
-
-You'll need the username and API key from [ToolJet](https://tooljet.lightning.ai/applications/7b6a09f5-f91a-44a2-9e28-803a13eb8bf0) → User Management. Enter them into the tool and it generates the JavaScript, copies it to your clipboard, and opens lightning.ai.
-
-> **Set up the alias:** Run the script, choose option 6, and you can just type `impersonate` from anywhere.
-
-**Manual method:** If you prefer, paste this into the browser console on lightning.ai:
-
-```javascript
-localStorage.setItem("gridUserId", "<username>");
-localStorage.setItem("gridUserKey", "<api_key from ToolJet>");
-localStorage.setItem("gridUserToken", "<token>");
-```
-
-Then open lightning.ai in a new tab. **All changes are real.** Sign out when done.
 
 **Loom:** [Impersonation demo](https://www.loom.com/share/87a32198121a4a149110e50bf1d5173b)
 
-### 8.6 Whitelisted IPs
+### 8.5 Whitelisted IPs
 
 Lightning **does not provide static IPs.** Each studio gets a new IP on every start. Users can check their current IP with `curl https://ipinfo.io/ip` but it will change on restart.
 
-### 8.7 Killing High-Memory Processes
-
-```bash
-ps aux --sort=-%mem
-sudo kill <PID>
-```
-
-### 8.8 Data Recovery (L2 — Needs Engineering)
+### 8.6 Data Recovery (L2 — Needs Engineering)
 
 Only pursue if the user has paid at least $100 (check Stripe). Otherwise, guide them to create a new account and duplicate studios.
 
@@ -411,7 +414,8 @@ Natalie Rand has recorded walkthroughs for most operations. Bookmark these:
 | Multiple accounts / credits | [Watch](https://www.loom.com/share/618e3941f79c4a61880e68de57a8f648) |
 | Account deletion | [Watch](https://www.loom.com/share/55ebe432315648c2beb72a191e5f732d) |
 | Suspicious activity review | [Watch](https://www.loom.com/share/53097c3de0684a0da81d8dd6c7566c57) |
-| Credit management | [Watch](https://www.loom.com/share/6a237b2cd1b24f8685b581f97438df61) |
+| Credit management | *(New Loom coming — old one uses Retool)* |
+| Academic pricing setup | *(Coming soon from Natalie Rand)* |
 | Crisp shortcut creation | [Watch](https://www.loom.com/share/1907c8ae2ed4467f93cf66808295962d) |
 | Duplicate tickets handling | [Watch](https://www.loom.com/share/3703e62c697a42399dac44ce2176906e) |
 | Subscription management | [Watch](https://www.loom.com/share/6934d653f0fd47dfb4ab729fe7c891ef) |
@@ -466,13 +470,14 @@ Before handling live PLG tickets, confirm all of the following:
 ### Platform Knowledge
 
 - [ ] Can explain the account hierarchy (Org → Team Space → Studio → Drive)
-- [ ] Knows all four subscription tiers and costs
+- [ ] Knows all subscription tiers and costs (including Pro academic/annual)
 - [ ] Can explain the credit refresh rules accurately
-- [ ] Understands the login method lock-in (GitHub ≠ Google)
+- [ ] Understands the login method lock-in (pending confirmation)
 
 ### Ticket Handling
 
 - [ ] Can navigate Crisp and apply shortcuts
+- [ ] Knows to add "eng help" segment before escalating
 - [ ] Can perform phone verification on ToolJet
 - [ ] Can check and modify credit balances
 - [ ] Can identify soft bans vs hard bans
@@ -483,7 +488,7 @@ Before handling live PLG tickets, confirm all of the following:
 
 - [ ] Read this document end-to-end
 - [ ] Completed the PLG track in the Training Lab (all quizzes passed)
-- [ ] Watched at least the phone verification, credit management, and impersonation Looms
+- [ ] Watched at least the phone verification and impersonation Looms
 - [ ] Shadowed a live Crisp session (if available)
 
 ### Manager Sign-Off

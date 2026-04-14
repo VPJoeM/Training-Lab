@@ -32,11 +32,15 @@ Organization (Org)
 | Tier | Cost | What They Get |
 |------|------|--------------|
 | **Free** | $0 | 15 credits/month (~22 GPU hours), 1 studio at a time |
-| **Pro** | $9.99/month | Priority GPU access, more storage, faster startup |
-| **Teams** | $49.99/month | Multiple members, shared team space, admin controls |
+| **Pro (Monthly)** | Standard pricing | Priority GPU access, more storage, faster startup |
+| **Pro (Annual)** | Standard pricing (annual) | Same as Pro Monthly, billed annually |
+| **Pro (Academic)** | $9.99/month (annual) | Must be logged in with university/academic email for this discount |
+| **Teams** | $49.99/month (also annual) | Multiple members, shared team space, admin controls |
 | **Enterprise** | Custom | Dedicated support, SLAs, custom configs |
 
-> **Important:** Credits do not roll over. If a user only uses 4 of their 15 free credits, they'll get 4 back next cycle — not 15. Credits refresh every 30 days, not monthly.
+See [lightning.ai/pricing](https://lightning.ai/pricing) for current pricing.
+
+> **Important:** Credits do not roll over. If a user only uses 4 of their 15 free credits, they'll get 4 back next cycle — not 15. Credits refresh on the 1st of each month.
 
 ### How Credits Work
 
@@ -53,7 +57,7 @@ Users can sign in via:
 - **Google** — OAuth
 - **Magic Link** — Email-based passwordless login
 
-> **Gotcha:** If a user signs up with GitHub, they can't later log in with Google/Magic Link even if the email matches. The `auth_provider` field in ToolJet tells you which method they used originally.
+> **Possible gotcha:** If a user signs up with GitHub, they may not be able to log in with Google/Magic Link even if the email matches. The `auth_provider` field in ToolJet tells you which method they used. *(This is being confirmed — treat as likely but not guaranteed.)*
 
 ## Platform Tour
 

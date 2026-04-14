@@ -4,6 +4,8 @@
 
 Lightning AI has automated systems that detect and ban suspicious activity. As support, you'll deal with ban appeals daily. The key is knowing **when to unban** and **when to hold firm**.
 
+> **Note:** As of April 2026, the waitlist has been removed. We should see fewer and fewer users stuck in a waitlisted state going forward.
+
 ## Ban Reasons (What You'll See in ToolJet)
 
 Navigate to [ToolJet](https://tooljet.lightning.ai/applications/7b6a09f5-f91a-44a2-9e28-803a13eb8bf0) → User Management → enter the user's email → scroll right to see the **ban reason** column.
@@ -22,8 +24,8 @@ Navigate to [ToolJet](https://tooljet.lightning.ai/applications/7b6a09f5-f91a-44
 | Ban Reason | What To Do |
 |-----------|-----------|
 | Crypto mining detected | Use `#suspicious-activity`. Offer data deletion only. |
-| Pornography / inappropriate content | Same — `#suspicious-activity`, no unban. |
-| Torrenting | Same — `#suspicious-activity`, no unban. |
+| Pornography / inappropriate content | Use `#suspicious-activity`. Offer data deletion only. |
+| Torrenting | Use `#suspicious-activity`. Offer data deletion only. |
 | Sanctioned country (hard block) | Cannot unban. Explain it's a legal restriction. |
 
 ### Complex Bans
@@ -70,6 +72,8 @@ Users from these countries **can** be manually verified and unbanned. Ask for Li
 - Korea
 - Egypt
 - Pakistan
+
+> **University students:** If you can tell from the email domain that they're a university student (`.edu`, `.ac.uk`, etc.), you can always just verify them regardless of country.
 
 > **When in doubt, verify identity.** It only takes a minute to Google someone's LinkedIn or university, and it prevents us from unfairly locking out legitimate researchers.
 

@@ -1,11 +1,11 @@
-- question: "A user requests a refund. What's the credit threshold they must have in their teamspace?"
+- question: "A user bought a $50 Pro sub (40 credits). They used 30 credits and want a refund. What can we offer?"
   options:
-    - "10 credits"
-    - "25 credits"
-    - "50 credits"
-    - "No threshold — any amount is refundable"
-  correct: 2
-  explanation: "Users must have 50 credits in the teamspace to be eligible for a refund."
+    - "Full $50 refund"
+    - "Partial refund of $10 (proportional to 10 unused credits)"
+    - "No refund — credits were partially consumed"
+    - "$25 — always half the subscription price"
+  correct: 1
+  explanation: "Refunds are based on credits consumed. They used 30 of 40 credits, so we can only refund the proportional value of the 10 unused credits."
 
 - question: "After creating a custom invoice on Stripe, what critical step must you NOT forget?"
   options:
@@ -16,14 +16,14 @@
   correct: 1
   explanation: "You must mark the invoice status as 'paid' after creating it, since the payment was already received."
 
-- question: "A user wants to update their billing email. Where do you need to update it?"
+- question: "A user wants to cancel their subscription immediately. Can they do it themselves?"
   options:
-    - "Stripe only"
-    - "ToolJet only"
-    - "Stripe AND HubSpot"
-    - "Crisp and Stripe"
-  correct: 2
-  explanation: "Billing email needs to be updated in both Stripe and HubSpot to stay in sync across systems."
+    - "Yes — self-serve cancellation is instant"
+    - "No — self-serve only cancels at end of billing period. We need to cancel it for them on Stripe."
+    - "Only if they're on Pro tier"
+    - "Only if they have zero credits remaining"
+  correct: 1
+  explanation: "Self-serve cancellation only stops renewal at the end of the billing period. For immediate cancellation, we have to do it on Stripe."
 
 - question: "What hidden cost often surprises users about running GPU studios?"
   options:
@@ -34,11 +34,11 @@
   correct: 1
   explanation: "Every GPU job also spins up a monitoring CPU machine at ~$0.43/hr. Users often don't realize this additional cost."
 
-- question: "How is compute billed on the Lightning platform?"
+- question: "Who should you escalate refund requests to?"
   options:
-    - "Per minute, rounded up"
-    - "Per hour, minimum 1 hour"
-    - "By the second, no minimum"
-    - "Flat daily rate per machine"
-  correct: 2
-  explanation: "Compute is billed by the second with no minimum charge. This is granular but can add up with idle studios."
+    - "Engineering via #customer-support-plg"
+    - "Natalie Rand"
+    - "The user's account manager"
+    - "Process it yourself on Stripe"
+  correct: 1
+  explanation: "All refund requests go to Natalie Rand. Only she and select finance team members can issue refunds on Stripe."

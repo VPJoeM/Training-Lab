@@ -29,7 +29,7 @@ Open [ToolJet](https://tooljet.lightning.ai/applications/7b6a09f5-f91a-44a2-9e28
 
 ### Red Flags to Watch For
 
-- **Google the phone number.** If it comes back as a VoIP/temporary number, ask for a real one.
+- **US numbers (+1) that fail verification** — this is when you should Google the number. People using US numbers that fail during phone verification often indicates a fake number. For non-US numbers, you don't need to Google every single one — there are too many of these queries to get hung up on it.
 - **Non-US user sending a +1 number?** Almost certainly a temp number. Ask for their real local number.
 - **Same number on multiple accounts?** Free credits only go to one account per phone number. This is often intentional abuse.
 

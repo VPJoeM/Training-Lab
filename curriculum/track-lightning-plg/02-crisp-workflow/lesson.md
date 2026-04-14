@@ -19,7 +19,7 @@ This is **the** channel for anything that can't be solved with ToolJet, Crisp sh
 
 ### What to Include When Escalating
 
-Every escalation post should have these four things:
+Before posting, add the **"eng help" segment** to the conversation in Crisp — this is how we track how many tickets require engineering. Then include these four things in your Slack post:
 
 1. **Paid user OR Free user** — so engineers know the priority
 2. **Username OR user email**
@@ -33,7 +33,7 @@ If the user doesn't initially provide a studio name, ask for it. This saves ever
 ### Resolving Tickets
 
 - **Phone verification / account verification** tickets: Resolve immediately after verifying. Don't wait for the user to respond.
-- **Duplicate tickets**: Users often submit multiple tickets about the same thing. Consolidate and close duplicates.
+- **Duplicate tickets**: Leave an **internal note** on the duplicate conversation, write **"duplicate"** in the note, then click **Resolve**.
 
 ### Creating Shortcuts
 If you encounter an issue that doesn't have an existing shortcut (canned response), create one so we can track it.
@@ -60,6 +60,6 @@ These are the pre-built responses in Crisp. Use them — they're consistent and 
 ## Practical Tips
 
 - **Read the first line.** People write novels but the core question is usually in the opening sentence. Don't waste time reading everything before acting.
-- **Check [ToolJet](https://tooljet.lightning.ai/applications/7b6a09f5-f91a-44a2-9e28-803a13eb8bf0) first.** Before responding, look up the user. Are they banned? Do they have multiple accounts? Where are their credits? This context shapes your response.
+- **Check [ToolJet](https://tooljet.lightning.ai/applications/7b6a09f5-f91a-44a2-9e28-803a13eb8bf0) first.** Before responding, look up the user. If they're banned, that's the cause of whatever issue they're reporting — regardless of what the ticket says. First step for any and all problems is checking ban status. Then check account info, credits, multiple accounts.
 - **Use shortcuts consistently.** They help us track issue volume and types over time, which feeds back into product improvements.
 - **Don't ghost free users forever.** We deprioritize them, sure, but try to get back to them within a couple days. Even a "we're looking into this" is better than silence.

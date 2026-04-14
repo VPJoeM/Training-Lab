@@ -47,17 +47,24 @@ Users automatically receive receipts, but some request a formal invoice for thei
 
 ### Processing a Refund
 
-Requirements:
+**Escalate all refund requests to Natalie Rand.**
 
-- User must have **50 credits** in the teamspace
-- On Stripe: Process the refund, can choose "end of current period" so they keep access until billing date
-- On ToolJet: Navigate to **"Credit Management"** and subtract the credits
+Refunds are based on how many credits the user has consumed, not the flat subscription price:
+
+> Example: A user bought a $50 monthly Pro sub (40 credits per month). They're not satisfied and want to cancel and get a refund. They've used 30 credits and only have 10 left. We can only offer a **partial refund of $10** — proportional to the unused credits.
 
 ### Cancelling a Subscription
 
-Users can self-serve this: [Self-serve cancellation guide](https://www.loom.com/share/30258dc9bd3f47d8bbfb12c7f4e2f7fd)
+**Self-serve:** Users can cancel their own subscription, but it only cancels at the **end of the current billing period** — they keep access until then.
 
-If you need to do it manually:
+[Self-serve cancellation guide](https://www.loom.com/share/30258dc9bd3f47d8bbfb12c7f4e2f7fd)
+
+**When we need to step in:**
+
+- **User wants immediate cancellation** — self-serve only does end-of-period. Cancel it for them on Stripe.
+- **Payment failure** — if their payment has failed, they can't cancel self-serve. We have to do it on Stripe.
+
+Manual cancellation:
 
 1. Stripe → **Subscriptions** sidebar
 2. Search by customer email
@@ -68,7 +75,6 @@ If you need to do it manually:
 1. Stripe → **Customers** tab → search user email
 2. Click **Details** tab → edit icon in the corner
 3. Update the email
-4. **Also update in HubSpot** (billing email needs to match across systems)
 
 ### Updating Credit Card
 

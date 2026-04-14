@@ -10,6 +10,7 @@ This is a frequent complaint. Here's your troubleshooting flow:
 2. What's the **name** of the stuck studio?
 3. How long has it been stuck?
 4. What **machine type** were they trying to use?
+5. What **cloud provider** were they using?
 
 ### Common Causes
 
@@ -31,27 +32,6 @@ Users frequently don't understand why their credits are disappearing:
 - **Transferring to another cloud** — Costs credits that users didn't expect
 
 **Always check:** What machines are running, how long they've been running, and which teamspace is being charged.
-
-## CUDA Installation Issues
-
-Users sometimes need specific CUDA versions for their ML frameworks.
-
-**Docs link:** [Environments — Lightning AI](https://lightning.ai/docs/overview/studios/environments#drivers-and-cuda-versions)
-
-### Quick Install
-
-```bash
-sudo apt-get -y install cudnn
-```
-
-### Specific Version Install
-
-```bash
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.1-1_all.deb
-sudo dpkg -i cuda-keyring_1.1-1_all.deb
-sudo apt-get update
-sudo apt-get install libcudnn8=8.9.7.29-1+cuda11.8
-```
 
 ## Data Loss in Studios
 
@@ -79,67 +59,15 @@ If a user has genuinely lost data and it needs recovery:
 
 ## Impersonating a User Account
 
-Sometimes you need to see what the user sees. We have a dedicated tool for this in Support-Tooling:
+> **Restricted access.** Account impersonation is a sensitive operation. Natalie Rand is confirming with Neil who should have access. Only use this if you've been explicitly authorized.
 
-### Using the Impersonation Tool (Recommended)
+If authorized, use the impersonation tool in Support-Tooling:
 
 ```bash
-# interactive menu
 ~/Github/Support-Tooling/scripts/plg/lightning-impersonate.sh
-
-# or CLI mode — generates snippet, copies to clipboard, opens browser
-~/Github/Support-Tooling/scripts/plg/lightning-impersonate.sh --user <username> --key <api_key> --copy --open
 ```
-
-You'll need the username and API key from [ToolJet](https://tooljet.lightning.ai/applications/7b6a09f5-f91a-44a2-9e28-803a13eb8bf0) → User Management. The tool takes those values, generates the JavaScript snippet, and optionally copies it to your clipboard and opens lightning.ai.
-
-> **Tip:** Run the script and choose option 6 to create a shell alias — then just type `impersonate` from anywhere.
-
-### Manual Method
-
-If you prefer to do it by hand:
-
-1. Go to [lightning.ai](https://lightning.ai) and sign in to your own account
-2. Open the browser developer console (Right-click → Inspect → Console)
-3. Run this JavaScript (replacing username and API key from ToolJet):
-
-```javascript
-localStorage.setItem("gridUserId", "<username>");
-localStorage.setItem("gridUserKey", "<user API key>");
-localStorage.setItem("gridUserToken", "<token>");
-```
-
-4. Navigate to [lightning.ai](https://lightning.ai) in a different tab — you're now impersonating
-5. **Be careful!** All changes are real. Sign out to end impersonation.
 
 [Loom: Impersonation demo](https://www.loom.com/share/87a32198121a4a149110e50bf1d5173b)
-
-## Kill High-Memory Process
-
-If a user's studio is slow or hanging:
-
-```bash
-ps aux --sort=-%mem
-```
-
-Find the process eating memory and kill it:
-
-```bash
-sudo kill <PID>
-```
-
-Or for Python processes specifically:
-
-```bash
-pgrep -f python
-```
-
-## Clearing CUDA Memory
-
-Users often have leftover GPU processes blocking their work:
-
-1. Find what's using the GPU: `ps aux` or `pgrep -f python`
-2. Kill the process: `sudo kill <PID>`
 
 ## Working with GitHub in Studios
 
