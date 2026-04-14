@@ -16,15 +16,6 @@
   correct: 1
   explanation: "Data recovery is an L2 operation. Only escalate if the user has paid at least $100. Otherwise, guide them to duplicate studios."
 
-- question: "After impersonating a user's account, how do you stop impersonating?"
-  options:
-    - "Close the browser tab"
-    - "Clear localStorage"
-    - "Sign out"
-    - "Refresh the page"
-  correct: 2
-  explanation: "Sign out to end impersonation. All changes made while impersonating are real, so be careful."
-
 - question: "A user asks for a static IP for their studio. What's the answer?"
   options:
     - "Each studio gets a permanent static IP"
@@ -34,11 +25,20 @@
   correct: 1
   explanation: "Lightning doesn't provide static IPs. Each studio gets a new IP on startup. They can check it with 'curl https://ipinfo.io/ip' but it will change."
 
-- question: "How do you find the user's API key for account impersonation?"
+- question: "A Pro user's credits are draining faster than expected. What should you check first?"
   options:
-    - "Ask the user directly"
-    - "Check the Crisp ticket"
-    - "Look in the User Management tab on ToolJet"
-    - "Run a Stripe query"
+    - "Their subscription tier"
+    - "Whether autosleep is enabled and if credits auto-reload is turned on"
+    - "Their browser version"
+    - "The Lightning AI status page"
+  correct: 1
+  explanation: "Pro/Teams users can disable autosleep (studios never stop) and many don't know credits auto-reload is enabled. Both cause surprise charges."
+
+- question: "You need to see the platform as a specific user. What do you do?"
+  options:
+    - "Use the impersonation tool in Support-Tooling"
+    - "Log in with their credentials"
+    - "Escalate to Natalie Rand — impersonation is restricted"
+    - "Ask the user to share their screen"
   correct: 2
-  explanation: "The username and user API key are found in the User Management tab on ToolJet."
+  explanation: "Account impersonation is restricted and not available to the wider team. Escalate to Natalie Rand if you need it."

@@ -208,7 +208,7 @@ Enter a user's email to see:
 - Auth provider (GitHub / Google / Magic Link)
 - GA enabled (= verified)
 - Multiple accounts
-- API key (needed for impersonation — restricted access, see section 8.5)
+- API key (used internally — impersonation is restricted to Natalie Rand)
 
 ### 5.2 Phone Verification
 
@@ -383,15 +383,7 @@ Common causes:
 
 ### 8.4 Account Impersonation
 
-> **Restricted access.** Account impersonation is a sensitive operation. Natalie Rand is confirming with Neil who should have access to this. For now, only use this if you've been explicitly authorized.
-
-If authorized, use the impersonation tool in Support-Tooling:
-
-```bash
-~/Github/Support-Tooling/scripts/plg/lightning-impersonate.sh
-```
-
-**Loom:** [Impersonation demo](https://www.loom.com/share/87a32198121a4a149110e50bf1d5173b)
+If you need to see the platform as a specific user, **escalate to Natalie Rand**. Account impersonation is restricted and not available to the wider team.
 
 ### 8.5 Whitelisted IPs
 
@@ -429,7 +421,6 @@ Natalie Rand has recorded walkthroughs for most operations. Bookmark these:
 | Mark invoice paid (Stripe) | [Watch](https://www.loom.com/share/f2fafb58e88f403dac675d3387ae7533) |
 | Update credit card (Stripe) | [Watch](https://www.loom.com/share/ab792169cf8940b2867777d819226fa3) |
 | Data recovery (L2) | [Watch](https://www.loom.com/share/74641ae78d324ae1968c1ebb44e2e999) |
-| Impersonate account | [Watch](https://www.loom.com/share/87a32198121a4a149110e50bf1d5173b) |
 | Custom domain setup | [Watch](https://www.loom.com/share/890e614759d24bdd8c566572cf2d3578) |
 | Marimo in Studio | [Watch](https://www.loom.com/share/3a827fbc026149708660ee12f3f71a8e) |
 
@@ -492,7 +483,7 @@ Before handling live PLG tickets, confirm all of the following:
 
 - [ ] Read this document end-to-end
 - [ ] Completed the PLG track in the Training Lab (all quizzes passed)
-- [ ] Watched at least the phone verification and impersonation Looms
+- [ ] Watched at least the phone verification and credit management Looms
 - [ ] Shadowed a live Crisp session (if available)
 
 ### Manager Sign-Off

@@ -30,7 +30,7 @@ This is your primary lookup tool. Enter a user's email to see:
 - **Auth provider** — GitHub, Google, or Magic Link
 - **GA enabled** — essentially means "verified"
 - **Multiple accounts** — users sometimes create several with different emails
-- **API key** — needed for account impersonation
+- **API key** — used internally (impersonation is restricted to Natalie Rand)
 - **Activity log** — recent actions on the account
 
 ### 2. Phone Verification

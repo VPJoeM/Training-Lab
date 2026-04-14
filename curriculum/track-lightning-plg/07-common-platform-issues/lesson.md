@@ -60,17 +60,9 @@ If a user has genuinely lost data and it needs recovery:
 
 [Loom: Data recovery walkthrough](https://www.loom.com/share/74641ae78d324ae1968c1ebb44e2e999)
 
-## Impersonating a User Account
+## Account Impersonation
 
-> **Restricted access.** Account impersonation is a sensitive operation. Natalie Rand is confirming with Neil who should have access. Only use this if you've been explicitly authorized.
-
-If authorized, use the impersonation tool in Support-Tooling:
-
-```bash
-~/Github/Support-Tooling/scripts/plg/lightning-impersonate.sh
-```
-
-[Loom: Impersonation demo](https://www.loom.com/share/87a32198121a4a149110e50bf1d5173b)
+If you need to see the platform as a specific user, **escalate to Natalie Rand**. Account impersonation is restricted and not available to the wider team.
 
 ## Working with GitHub in Studios
 
