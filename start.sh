@@ -18,15 +18,31 @@ PORT="${PORT:-8080}"
 is_mac() { [[ "$(uname)" == "Darwin" ]]; }
 is_linux() { [[ "$(uname)" == "Linux" ]]; }
 
+# fresh macOS needs Xcode CLI tools for git, python, etc.
+ensure_xcode_tools() {
+    if is_mac && ! xcode-select -p &>/dev/null; then
+        echo -e "${YELLOW}Installing Xcode Command Line Tools (needed for git, python)...${NC}"
+        echo -e "${YELLOW}A dialog may pop up — click 'Install' and wait for it to finish.${NC}"
+        xcode-select --install 2>/dev/null || true
+        # wait for install to complete
+        until xcode-select -p &>/dev/null; do
+            sleep 5
+        done
+        echo -e "${GREEN}Xcode tools installed.${NC}"
+    fi
+}
+
 # install dependencies automatically
 install_deps() {
     echo -e "${CYAN}Installing dependencies...${NC}"
     
     if is_mac; then
+        ensure_xcode_tools
+        
         # install Homebrew if missing
         if ! command -v brew &>/dev/null; then
-            echo "Installing Homebrew..."
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            echo -e "${CYAN}Installing Homebrew...${NC}"
+            NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
         fi
         
@@ -48,7 +64,7 @@ install_deps() {
     elif is_linux; then
         # Debian/Ubuntu
         if command -v apt-get &>/dev/null; then
-            if ! command -v python3 &>/dev/null; then
+            if ! command -v python3 &>/dev/null || ! python3 -m venv --help &>/dev/null; then
                 echo "Installing Python 3..."
                 sudo apt-get update
                 sudo apt-get install -y python3 python3-venv python3-pip

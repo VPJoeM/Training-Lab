@@ -4,16 +4,21 @@ Interactive training for GPU infrastructure support. Hands-on labs with real sce
 
 ## Quick Start
 
+One line — works on a fresh macOS or Linux laptop:
+
 ```bash
 git clone https://github.com/VPJoeM/Training-Lab.git && cd Training-Lab && ./start.sh
 ```
 
 Opens at http://localhost:8080 → Setup wizard guides you through configuration.
 
+> **Fresh Mac?** The script handles everything: Xcode CLI tools, Homebrew, Python, virtual environment, and pip packages. Just run the one-liner and follow any prompts. You might need to click "Install" on an Xcode dialog and enter your password for Homebrew.
+
 ## Prerequisites
 
 ### Auto-Installed
 The start script automatically installs these if missing:
+- **Xcode Command Line Tools** (macOS — needed for git and compilers)
 - **Python 3.10+** via Homebrew (macOS) or apt/dnf (Linux)
 - **Homebrew** (macOS only, if needed for Python)
 
