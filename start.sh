@@ -97,25 +97,46 @@ install_python() {
     fi
 }
 
-# install 1Password CLI if missing (needed for credential storage in toolkit scripts)
-ensure_onepassword_cli() {
+# install all the support tools we can auto-install
+install_support_tools() {
+    if ! is_mac; then
+        return
+    fi
+    
+    ensure_brew
+    
+    # bash 5+ (macOS ships 3.x which is ancient)
+    local bash_major
+    bash_major=$(bash -c 'echo ${BASH_VERSINFO[0]}' 2>/dev/null || echo "3")
+    if [ "$bash_major" -lt 5 ] 2>/dev/null; then
+        echo -e "${CYAN}Upgrading Bash (macOS ships 3.x, we need 5+)...${NC}"
+        brew install bash
+        echo -e "${GREEN}Bash upgraded.${NC}"
+    fi
+    
+    # 1Password CLI
     if ! command -v op &>/dev/null; then
         echo -e "${CYAN}Installing 1Password CLI...${NC}"
-        if is_mac; then
-            ensure_brew
-            brew install --cask 1password-cli
-        elif is_linux; then
-            if command -v apt-get &>/dev/null; then
-                curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg 2>/dev/null
-                echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/$(dpkg --print-architecture) stable main" | sudo tee /etc/apt/sources.list.d/1password.list >/dev/null
-                sudo apt-get update -qq && sudo apt-get install -y -qq 1password-cli
-            fi
-        fi
-        if command -v op &>/dev/null; then
-            echo -e "${GREEN}1Password CLI installed.${NC}"
-        else
-            echo -e "${YELLOW}Could not install 1Password CLI automatically. Install manually: brew install --cask 1password-cli${NC}"
-        fi
+        brew install --cask 1password-cli && echo -e "${GREEN}1Password CLI installed.${NC}" \
+            || echo -e "${YELLOW}1Password CLI install failed — install manually: brew install --cask 1password-cli${NC}"
+    fi
+    
+    # git (should come with Xcode tools but just in case)
+    if ! command -v git &>/dev/null; then
+        echo -e "${CYAN}Installing git...${NC}"
+        brew install git
+    fi
+    
+    # jq (used by various toolkit scripts)
+    if ! command -v jq &>/dev/null; then
+        echo -e "${CYAN}Installing jq...${NC}"
+        brew install jq
+    fi
+    
+    # curl (macOS has it but some stripped installs don't)
+    if ! command -v curl &>/dev/null; then
+        echo -e "${CYAN}Installing curl...${NC}"
+        brew install curl
     fi
 }
 
@@ -149,8 +170,8 @@ case "${1:-start}" in
         FOUND_VER=$("$PYTHON" -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
         echo -e "${GREEN}Using Python ${FOUND_VER}${NC} (${PYTHON})"
         
-        # install 1Password CLI if missing
-        ensure_onepassword_cli
+        # install support tools (bash 5+, 1password cli, jq, etc.)
+        install_support_tools
         
         # step 2: create or fix the venv
         if [ -d ".venv" ]; then
