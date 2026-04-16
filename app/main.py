@@ -279,12 +279,21 @@ async def module_page(request: Request, track_name: str, module_id: str):
     if module.get("quiz"):
         quiz_result = await get_quiz_result(track_name, module_id)
 
+    # figure out the next module for navigation
+    module_ids = [m["id"] for m in track["modules"]]
+    current_idx = module_ids.index(module_id) if module_id in module_ids else -1
+    next_module = None
+    if current_idx >= 0 and current_idx < len(module_ids) - 1:
+        nm = track["modules"][current_idx + 1]
+        next_module = {"id": nm["id"], "title": nm["title"]}
+
     return templates.TemplateResponse("module.html", {
         "request": request,
         "track": track,
         "tracks": tracks,
         "module": module,
         "quiz_result": quiz_result,
+        "next_module": next_module,
         "settings": settings,
     })
 
