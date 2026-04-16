@@ -32,7 +32,7 @@ Direct users to the [pricing page](https://lightning.ai/pricing) and [compute co
 3. Scroll to **"Receipt History"**
 4. Click **"Send Receipt"** on the right
 
-[Loom walkthrough](https://www.loom.com/share/a36b9f42e3954f6f98cd4677950761d2)
+https://www.loom.com/share/a36b9f42e3954f6f98cd4677950761d2
 
 ### Creating a Custom Invoice
 
@@ -42,8 +42,9 @@ Users automatically receive receipts, but some request a formal invoice for thei
 2. Create the invoice
 3. **Important:** Change the invoice status to "paid" after creating it
 
-[Loom: Create invoice](https://www.loom.com/share/14792dfa491e49c6b98c1767009beb9f)
-[Loom: Mark as paid](https://www.loom.com/share/f2fafb58e88f403dac675d3387ae7533)
+https://www.loom.com/share/14792dfa491e49c6b98c1767009beb9f
+
+https://www.loom.com/share/f2fafb58e88f403dac675d3387ae7533
 
 ### Processing a Refund
 
@@ -57,7 +58,7 @@ Refunds are based on how many credits the user has consumed, not the flat subscr
 
 **Self-serve:** Users can cancel their own subscription, but it only cancels at the **end of the current billing period** — they keep access until then.
 
-[Self-serve cancellation guide](https://www.loom.com/share/30258dc9bd3f47d8bbfb12c7f4e2f7fd)
+https://www.loom.com/share/30258dc9bd3f47d8bbfb12c7f4e2f7fd
 
 **When we need to step in:**
 
@@ -83,10 +84,10 @@ Manual cancellation:
 3. Set the new payment method as **"default"**
 4. Go to their subscription → Payment Method → select the default card → save
 
-[Loom walkthrough](https://www.loom.com/share/ab792169cf8940b2867777d819226fa3)
+https://www.loom.com/share/ab792169cf8940b2867777d819226fa3
 
 ## Managing Subscriptions (Self-Serve)
 
 Users can manage their own subscription in their Lightning account. Share this Loom if they need guidance:
 
-[How to manage your subscription](https://www.loom.com/share/6934d653f0fd47dfb4ab729fe7c891ef)
+https://www.loom.com/share/6934d653f0fd47dfb4ab729fe7c891ef

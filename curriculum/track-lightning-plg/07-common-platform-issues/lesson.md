@@ -28,7 +28,10 @@ Users frequently don't understand why their credits are disappearing:
 
 - **Idle studios still running** — Compute charges even when they're not coding
 - **Autosleep disabled** — Pro and Teams users can turn off autosleep, which means studios never stop running. Check if it's enabled. [Autosleep docs](https://lightning.ai/docs/overview/ai-studio/auto-sleep)
-- **Credits auto-reload enabled** — Many users don't know they have this enabled in their teamspace or org and get surprised by charges. Send them this Loom on how to toggle it off: [Auto-reload Loom](https://www.loom.com/share/61f5acb5abdf4bd589705f023e8e8ab2)
+- **Credits auto-reload enabled** — Many users don't know they have this enabled in their teamspace or org and get surprised by charges. Show them how to toggle it off:
+
+https://www.loom.com/share/61f5acb5abdf4bd589705f023e8e8ab2
+
 - **Machine switching** — Switching from CPU to GPU or between GPU types can trigger unexpected charges
 - **The monitoring CPU** — ~$0.43/hr runs alongside every GPU job
 - **Storage over 10GB** — Once you exceed 10GB, storage is billed by the second (same for all tiers). [Billing FAQ](https://lightning.ai/docs/overview/faq/billing)

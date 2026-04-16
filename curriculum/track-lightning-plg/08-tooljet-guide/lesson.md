@@ -72,21 +72,41 @@ Two main operations:
 - Click **"Permanently delete user"** in the top right
 - **This is irreversible** — confirm with the user first
 
-## Loom Resources
+## Video Walkthroughs
 
-Natalie Rand has recorded walkthroughs for most ToolJet operations. Reference these when you need a visual guide:
+Natalie Rand has recorded walkthroughs for most ToolJet operations. Watch them here — no need to leave the training lab.
 
-| Operation | Loom Link |
-|----------|-----------|
-| Phone verification | [Watch](https://www.loom.com/share/60cdbe172584497daa111a60ab8ab317) |
-| Verify identity (ban reason) | [Watch](https://www.loom.com/share/bf66503cb7904768a0ef0f3ab65154ce) |
-| Account with wrong email | [Watch](https://www.loom.com/share/e118b455a7dc4317b407b072f43b980f) |
-| Multiple accounts / credits | [Watch](https://www.loom.com/share/618e3941f79c4a61880e68de57a8f648) |
-| Delete an account | [Watch](https://www.loom.com/share/55ebe432315648c2beb72a191e5f732d) |
-| Suspicious activity review | [Watch](https://www.loom.com/share/53097c3de0684a0da81d8dd6c7566c57) |
-| Credit balances in ToolJet | [Watch](https://www.loom.com/share/831ab84107f04ac29d5c5f8f2db4d3c3) |
-| User wallet vs teamspace vs org | [Watch](https://www.loom.com/share/d8f0e28efaa04b1c97fd641998a9d3cf) |
-| Multiple accounts / which has credits | [Watch](https://www.loom.com/share/618e3941f79c4a61880e68de57a8f648) |
+### Phone Verification
+
+https://www.loom.com/share/60cdbe172584497daa111a60ab8ab317
+
+### Verify Identity (Ban Review)
+
+https://www.loom.com/share/bf66503cb7904768a0ef0f3ab65154ce
+
+### Account with Wrong Email
+
+https://www.loom.com/share/e118b455a7dc4317b407b072f43b980f
+
+### Multiple Accounts / Which Has Credits
+
+https://www.loom.com/share/618e3941f79c4a61880e68de57a8f648
+
+### Delete an Account
+
+https://www.loom.com/share/55ebe432315648c2beb72a191e5f732d
+
+### Suspicious Activity Review
+
+https://www.loom.com/share/53097c3de0684a0da81d8dd6c7566c57
+
+### Credit Balances in ToolJet
+
+https://www.loom.com/share/831ab84107f04ac29d5c5f8f2db4d3c3
+
+### User Wallet vs Teamspace vs Org
+
+https://www.loom.com/share/d8f0e28efaa04b1c97fd641998a9d3cf
 
 ## ToolJet vs Other Tools
 

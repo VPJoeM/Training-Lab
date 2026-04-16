@@ -40,6 +40,10 @@ Organization (Org)
 
 See [lightning.ai/pricing](https://lightning.ai/pricing) for current pricing.
 
+**Watch: How to enable academic pricing for a domain**
+
+https://www.loom.com/share/46855740168c447eb017008efcc7cac8
+
 > **Important:** Credits do not roll over. If a user only uses 4 of their 15 free credits, they'll get 4 back next cycle — not 15. Credits refresh on the 1st of each month.
 
 ### How Credits Work

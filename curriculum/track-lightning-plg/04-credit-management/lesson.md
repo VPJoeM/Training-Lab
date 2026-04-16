@@ -48,6 +48,18 @@ Scroll down to the **"Monthly Free Credits Check"** section:
 - Look at the `refresh_date` and `free_credits_enabled` columns
 - This tells you when their next refresh happens and if auto-refresh is active
 
+### Watch: Credit Balances in ToolJet
+
+https://www.loom.com/share/831ab84107f04ac29d5c5f8f2db4d3c3
+
+### Watch: User Wallet vs Teamspace vs Org
+
+https://www.loom.com/share/d8f0e28efaa04b1c97fd641998a9d3cf
+
+### Watch: Multiple Accounts / Which Has Credits
+
+https://www.loom.com/share/618e3941f79c4a61880e68de57a8f648
+
 ## Common Credit Scenarios
 
 ### "Where are my credits?"

@@ -144,6 +144,7 @@ def load_curriculum() -> dict:
                     extensions=["fenced_code", "tables", "toc"],
                 )
                 lesson_html = _process_safety_labels(lesson_html)
+                lesson_html = _embed_loom_videos(lesson_html)
                 logger.debug(f"  Loaded lesson: {module_id} ({len(lesson_md)} chars)")
             else:
                 logger.debug(f"  No lesson.md for {module_id}")
@@ -363,6 +364,7 @@ async def reference_page(request: Request, page_name: str):
             break
     html = markdown.markdown(content, extensions=["fenced_code", "tables", "toc"])
     html = _process_safety_labels(html)
+    html = _embed_loom_videos(html)
 
     tracks = load_curriculum()
     return templates.TemplateResponse("reference.html", {
@@ -1274,6 +1276,32 @@ async def debug_info():
 # helpers
 # ──────────────────────────────────────────
 import re as _re
+
+def _embed_loom_videos(html: str) -> str:
+    """turn Loom share links into embedded video iframes"""
+    # matches <a href="https://www.loom.com/share/XXXX">...</a> and bare URLs in <p> tags
+    def loom_iframe(video_id):
+        return (
+            f'<div class="loom-embed" style="position:relative;padding-bottom:56.25%;height:0;margin:1rem 0;">'
+            f'<iframe src="https://www.loom.com/embed/{video_id}?hide_share=true&hideEmbedTopBar=true" '
+            f'frameborder="0" allowfullscreen '
+            f'style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;">'
+            f'</iframe></div>'
+        )
+    # replace <a> tags linking to loom share URLs
+    html = _re.sub(
+        r'<a[^>]*href="https?://(?:www\.)?loom\.com/share/([a-zA-Z0-9]+)"[^>]*>[^<]*</a>',
+        lambda m: loom_iframe(m.group(1)),
+        html,
+    )
+    # replace bare loom URLs that ended up as text in a <p>
+    html = _re.sub(
+        r'(?<!["\'])https?://(?:www\.)?loom\.com/share/([a-zA-Z0-9]+)',
+        lambda m: loom_iframe(m.group(1)),
+        html,
+    )
+    return html
+
 
 def _process_safety_labels(html: str) -> str:
     """convert [SAFE:type] markers to styled badges after code blocks"""
