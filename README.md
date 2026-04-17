@@ -111,7 +111,7 @@ The start script automatically installs these if missing:
 - Enter your password when Homebrew asks for it
 
 **Port already in use**
-- The script auto-kills anything on port 8080, but if it still fails: `lsof -ti :8080 | xargs kill -9`
+- The script will ask if you want to use a different port or kill the existing process
 
 **Reset everything**
 ```bash

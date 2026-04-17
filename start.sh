@@ -140,11 +140,65 @@ install_support_tools() {
     fi
 }
 
-# kill anything on our port so we don't get "address in use"
-kill_port() {
-    if command -v lsof &>/dev/null; then
-        lsof -ti :"$PORT" 2>/dev/null | xargs kill -9 2>/dev/null || true
+# check if port is busy and handle it gracefully
+check_port() {
+    if ! command -v lsof &>/dev/null; then
+        return 0
     fi
+    
+    local pids
+    pids=$(lsof -ti :"$PORT" 2>/dev/null || true)
+    
+    if [ -z "$pids" ]; then
+        return 0
+    fi
+    
+    # check if it's our own server
+    if echo "$pids" | xargs ps -p 2>/dev/null | grep -q "uvicorn"; then
+        echo -e "${YELLOW}Training Lab already running on port ${PORT} — restarting...${NC}"
+        echo "$pids" | xargs kill -9 2>/dev/null || true
+        sleep 1
+        return 0
+    fi
+    
+    # something else is using the port
+    local process_info
+    process_info=$(lsof -i :"$PORT" -P -n 2>/dev/null | grep LISTEN | head -3)
+    echo -e "${YELLOW}Port ${PORT} is already in use:${NC}"
+    echo -e "${DIM}${process_info}${NC}"
+    echo ""
+    echo -e "  ${CYAN}1)${NC} Use a different port"
+    echo -e "  ${CYAN}2)${NC} Kill the process and use ${PORT}"
+    echo -e "  ${CYAN}3)${NC} Cancel"
+    echo ""
+    read -rp "  Select [1]: " choice
+    choice="${choice:-1}"
+    
+    case "$choice" in
+        1)
+            read -rp "  Enter port number: " new_port
+            if [[ "$new_port" =~ ^[0-9]+$ ]] && [ "$new_port" -gt 1024 ] && [ "$new_port" -lt 65535 ]; then
+                PORT="$new_port"
+                echo -e "${GREEN}Using port ${PORT}${NC}"
+            else
+                echo -e "${RED}Invalid port. Exiting.${NC}"
+                exit 1
+            fi
+            ;;
+        2)
+            echo "$pids" | xargs kill -9 2>/dev/null || true
+            sleep 1
+            echo -e "${GREEN}Port ${PORT} cleared.${NC}"
+            ;;
+        3)
+            echo "Cancelled."
+            exit 0
+            ;;
+        *)
+            echo -e "${RED}Invalid choice. Exiting.${NC}"
+            exit 1
+            ;;
+    esac
 }
 
 case "${1:-start}" in
@@ -222,8 +276,8 @@ case "${1:-start}" in
         # step 4: prep data directory
         mkdir -p data
         
-        # step 5: kill stale processes on our port
-        kill_port
+        # step 5: check if port is free
+        check_port
         
         # step 6: check if somehow already running after kill
         if curl -sf "http://localhost:${PORT}/health" &>/dev/null 2>&1; then
@@ -259,7 +313,6 @@ case "${1:-start}" in
         ;;
         
     stop)
-        kill_port
         if [ -f ".server.pid" ]; then
             PID=$(cat .server.pid)
             kill "$PID" 2>/dev/null || true
