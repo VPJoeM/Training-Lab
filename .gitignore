@@ -30,6 +30,7 @@ Thumbs.db
 # runtime
 .server.pid
 .playwright-mcp/
+skills-lock.json
 
 # local notes
 .chat_summary.md
