@@ -206,7 +206,20 @@ case "${1:-start}" in
         echo -e "${CYAN}${BOLD}GPU Support Training Lab${NC}"
         echo ""
         
-        # step 0: pull latest changes if this is a git repo
+        # step 0: check for outdated alias in shell config
+        SHELL_RC="$HOME/.zshrc"
+        [[ "$SHELL" != *"zsh"* ]] && SHELL_RC="$HOME/.bashrc"
+        if [ -f "$SHELL_RC" ] && grep -q "alias.*Training-Lab.*uvicorn\|alias.*Training-Lab.*xargs kill\|alias.*Training-Lab.*lsof" "$SHELL_RC" 2>/dev/null; then
+            echo -e "${YELLOW}Found an outdated Training Lab alias in $(basename "$SHELL_RC") — fixing...${NC}"
+            grep -v "alias.*Training-Lab.*uvicorn\|alias.*Training-Lab.*xargs kill\|alias.*Training-Lab.*lsof" "$SHELL_RC" > "${SHELL_RC}.tmp" && mv "${SHELL_RC}.tmp" "$SHELL_RC"
+            grep -v "# Training Lab.*kill" "$SHELL_RC" > "${SHELL_RC}.tmp" 2>/dev/null && mv "${SHELL_RC}.tmp" "$SHELL_RC"
+            echo "" >> "$SHELL_RC"
+            echo "# Training Lab — auto-updates and restarts" >> "$SHELL_RC"
+            echo "alias lab='cd ${SCRIPT_DIR} && ./start.sh'" >> "$SHELL_RC"
+            echo -e "${GREEN}Fixed. Run 'source ${SHELL_RC}' or open a new terminal to pick it up.${NC}"
+        fi
+        
+        # step 0b: pull latest changes if this is a git repo
         if [ -d ".git" ]; then
             echo -e "${CYAN}Checking for updates...${NC}"
             if git pull --quiet 2>/dev/null; then
