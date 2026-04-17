@@ -226,3 +226,186 @@ iframe {
 .example-output tr:nth-child(even) {
     background: rgba(0, 0, 0, 0.15);
 }
+
+/* ─── Light Mode ─── */
+body.light-mode {
+    background: #f8fafc !important;
+    color: #1e293b !important;
+}
+
+body.light-mode aside {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+
+body.light-mode main {
+    background: #f8fafc !important;
+}
+
+/* cards and content boxes */
+body.light-mode .bg-lab-dark {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+
+body.light-mode .bg-lab-darker {
+    background: #f8fafc !important;
+}
+
+/* text colors */
+body.light-mode .text-white {
+    color: #0f172a !important;
+}
+
+body.light-mode .text-gray-100,
+body.light-mode .text-gray-200,
+body.light-mode .text-gray-300 {
+    color: #334155 !important;
+}
+
+body.light-mode .text-gray-400 {
+    color: #64748b !important;
+}
+
+body.light-mode .text-gray-500,
+body.light-mode .text-gray-600 {
+    color: #94a3b8 !important;
+}
+
+/* prose (lesson content) */
+body.light-mode .prose {
+    color: #334155 !important;
+}
+
+body.light-mode .prose h1,
+body.light-mode .prose h2,
+body.light-mode .prose h3,
+body.light-mode .prose h4 {
+    color: #0f172a !important;
+}
+
+body.light-mode .prose strong {
+    color: #0f172a !important;
+}
+
+body.light-mode .prose code {
+    color: #7c3aed !important;
+    background: #f1f5f9 !important;
+}
+
+body.light-mode .prose pre {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.light-mode .prose pre code {
+    color: #e2e8f0 !important;
+    background: transparent !important;
+}
+
+body.light-mode .prose a {
+    color: #7c3aed !important;
+}
+
+body.light-mode .prose li {
+    color: #475569 !important;
+}
+
+body.light-mode .prose blockquote {
+    border-color: #8B5CF6 !important;
+    background: #f5f3ff !important;
+    color: #4c1d95 !important;
+}
+
+body.light-mode .prose blockquote p {
+    color: #4c1d95 !important;
+}
+
+/* tables */
+body.light-mode .prose table {
+    border-color: #e2e8f0 !important;
+}
+
+body.light-mode .prose th {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+    border-color: #e2e8f0 !important;
+}
+
+body.light-mode .prose td {
+    border-color: #e2e8f0 !important;
+    color: #334155 !important;
+}
+
+/* borders */
+body.light-mode .border-gray-800 {
+    border-color: #e2e8f0 !important;
+}
+
+body.light-mode .border-gray-700 {
+    border-color: #cbd5e1 !important;
+}
+
+/* backgrounds */
+body.light-mode .bg-gray-800 {
+    background: #f1f5f9 !important;
+}
+
+body.light-mode .bg-gray-900 {
+    background: #f1f5f9 !important;
+}
+
+body.light-mode .bg-gray-900\/50 {
+    background: rgba(241, 245, 249, 0.8) !important;
+}
+
+/* quiz options */
+body.light-mode .quiz-option {
+    border-color: #e2e8f0 !important;
+}
+
+body.light-mode .quiz-option:hover {
+    border-color: rgba(139, 92, 246, 0.3) !important;
+}
+
+/* sidebar nav */
+body.light-mode nav a {
+    color: #475569 !important;
+}
+
+body.light-mode nav a:hover {
+    color: #0f172a !important;
+    background: rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-mode nav .bg-lab-accent\/10 {
+    background: rgba(139, 92, 246, 0.08) !important;
+}
+
+/* scrollbar */
+body.light-mode ::-webkit-scrollbar-track {
+    background: #f8fafc;
+}
+
+body.light-mode ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+}
+
+body.light-mode ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* debug bar */
+body.light-mode .bg-violet-500\/10 {
+    background: rgba(139, 92, 246, 0.05) !important;
+}
+
+/* track cards on homepage */
+body.light-mode .hover\:border-lab-accent\/40:hover {
+    border-color: rgba(139, 92, 246, 0.4) !important;
+}
+
+/* loom embed hint */
+body.light-mode .loom-embed + p {
+    color: #94a3b8 !important;
+}

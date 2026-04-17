@@ -236,7 +236,8 @@
         {% endfor %}
     </div>
     {% else %}
-    <!-- no scenarios - just mark lesson complete -->
+    {% if not module.quiz %}
+    <!-- no scenarios and no quiz - manual completion -->
     <div class="bg-lab-dark rounded-xl border border-gray-800 p-8 mb-8">
         <div id="complete-btn">
             <button hx-post="/api/module/{{ track.name }}/{{ module.id }}/complete"
@@ -247,6 +248,7 @@
             </button>
         </div>
     </div>
+    {% endif %}
     {% endif %}
 
     <!-- script walkthroughs -->
