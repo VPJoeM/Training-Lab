@@ -40,7 +40,7 @@ Organization (Org)
 
 See [lightning.ai/pricing](https://lightning.ai/pricing) for current pricing.
 
-**Watch: How to enable academic pricing for a domain**
+**Watch: How to enable academic pricing for a domain** *(this uses ToolJet — covered in detail in [Module 8: ToolJet Guide](/track/lightning-plg/module/08-tooljet-guide))*
 
 https://www.loom.com/share/46855740168c447eb017008efcc7cac8
 

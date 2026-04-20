@@ -25,6 +25,9 @@ html {
 .prose pre {
     position: relative;
     border-radius: 0.5rem;
+    overflow-x: auto;
+    max-height: 600px;
+    overflow-y: auto;
 }
 
 .prose pre code {
