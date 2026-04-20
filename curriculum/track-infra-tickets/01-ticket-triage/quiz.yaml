@@ -1,0 +1,125 @@
+- question: "A ticket lands: 'ALERT: [idrac-6vb0fz3] [sensor] [System Board GPU22] A GPU is over 81°.' What do you do?"
+  options:
+    - "Contact the customer, confirm a maintenance window, then open a Jira for infra-ops"
+    - "Nothing — this is an automated alert, infra-ops handles it"
+    - "Escalate directly to the security team"
+    - "Reboot the node remotely"
+  correct: 0
+  explanation: "GPU temp alerts are CX's most common ticket. Your job is to contact the customer, get a maintenance window confirmed, then open Jira for infra-ops to action."
+
+- question: "A customer reports: 'My training job keeps crashing with NCCL errors on node gpu040190.' You check Plain and see a TT ticket on that node. What's your response?"
+  options:
+    - "Tell the customer to restart their training job"
+    - "Acknowledge the issue, let them know there's a known thermal issue being worked, and coordinate a maintenance window"
+    - "Ignore it — TT tickets aren't your responsibility"
+    - "Try to SSH into the node and fix the GPU yourself"
+  correct: 1
+  explanation: "Connect the dots — the TT ticket explains the NCCL crashes. Let the customer know, and coordinate a maintenance window so infra-ops can fix the hardware."
+
+- question: "A ticket reads: 'Add new SSH public key'. What do you do?"
+  options:
+    - "Forward to infra-ops"
+    - "Ask the customer to add it themselves"
+    - "Add the key using sshv — this is CX direct"
+    - "Create a Jira ticket and wait"
+  correct: 2
+  explanation: "SSH key management is CX direct work. Use sshv to add the key — no escalation needed."
+
+- question: "You get a ticket: 'DFW1 - gpu040360 - GPU26 - TT'. What's the CX workflow?"
+  options:
+    - "Close it — thermal throttle is infra-ops only"
+    - "Contact the customer, confirm a maintenance window, then open Jira for infra-ops"
+    - "Immediately reboot the node"
+    - "Email the DC team directly"
+  correct: 1
+  explanation: "TT tickets follow the same flow as temp alerts: contact customer → confirm maintenance window → open Jira."
+
+- question: "A ticket reads: 'Quick SEO Review for Your Website'. What do you do?"
+  options:
+    - "Forward to the marketing team"
+    - "Reply politely declining"
+    - "Close with a note — it's spam"
+    - "Escalate to management"
+  correct: 2
+  explanation: "SEO pitches, partnership spam, and solicitations are common. Close with a note and move on."
+
+- question: "You get a ticket: 'Slowdown accessing /data/ on node g0585'. What's the correct CX approach?"
+  options:
+    - "Acknowledge, ask which node(s) and when it started, check for known outages, then escalate to infra-ops with details"
+    - "Close the ticket — storage issues aren't CX"
+    - "Tell the customer to reboot the node"
+    - "SSH in and run disk diagnostics yourself"
+  correct: 0
+  explanation: "Storage slowdowns need triage. Gather the details, check for known issues, then escalate with full context."
+
+- question: "A customer reports 'nvidia-smi fails under srun'. What should CX do first?"
+  options:
+    - "Immediately escalate to infra-ops"
+    - "Tell the customer to reinstall drivers"
+    - "Login with sshv, check drivers, diagnose the issue — escalate only if no issue found"
+    - "Close the ticket — driver issues aren't CX"
+  correct: 2
+  explanation: "CX diagnoses first. Login with sshv, check nvidia-smi and driver versions. Only escalate after you've checked and can report what you found."
+
+- question: "A ticket says 'Critical Security Vulnerabilities Found'. What's your first move?"
+  options:
+    - "Share your infrastructure details to help the reporter"
+    - "Close it as spam"
+    - "Take it seriously, don't share internal details, escalate to the security team immediately"
+    - "Try to reproduce the vulnerability yourself"
+  correct: 2
+  explanation: "Security reports are serious. Never share internal details. Escalate to the security team and confirm receipt to the customer."
+
+- question: "A ticket says 'Node g0726 ready for maintenance'. What does CX do?"
+  options:
+    - "Nothing — it's an internal ticket"
+    - "Open a Jira ticket for infra-ops to action the maintenance"
+    - "Contact the customer to schedule the maintenance"
+    - "SSH into the node and start the maintenance"
+  correct: 1
+  explanation: "When a node is confirmed ready, CX opens Jira so infra-ops can execute. The customer coordination was already done."
+
+- question: "What's the most important thing to include when escalating a customer ticket to infra-ops?"
+  options:
+    - "Your opinion on what the fix should be"
+    - "The customer's billing history"
+    - "Context: node, timeframe, error messages, what you checked, related tickets, and confirmed maintenance window"
+    - "A screenshot of the ticket title"
+  correct: 2
+  explanation: "Quality escalations save infra-ops time. Include everything: node details, timeframe, errors, what you already checked, related tickets, and any confirmed maintenance window."
+
+- question: "You see a ticket: 'SSH Access Suddenly Failing with Permission Denied (Publickey)'. What do you do?"
+  options:
+    - "Tell the customer to generate new SSH keys"
+    - "Login with sshv to verify the problem, check if it's an LDAP or key rotation issue"
+    - "Escalate to infra-ops immediately"
+    - "Close the ticket — SSH issues are the customer's problem"
+  correct: 1
+  explanation: "CX diagnoses access issues first. Use sshv to check the node, verify LDAP status and key state before deciding next steps."
+
+- question: "You see an 'EMEA->US Handover' ticket in your queue. What is this?"
+  options:
+    - "A customer requesting to move their servers to the US"
+    - "An internal shift handoff — pick up any work tagged for your region"
+    - "A billing transfer between entities"
+    - "A VPN configuration request"
+  correct: 1
+  explanation: "Handover tickets are shift-change notes between regional teams. Review and pick up anything relevant to your region."
+
+- question: "A customer contacts you saying their GPU performance is degraded. You find no TT or alert tickets in Plain. What's your next step?"
+  options:
+    - "Tell them it's not an infrastructure issue"
+    - "Login with sshv, run nvidia-smi to check temps and utilization, check dmesg for errors"
+    - "Open a Jira immediately"
+    - "Ask them to wait 24 hours and see if it resolves"
+  correct: 1
+  explanation: "No existing tickets means you need to investigate. SSH in, check GPU health, temps, and system logs. Then you'll know whether to open a Jira or help the customer directly."
+
+- question: "Two customers on different nodes in the same rack both report issues within an hour. What should you suspect?"
+  options:
+    - "Coincidence — handle each ticket separately"
+    - "A rack-level issue (power, cooling, or network) — flag this pattern when escalating"
+    - "Both customers are running the same bad workload"
+    - "The monitoring system is broken"
+  correct: 1
+  explanation: "Multiple nodes in the same rack failing together points to rack-level infrastructure. Flag this pattern to infra-ops — it's more urgent than individual node issues."

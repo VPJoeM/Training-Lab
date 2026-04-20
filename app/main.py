@@ -108,6 +108,7 @@ def load_curriculum() -> dict:
         display_names = {
             "baremetal": "Bare Metal H100",
             "lightning-plg": "Lightning Platform (PLG)",
+            "infra-tickets": "Infra Ticket Training",
             "k8s": "Kubernetes",
         }
         modules = []

@@ -11,17 +11,22 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {% for tname, t in tracks.items() %}
-        {% set is_wip = 'lightning' not in tname %}
+        {% set is_wip = 'lightning' not in tname and 'infra-tickets' not in tname %}
         {% if not is_wip %}
         <a href="/track/{{ tname }}"
            class="block bg-lab-dark rounded-xl border border-gray-800 hover:border-lab-accent/40 transition-all duration-200 group p-6">
             <div class="flex items-start gap-4">
                 <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0
                      {% if 'lightning' in tname %}bg-violet-500/10 text-violet-400
+                     {% elif 'infra' in tname %}bg-amber-500/10 text-amber-400
                      {% else %}bg-gray-800 text-gray-400{% endif %}">
                     {% if 'lightning' in tname %}
                     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
+                    </svg>
+                    {% elif 'infra' in tname %}
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
                     </svg>
                     {% endif %}
                 </div>

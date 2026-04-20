@@ -68,7 +68,7 @@
 
                 {% if tracks is defined %}
                 {% for tname, t in tracks.items() %}
-                {% set is_wip = 'lightning' not in tname %}
+                {% set is_wip = 'lightning' not in tname and 'infra-tickets' not in tname %}
                 <div class="mb-4">
                     {% if is_wip %}
                     <div class="px-3 py-1.5 text-xs uppercase tracking-wider text-gray-600 flex items-center gap-2">
