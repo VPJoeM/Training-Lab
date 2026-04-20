@@ -48,6 +48,27 @@ DFW1 - gpu040360 - Northstar AI - GPU26 - TT
 2. Confirm a maintenance window that works for them
 3. Once confirmed, open a Jira ticket for infra-ops with the maintenance window details
 4. Update the Plain ticket with the Jira link
+5. After GPU replacement: run DCGMI r3+ via node-toolkit to validate the new hardware before returning the node
+
+**Option A — Node Toolkit (preferred):**
+
+```bash
+./scripts/sshv/start-node-toolkit.sh
+# → Main Menu option 14 (Log Collection) → option 11 (Run DCGMI Diagnostics)
+# → Select level 3 or above for post-replacement validation
+```
+
+**Option B — One-liner snippet (run directly on the node):**
+
+This installs DCGM if needed, kills GPU processes, stops conflicting services, and runs L4 in a screen session:
+
+```bash
+if ! dpkg -l | grep -q cuda-keyring; then echo "NVIDIA keyring not found, installing..." && wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu$(lsb_release -rs | tr -d '.')/x86_64/cuda-keyring_1.1-1_all.deb && sudo dpkg -i cuda-keyring_1.1-1_all.deb && sudo apt-get update && echo "NVIDIA keyring installed"; else echo "NVIDIA keyring already installed"; fi && CUDA_VERSION=$(nvidia-smi | sed -E -n 's/.*CUDA Version: ([0-9]+)[.].*/\1/p') && sudo apt-get install -y --install-recommends screen datacenter-gpu-manager-4-cuda${CUDA_VERSION} && echo "Checking for running processes using GPUs..." && RUNNING_PROCESSES=$(nvidia-smi --query-compute-apps=pid,process_name,used_memory --format=csv,noheader) && if [ -n "$RUNNING_PROCESSES" ]; then echo "Found running GPU processes:" && echo "$RUNNING_PROCESSES" && read -p "Do you want to kill these processes? (y/n) (Answering 'n' will exit the script): " KILL_CHOICE && if [ "$KILL_CHOICE" = "y" ]; then echo "Killing GPU processes..." && nvidia-smi --query-compute-apps=pid --format=csv,noheader | xargs -r kill -9 && echo "GPU processes terminated."; else echo "You chose not to kill GPU processes. Exiting for safety." && exit 1; fi; else echo "No GPU processes found."; fi && echo "Checking service status..." && RUNNING_SERVICES=() && echo "Checking for GPU services..." && for SVC in $(systemctl list-units --type=service --all | grep -E 'gpu' | awk '{print $1}' | sed 's/\.service$//'); do if [[ "$SVC" != fake-* ]]; then if systemctl is-active --quiet $SVC; then echo "$SVC service is running" && RUNNING_SERVICES+=("$SVC"); fi; fi; done && echo "Checking for Kubernetes services..." && for SVC in $(systemctl list-units --type=service --all | grep -E 'kube|containerd|docker' | awk '{print $1}' | sed 's/\.service$//'); do if [[ "$SVC" != fake-* ]]; then if systemctl is-active --quiet $SVC; then echo "$SVC service is running" && RUNNING_SERVICES+=("$SVC"); fi; fi; done && if [ ${#RUNNING_SERVICES[@]} -gt 0 ]; then read -p "Do you want to stop these services? (y/n) (Answering 'n' will exit the script): " STOP_SERVICES && if [ "$STOP_SERVICES" = "y" ]; then for SERVICE in "${RUNNING_SERVICES[@]}"; do echo "Stopping $SERVICE..." && sudo systemctl stop $SERVICE && echo "$SERVICE stopped"; done; else echo "You chose not to stop running services. Exiting for safety." && exit 1; fi; else echo "No relevant services are running."; fi && screen -dmS dcgm_stress_test bash -c 'dcgmi diag -r 4 --verbose | tee dcgm_stress.log; echo -e "\nTest complete. Output saved to dcgm_stress.log. Shell will remain open."; exec bash' && echo "Started DCGM stress test in screen session 'dcgm_stress_test'"
+```
+
+The snippet handles everything: DCGM install, CUDA version detection, GPU process cleanup, service stops, and runs L4 in a detached screen session. Results go to `dcgm_stress.log`. Reattach with `screen -r dcgm_stress_test`.
+
+See the [Bare Metal GPU Diagnostics module](../track-baremetal/03-gpu-diagnostics/lesson.md) for the full breakdown of DCGM levels.
 
 This is bread-and-butter CX work. You're the bridge between the customer and infra-ops.
 

@@ -128,7 +128,7 @@
   options:
     - "Just confirm the node is pingable and close it"
     - "Ask the customer to test their workload"
-    - "Request infra-ops run DCGMI diagnostics level 3 or above to validate the replacement GPU"
+    - "Run DCGMI diagnostics level 3 or above via node-toolkit to validate the replacement GPU"
     - "Run nvidia-smi to confirm the GPU shows up"
   correct: 2
-  explanation: "After a GPU replacement, nvidia-smi only confirms the GPU is visible — not that it's healthy. DCGMI r3+ runs stress tests on compute, memory, and PCIe to validate the new hardware before returning it to the customer."
+  explanation: "After a GPU replacement, nvidia-smi only confirms the GPU is visible — not that it's healthy. CX runs DCGMI r3+ via node-toolkit to stress test compute, memory, and PCIe before returning the node to the customer."
