@@ -1,11 +1,11 @@
 - question: "A ticket lands: 'ALERT: [idrac-6vb0fz3] [sensor] [System Board GPU22] A GPU is over 81°.' What do you do?"
   options:
-    - "Contact the customer, confirm a maintenance window, then open a Jira for infra-ops"
-    - "Nothing — this is an automated alert, infra-ops handles it"
+    - "Contact the customer, confirm a maintenance window, then open a Jira for DC Ops"
+    - "Nothing — this is an automated alert, DC Ops handles it"
     - "Escalate directly to the security team"
     - "Reboot the node remotely"
   correct: 0
-  explanation: "GPU temp alerts are CX's most common ticket. Your job is to contact the customer, get a maintenance window confirmed, then open Jira for infra-ops to action."
+  explanation: "GPU temp alerts are CX's most common ticket. Your job is to contact the customer, get a maintenance window confirmed, then open Jira for DC Ops to action."
 
 - question: "A customer reports: 'My training job keeps crashing with NCCL errors on node gpu040190.' You check Plain and see a TT ticket on that node. What's your response?"
   options:
@@ -14,11 +14,11 @@
     - "Ignore it — TT tickets aren't your responsibility"
     - "Try to SSH into the node and fix the GPU yourself"
   correct: 1
-  explanation: "Connect the dots — the TT ticket explains the NCCL crashes. Let the customer know, and coordinate a maintenance window so infra-ops can fix the hardware."
+  explanation: "Connect the dots — the TT ticket explains the NCCL crashes. Let the customer know, and coordinate a maintenance window so DC Ops can fix the hardware."
 
 - question: "A ticket reads: 'Add new SSH public key'. What do you do?"
   options:
-    - "Forward to infra-ops"
+    - "Forward to DC Ops"
     - "Ask the customer to add it themselves"
     - "Add the key using sshv — this is CX direct"
     - "Create a Jira ticket and wait"
@@ -27,12 +27,12 @@
 
 - question: "You get a ticket: 'DFW1 - gpu040360 - GPU26 - TT'. What's the CX workflow?"
   options:
-    - "Close it — thermal throttle is infra-ops only"
-    - "Contact the customer, confirm a maintenance window, then open Jira for infra-ops"
+    - "Close it — thermal throttle is DC Ops only"
+    - "Contact the customer, confirm a maintenance window, then open Jira for DC Ops"
     - "Immediately reboot the node"
     - "Email the DC team directly"
   correct: 1
-  explanation: "TT tickets follow the same flow as temp alerts: contact customer → confirm maintenance window → open Jira."
+  explanation: "TT tickets follow the same flow as temp alerts: contact customer → confirm maintenance window → open Jira for DC Ops."
 
 - question: "A ticket reads: 'Quick SEO Review for Your Website'. What do you do?"
   options:
@@ -73,20 +73,20 @@
 - question: "A ticket says 'Node g0726 ready for maintenance'. What does CX do?"
   options:
     - "Nothing — it's an internal ticket"
-    - "Open a Jira ticket for infra-ops to action the maintenance"
+    - "Open a Jira ticket for DC Ops to action the maintenance"
     - "Contact the customer to schedule the maintenance"
     - "SSH into the node and start the maintenance"
   correct: 1
-  explanation: "When a node is confirmed ready, CX opens Jira so infra-ops can execute. The customer coordination was already done."
+  explanation: "When a node is confirmed ready, CX opens Jira so DC Ops can execute. The customer coordination was already done."
 
-- question: "What's the most important thing to include when escalating a customer ticket to infra-ops?"
+- question: "What's the most important thing to include when escalating a customer ticket?"
   options:
     - "Your opinion on what the fix should be"
     - "The customer's billing history"
     - "Context: node, timeframe, error messages, what you checked, related tickets, and confirmed maintenance window"
     - "A screenshot of the ticket title"
   correct: 2
-  explanation: "Quality escalations save infra-ops time. Include everything: node details, timeframe, errors, what you already checked, related tickets, and any confirmed maintenance window."
+  explanation: "Quality escalations save time. Include everything: node details, timeframe, errors, what you already checked, related tickets, and any confirmed maintenance window."
 
 - question: "You see an 'EMEA->US Handover' ticket in your queue. What is this?"
   options:
@@ -101,7 +101,7 @@
   options:
     - "Tell the customer to generate new SSH keys"
     - "Login with sshv to verify the problem, check if it's an LDAP or key rotation issue"
-    - "Escalate to infra-ops immediately"
+    - "Escalate to DC Ops immediately"
     - "Close the ticket — SSH issues are the customer's problem"
   correct: 1
   explanation: "CX diagnoses access issues first. Use sshv to check the node, verify LDAP status and key state before deciding next steps."
@@ -122,9 +122,9 @@
     - "Both customers are running the same bad workload"
     - "The monitoring system is broken"
   correct: 1
-  explanation: "Multiple nodes in the same rack failing together points to rack-level infrastructure. Flag this pattern to infra-ops — it's more urgent than individual node issues."
+  explanation: "Multiple nodes in the same rack failing together points to rack-level infrastructure. Flag this pattern to DC Ops — it's more urgent than individual node issues."
 
-- question: "Infra-ops replaced a GPU after a thermal throttle ticket. What should you request before closing the ticket and returning the node to the customer?"
+- question: "DC Ops replaced a GPU after a thermal throttle ticket. What should you do before closing the ticket and returning the node to the customer?"
   options:
     - "Just confirm the node is pingable and close it"
     - "Ask the customer to test their workload"

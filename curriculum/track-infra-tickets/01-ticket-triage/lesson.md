@@ -7,7 +7,7 @@ Built from **750+ real Plain tickets**. This module teaches you the CX workflow 
 CX doesn't just forward tickets. For most infra tickets, you're the one who:
 
 - **Contacts the customer** to confirm maintenance windows
-- **Opens Jira tickets** for infra-ops once the window is confirmed
+- **Opens Jira tickets** for DC Ops once the window is confirmed
 - **Diagnoses first** using tools like `sshv` before escalating
 - **Closes spam** with a note
 
@@ -17,11 +17,11 @@ Here's what the queue actually looks like:
 
 | Category | % of Tickets | CX Action |
 |----------|-------------|-----------|
-| **Automated Alerts (GPU temp)** | ~60% | Contact customer, confirm maintenance window, open Jira |
-| **GPU Thermal Throttle (TT)** | ~15% | Contact customer, confirm maintenance window, open Jira |
-| **Software/Image Issues** | ~8% | Diagnose first (sshv, check drivers), escalate if needed |
-| **Downtime/Maintenance** | ~5% | Coordinate with customer, open Jira |
-| **Node Unreachable** | ~4% | Contact customer, coordinate, open Jira |
+| **Automated Alerts (GPU temp)** | ~60% | Contact customer, confirm maintenance window, open Jira for DC Ops |
+| **GPU Thermal Throttle (TT)** | ~15% | Contact customer, confirm maintenance window, open Jira for DC Ops |
+| **Software/Image Issues** | ~8% | Diagnose first (sshv, check drivers), escalate to infra-ops if needed |
+| **Downtime/Maintenance** | ~5% | Coordinate with customer, open Jira for DC Ops |
+| **Node Unreachable** | ~4% | Contact customer, coordinate, open Jira for DC Ops |
 | **User Management** | ~3% | Handle directly (sshv, key additions) |
 | **Billing/Onboarding** | ~3% | Handle directly |
 | **Network/IB** | ~2% | Diagnose, escalate with context |
@@ -46,7 +46,7 @@ DFW1 - gpu040360 - Northstar AI - GPU26 - TT
 
 1. Contact the customer
 2. Confirm a maintenance window that works for them
-3. Once confirmed, open a Jira ticket for infra-ops with the maintenance window details
+3. Once confirmed, open a Jira ticket for DC Ops with the maintenance window details
 4. Update the Plain ticket with the Jira link
 5. After GPU replacement: run DCGMI r3+ via node-toolkit to validate the new hardware before returning the node
 
@@ -70,7 +70,7 @@ The snippet handles everything: DCGM install, CUDA version detection, GPU proces
 
 See the [Bare Metal GPU Diagnostics module](../track-baremetal/03-gpu-diagnostics/lesson.md) for the full breakdown of DCGM levels.
 
-This is bread-and-butter CX work. You're the bridge between the customer and infra-ops.
+This is bread-and-butter CX work. You're the bridge between the customer and DC Ops.
 
 ### User Management (SSH Keys, Access, Passwords)
 
@@ -152,7 +152,7 @@ Real examples:
 **Your workflow:**
 
 1. For customer-requested downtime: confirm details and window
-2. For "ready for maintenance" tickets: open Jira for infra-ops
+2. For "ready for maintenance" tickets: open Jira for DC Ops
 3. Track completion and update the customer
 
 ### Node Down / Unreachable
@@ -165,7 +165,7 @@ Real examples:
 **Your workflow:**
 
 1. Contact the customer to let them know you're aware
-2. Coordinate with infra-ops
+2. Coordinate with DC Ops
 3. Open Jira with node details
 4. Keep the customer updated on progress
 
