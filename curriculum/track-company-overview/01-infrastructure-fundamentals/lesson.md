@@ -44,7 +44,7 @@ Every watt a chip consumes becomes heat. An H100 at 700W = 700W of heat, constan
 
 **PDU redundancy:** Each rack has two PDUs (A-feed and B-feed) from separate power circuits. Each server has two power supplies — one per feed. If an entire circuit fails, every server stays up on the other feed. When you see "PSU issues" in tickets, this is why the node usually stays running.
 
-**Cooling:** Our facilities are **air-cooled**. Massive CRAC/CRAH units push cold air through raised floors or hot/cold aisle containment. At the power densities GPU racks pull (80-100 kW), airflow management is critical — blocked vents or failed fans lead directly to thermal throttle tickets.
+**Cooling:** Most of our facilities use **liquid cooling** — cold plates sitting directly on GPU chips with chilled water flowing through. Water conducts heat ~25x better than air. A CDU (Cooling Distribution Unit) per rack manages flow rate and temperature.
 
 **PUE** (Power Usage Effectiveness) = total facility power / IT equipment power. Perfect = 1.0 (impossible). Every tenth of a point saves millions per year.
 
