@@ -111,6 +111,7 @@ def load_curriculum() -> dict:
             "company-overview": "Company Overview",
             "infra-tickets": "Infra Ticket Training",
             "k8s": "Kubernetes",
+            "build-on-lightning": "Build on Lightning",
         }
         modules = []
 

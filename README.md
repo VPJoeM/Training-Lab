@@ -91,6 +91,10 @@ Each module has a lesson, embedded Loom video walkthroughs, and a 5-question kno
 
 Infrastructure training with hands-on labs. Currently in development.
 
+### Build on Lightning — Capstone
+
+Final project that closes any track. Pick a problem, write it up using the Value Framework + 1:3:1 Decision-Making Process, build it on the platform, and present a 15-minute walkthrough to the team. Project-based — no quiz. Discipline of the frameworks is what's being trained, not the ambition of the build.
+
 ## Commands
 
 ```bash
