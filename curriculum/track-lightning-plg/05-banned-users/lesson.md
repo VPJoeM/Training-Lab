@@ -23,9 +23,9 @@ Navigate to [ToolJet](https://tooljet.lightning.ai/applications/7b6a09f5-f91a-44
 
 | Ban Reason | What To Do |
 |-----------|-----------|
-| Crypto mining detected | Use `#suspicious-activity`. Offer data deletion only. |
-| Pornography / inappropriate content | Use `#suspicious-activity`. Offer data deletion only. |
-| Torrenting | Use `#suspicious-activity`. Offer data deletion only. |
+| Crypto mining detected | Use `!suspicious-activity`. Offer data deletion only. |
+| Pornography / inappropriate content | Use `!suspicious-activity`. Offer data deletion only. |
+| Torrenting | Use `!suspicious-activity`. Offer data deletion only. |
 | Sanctioned country (hard block) | Cannot unban. Use the `hard-ban` Crisp shortcut (see below). |
 
 ### Complex Bans
@@ -100,7 +100,7 @@ Users from these countries **can** be manually verified and unbanned. Ask for Li
 1. **Look up the user in ToolJet** — check ban reason and status
 2. **Determine ban type** — soft ban or hard ban?
 3. **For soft bans**: Ask for identity verification, then unban
-4. **For hard bans**: Send `#suspicious-activity` shortcut. Offer data deletion.
+4. **For hard bans**: Send `!suspicious-activity` shortcut. Offer data deletion.
 5. **For country bans**: Check if it's hard or soft blocked
 
 ### False Positive Trends

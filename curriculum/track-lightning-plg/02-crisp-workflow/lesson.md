@@ -52,8 +52,8 @@ These are the pre-built responses in Crisp. Use them — they're consistent and 
 
 | Shortcut | When to Use |
 |----------|------------|
-| `#phone-verified` | After verifying someone's phone number on ToolJet |
-| `#account-verified` | After verifying/unbanning an account |
+| `!phone-verified` | After verifying someone's phone number on ToolJet |
+| `!account-verified` | After verifying/unbanning an account |
 | `#need-to-verify-identity` | Ban reason says "manually banned before verification" — ask for LinkedIn/Scholar/student ID |
 | `#studio-name` | User reports an issue but didn't tell us which studio |
 | `#studio-stuck` | Studio is stuck loading or unresponsive |
@@ -62,7 +62,7 @@ These are the pre-built responses in Crisp. Use them — they're consistent and 
 | `#multiple-accounts` | User has multiple accounts — credits are in a different one |
 | `#how-do-credits-work` | User confused about credit replenishment rules |
 | `#delete-account` | After permanently deleting an account on ToolJet |
-| `#suspicious-activity` | Account banned for mining, porn, torrenting |
+| `!suspicious-activity` | Account banned for mining, porn, torrenting |
 | `#product-question` | General product questions that don't fit other categories |
 
 ## Practical Tips

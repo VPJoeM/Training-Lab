@@ -62,7 +62,7 @@ https://www.loom.com/share/e118b455a7dc4317b407b072f43b980f
 | "manually banned before verification" | Domain or username flagged in scans | Ask for identity verification (LinkedIn/Scholar/ID), then unban if legit |
 | Temp email domain | They used a disposable email | Ask for a real email, or verify identity |
 | Completed multiple quests in < 2 min | Automated behavior detection | Verify identity first, then unban if legit |
-| Crypto mining / torrenting / inappropriate content | Nefarious activity | **Do not unban.** Use `#suspicious-activity` shortcut |
+| Crypto mining / torrenting / inappropriate content | Nefarious activity | **Do not unban.** Use `!suspicious-activity` shortcut |
 | Country ban | Sanctioned or high-risk country | See Module 05 for the country lists |
 | Complex GuardDuty errors | AWS-level detection of suspicious DNS/activity | Escalate to engineering with the full error |
 

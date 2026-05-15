@@ -10,7 +10,7 @@
 - question: "A user banned for 'crypto mining' asks to be unbanned, saying it was a mistake. What do you do?"
   options:
     - "Ask for identity verification and unban"
-    - "Do not unban — use #suspicious-activity shortcut, offer data deletion"
+    - "Do not unban — use !suspicious-activity shortcut, offer data deletion"
     - "Escalate to engineering for review"
     - "Unban with a warning"
   correct: 1

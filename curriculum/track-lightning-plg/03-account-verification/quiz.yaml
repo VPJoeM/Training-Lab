@@ -38,7 +38,7 @@
   options:
     - "Unban them after verifying their identity"
     - "Ask an engineer to review"
-    - "Do not unban — use #suspicious-activity shortcut"
+    - "Do not unban — use !suspicious-activity shortcut"
     - "Delete the account and tell them to create a new one"
   correct: 2
   explanation: "Crypto mining, torrenting, and inappropriate content are hard bans. We do not unban. Offer data deletion if requested."
