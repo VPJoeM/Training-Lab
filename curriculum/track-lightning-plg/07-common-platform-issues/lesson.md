@@ -73,6 +73,26 @@ Common reasons someone might need impersonation:
 
 If you think peeking into an account would solve the issue, let Natalie know and she'll take a look.
 
+## Storage Billing Discrepancy
+
+Sometimes users report being billed for way more storage than they're actually using. For example, Activity page shows 123 GB but `du -sh /teamspace` shows 24 GB.
+
+**What's happening:** The user likely deleted a bunch of files but storage billing is calculated daily. They were legitimately charged for the storage while it existed, but now the numbers look wrong because the files are gone.
+
+### How to Handle It
+
+1. **Ask the user when they deleted the files** — you need to know when they went from high usage to low usage
+2. **Escalate to Natalie Rand for impersonation** — she'll log in as the user, export the teamspace daily storage charges, and identify the overcharge window
+3. **Refund credits** for the period after they deleted the files (if billing continued at the old rate)
+
+> **You cannot do this yourself.** Impersonation is required to pull the daily storage charge breakdown. Flag Natalie with the user's email, the storage discrepancy (what Activity shows vs what's actually on disk), and when the user says they deleted files.
+
+### Quick Checks Before Escalating
+
+- Ask the user to run `du -sh /teamspace` to confirm current actual usage
+- Ask if they've checked for deleted-but-open files: `lsof | grep deleted`
+- Check which teamspace the charges are hitting in ToolJet
+
 ## Working with GitHub in Studios
 
 Some users want to connect their GitHub repos to their studio. Point them to the [Discord guide](https://discord.com/channels/1077906959069626439/1267308626398412830/1267471909856088112).
