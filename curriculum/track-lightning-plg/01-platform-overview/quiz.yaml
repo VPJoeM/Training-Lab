@@ -34,6 +34,15 @@
   correct: 1
   explanation: "Lightning only replenishes credits equal to what the user consumed. Use 4, get 4 back."
 
+- question: "A user asks 'what does 30M free tokens mean?' What are they referring to?"
+  options:
+    - "Studio compute credits"
+    - "The Lightning AI inference API — free hosted LLM calls"
+    - "Storage allocation"
+    - "Free GPU hours"
+  correct: 1
+  explanation: "30M free tokens/month is for the inference API (hosted LLM calls like Llama, DeepSeek). This is separate from credits, which are for compute (Studios/GPUs)."
+
 - question: "Where do PLG customer support tickets come in?"
   options:
     - "Slack #customer-support-plg channel"

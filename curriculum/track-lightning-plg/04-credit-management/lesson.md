@@ -81,12 +81,20 @@ https://www.loom.com/share/618e3941f79c4a61880e68de57a8f648
 2. Check if they have **idle studios running** — compute charges even when they're not actively coding
 3. Help them understand [compute costs](https://lightning.ai/pricing#compute) — prices are shown in the machine selection menu
 
-## When Users Want Credits Back
+### "My credits didn't refresh"
+
+If a user's monthly top-up didn't happen and there's no data showing why (no usage anomaly, no multi-account issue):
+
+- **Add 15 credits manually via ToolJet** — this is standard practice for missing monthly top-ups
+- No need to escalate for this, just add them and let the user know
+
+### When Users Want Credits Back
 
 If a user claims they were incorrectly charged or want a goodwill credit:
 
 - Small amounts (under 5 credits): Use your judgment, add them via ToolJet
 - Larger amounts: Check with Natalie Rand or the team lead before adding
+- Missing monthly top-up with no clear cause: Add 15 credits — it's a known edge case
 - Refunds for paid plans: That's a Stripe operation (see Module 06)
 
 <!-- crisp-shortcuts:start (auto-generated, do not edit) -->

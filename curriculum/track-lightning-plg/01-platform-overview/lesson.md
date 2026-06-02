@@ -90,6 +90,27 @@ When you log in, pay attention to:
 - How to create a **new studio** and pick a machine type
 - The **Drive** — where persistent files are stored
 
+### Lightning AI Inference API
+
+Lightning AI also offers a **hosted inference API** — users can call LLMs (Llama, DeepSeek, etc.) through our API without running their own infrastructure.
+
+**Free tier:** Every account gets **30 million free tokens per month**. After that, token usage is billed.
+
+**How users access it:**
+
+1. Go to [lightning.ai](https://lightning.ai) and navigate to the **Inference / Models** section
+2. Pick a model
+3. Grab their API key from account settings
+4. Make API calls — the API is **OpenAI-compatible**, so users can use the OpenAI SDK by pointing it at our endpoint
+
+**Common support questions:**
+
+- **"What does 30M free tokens mean?"** — It's the inference API, not Studios/GPUs. Each API call to a hosted model consumes tokens. 30M tokens/month is the free allowance.
+- **"I ran out of tokens"** — Check if they've been making a lot of API calls. Tokens reset monthly.
+- **"How is this different from credits?"** — Credits are for **compute** (Studios, GPUs). Tokens are for the **inference API** (calling hosted models). They're separate systems.
+
+> **Key distinction for support:** Credits ≠ tokens. Don't confuse them. A user asking about tokens is talking about the inference API, not studio compute credits.
+
 ## Support Tools Overview
 
 | Tool | What It Does | Who Has Access |
