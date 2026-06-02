@@ -75,6 +75,32 @@ https://www.loom.com/share/618e3941f79c4a61880e68de57a8f648
 2. Check if someone else spent their credits (transfer scenario above)
 3. Point them to the [billing FAQ](https://lightning.ai/docs/overview/faq/billing)
 
+### "I created a second account and my credits are missing"
+
+This comes up with academic pricing — user creates a new account with their `.edu` email for the discount, then can't find their credits from their original account.
+
+**What's actually happening:**
+
+- They have **two accounts** (e.g., one via GitHub, one via Magic Link with their `.edu` email)
+- Credits live in the **Pro account's personal org**, not the new one
+- Credits may be "unallocated" — sitting in the personal org but not assigned to any teamspace
+
+**How to fix it:**
+
+1. Check both accounts in ToolJet — find which one has the Pro subscription and the credits
+2. Tell the user their credits are in the Pro account and are "unallocated"
+3. Walk them through transferring: click on credits → "Add Credits" → "Transfer Credits" → pick the teamspace from the dropdown
+
+**Moving studios between accounts:**
+
+Users can't directly move studios between accounts. The workaround:
+
+1. Invite the second account as a **member** of the teamspace that has the studio
+2. **Share** the studio with that account
+3. The second account can then **clone** the studio into a different teamspace
+
+> **If you can't figure out which account has the credits**, escalate to Natalie Rand for impersonation. She can see the full picture across both accounts.
+
 ### "My credits are draining too fast"
 
 1. Ask what machine type they're running — GPU machines cost more
@@ -83,10 +109,11 @@ https://www.loom.com/share/618e3941f79c4a61880e68de57a8f648
 
 ### "My credits didn't refresh"
 
-If a user's monthly top-up didn't happen and there's no data showing why (no usage anomaly, no multi-account issue):
+If a user's monthly top-up didn't happen and there's no data showing why — i.e. you look them up in ToolJet and **nothing comes back / the balance and refresh fields are blank**, and there's no usage anomaly or multi-account issue to explain it:
 
-- **Add 15 credits manually via ToolJet** — this is standard practice for missing monthly top-ups
-- No need to escalate for this, just add them and let the user know
+- **Add 15 credits manually via ToolJet** — this is standard practice for a missing monthly top-up
+- The "no data shown" case is the tell: if the platform has no record of the top-up happening, just grant the 15 and move on
+- No need to escalate for this, just add them and let the user know (canned reply: `!credits-added`)
 
 ### When Users Want Credits Back
 
