@@ -16,6 +16,7 @@ Navigate to [ToolJet](https://tooljet.lightning.ai/applications/7b6a09f5-f91a-44
 |-----------|--------------|-----------|
 | "manually banned before verification" | Domain or username flagged | Ask for identity (LinkedIn/Scholar/Student ID). If legit, unban. |
 | Domain name flagged | Used a temp email or unusual domain | Ask for a real email or verify identity |
+| Attempted too many phone numbers | Got stuck in phone verification and retried too many times — system auto-flagged them | Verify their account and phone number. Use the `!attempting-multiple-phones` shortcut. **This is NOT fraud** — they just hit a retry limit. |
 | Completed quests too fast | Auto-detected as potential bot (old threshold was 5 min, now 2 min) | Verify identity, then unban if legit |
 | Soft-blocked country | User is in a high-crypto-abuse country | Verify identity, then unban |
 
