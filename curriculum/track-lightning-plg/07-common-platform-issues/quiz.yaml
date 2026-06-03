@@ -69,3 +69,30 @@
     - "Storage is free for all tiers"
   correct: 1
   explanation: "Storage over 10GB is billed at $0.10/GB/month, calculated daily. This is the same for all tiers. Data connections to external sources (S3, GCS) are not billed."
+
+- question: "What is the total storage limit for a Free tier user?"
+  options:
+    - "10 GB"
+    - "50 GB"
+    - "200 GB"
+    - "Unlimited"
+  correct: 1
+  explanation: "Free tier has a 50 GB total storage limit. Pro gets 200 GB, Teams gets 2 TB, Enterprise gets unlimited. Only the first 10 GB is free across all tiers."
+
+- question: "A user wants cheaper GPU access and can handle occasional interruptions. What should you suggest?"
+  options:
+    - "Wait for a sale"
+    - "Interruptible machines — 50-80% cheaper with a 2-minute shutdown warning"
+    - "Switch to CPU only"
+    - "Use a different cloud provider"
+  correct: 1
+  explanation: "Interruptible machines cost 50-80% less. Cloud providers give a 2-minute warning before shutdown. Requires a paid tier. Great for checkpointed training."
+
+- question: "When duplicating a studio, which of these is NOT copied?"
+  options:
+    - "Python packages"
+    - "Files and data"
+    - "SSH keys and AWS credentials"
+    - "Environment configuration"
+  correct: 2
+  explanation: "Studio duplication copies environment, files, packages, and data. It deliberately excludes SSH keys, AWS credentials, Docker credentials, and shell history for security."

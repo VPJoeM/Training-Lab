@@ -88,6 +88,38 @@ Common reasons someone might need impersonation:
 
 If you think peeking into an account would solve the issue, let Natalie know and she'll take a look.
 
+## Storage Limits & Disk Management
+
+### Storage Limits Per Tier
+
+| Tier | Total Storage Limit | Free Storage |
+|------|-------------------|-------------|
+| **Free** | 50 GB | First 10 GB |
+| **Pro** | 200 GB | First 10 GB |
+| **Teams** | 2 TB | First 10 GB |
+| **Enterprise** | Unlimited | First 10 GB |
+
+After the free 10 GB, storage is billed at **$0.10/GB/month** (billed daily). Data connections (S3, GCS, EFS) are **not billed** — only data stored on Lightning Drive counts.
+
+### Disk Size
+
+- **Default disk:** 400 GB high-performance disk per studio
+- **Data Prep Studios:** Offer 3 TB, 8 TB, or 12 TB for large datasets
+- Users **cannot downgrade** from a Data Prep Studio if their disk holds >300 GB — they need to reduce data first
+
+### Duplicating Studios
+
+When users need to recover from a stuck studio or share their setup:
+
+- **What gets copied:** environment, files, packages, dependencies, data
+- **What does NOT get copied:** SSH keys, AWS credentials, Docker credentials, shell history
+- **Speed:** Usually <1 minute; a few minutes for hundreds of GBs
+- **Cross-teamspace:** Yes — pick target teamspace from dropdown
+- **Cross-cloud-account:** Not currently supported (contact support if needed)
+- **Credentials workaround:** Users can put env vars in `.lightning_studio/.studiorc` (e.g., `export PERSONAL_TOKEN="..."`)
+
+> **Before suggesting duplication:** Check the user's storage tier limit. A free tier user with 45 GB can't duplicate a 45 GB studio — they'd hit the 50 GB cap.
+
 ## Storage Billing Discrepancy
 
 Sometimes users report being billed for way more storage than they're actually using. For example, Activity page shows 123 GB but `du -sh /teamspace` shows 24 GB.
@@ -137,6 +169,30 @@ Users can also use the CLI: `lightning studio ssh`
 ## Working with GitHub in Studios
 
 Some users want to connect their GitHub repos to their studio. Point them to the [Discord guide](https://discord.com/channels/1077906959069626439/1267308626398412830/1267471909856088112).
+
+## Deploying on Public Ports
+
+Users can expose services running in a studio to the public internet. Key things to know:
+
+- Studios support **serverless mode** — auto-sleep when not in use, wake on incoming requests (saves credits)
+- **API Builder plugin** lets users create public APIs with security (token auth or basic auth)
+- One studio can host multiple APIs/apps simultaneously
+- Supports LitServe, FastAPI, and any framework that exposes a port
+- **Port 2222 is reserved** — users can't expose it (internal sshd)
+
+If a user asks how to deploy a model API or web app, point them to [the deploy docs](https://lightning.ai/docs/overview/ai-studio/deploy-on-public-ports).
+
+## GPU Marketplace
+
+Lightning aggregates GPUs from **7+ cloud providers** into a single marketplace. Users don't need separate accounts with each provider.
+
+- **On-demand:** Pay per second, availability varies by supply/demand
+- **Reserved:** Guaranteed capacity, dedicated resources, better rates — contact support@lightning.ai
+- **Interruptible:** 50-80% cheaper, rare interruptions (see Module 1)
+- **Cloud-agnostic storage:** Lightning Storage folders can move across clouds without ingress/egress fees
+- **No vendor lock-in** — users can switch providers without changing code
+
+If a user asks about GPU availability or pricing, point them to the GPU selection menu in the platform or [lightning.ai/pricing](https://lightning.ai/pricing).
 
 ## Whitelisted IPs
 

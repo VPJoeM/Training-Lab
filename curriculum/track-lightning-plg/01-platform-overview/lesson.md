@@ -46,6 +46,18 @@ https://www.loom.com/share/46855740168c447eb017008efcc7cac8
 
 > **Important:** Credits do not roll over. If a user only uses 4 of their 15 free credits, they'll get 4 back next cycle — not 15. Credits refresh on the 1st of each month.
 
+### Interruptible Machines
+
+Users on paid tiers can run studios on **interruptible machines** — 50-80% cheaper than standard pricing. The trade-off is they can be interrupted if demand is high, but in practice this is rare.
+
+- Cloud providers give a **2-minute warning** before shutdown so work can be saved
+- File loss is extremely rare
+- Best for: training runs with checkpointing, batch processing, anything fault-tolerant
+- Teamspace admins can set interruptible as the default for all new studios
+- Activity tab shows credit savings from interruptible usage
+
+If a user asks about cheaper GPU options, point them to interruptible machines first.
+
 ### Free CPU Studios
 
 The default 4xCPU machine has a free window before it starts consuming credits:
