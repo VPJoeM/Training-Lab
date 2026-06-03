@@ -82,7 +82,23 @@ Users can move credits between teamspaces themselves:
 
 > **"My credits disappeared after transfer"** — They almost certainly landed in a different teamspace than expected. Check ToolJet and look at ALL teamspaces for that user. The credits are there, just not where they're looking.
 
+> **Known bug:** Transferring credits from an org directly to a personal account can get stuck in an infinite loading loop. Workaround: transfer to a teamspace instead. If the user needs it fixed, escalate to `#customer-support-plg`.
+
 ## Common Credit Scenarios
+
+### University Email Domain Changed
+
+This comes up with academic users. A university changes its domain (e.g., `@daiict.ac.in` → `@dau.ac.in`) and the user ends up with two accounts — one per email. Credits refresh on the old account, the user can't see them on the new one.
+
+**ToolJet will show:** `"not granted, phone number already in use, account_rank: 2"` — meaning credits go to the older (rank 1) account.
+
+**How to fix (escalate to Natalie Rand):**
+
+1. Transfer credits from the old account to the new one
+2. Delete the old account
+3. Confirm the new account is now rank 1 for credit refresh
+
+You can't do this yourself — account deletion and rank changes require Natalie or admin access.
 
 ### "Where are my credits?"
 
