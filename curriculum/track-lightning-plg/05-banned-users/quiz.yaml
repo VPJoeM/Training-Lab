@@ -42,3 +42,30 @@
     - "Delete the account immediately"
   correct: 2
   explanation: "Complex GuardDuty errors require engineering review. Don't try to interpret them yourself — escalate with the full error."
+
+- question: "A ban shows: 'Miner chase: processes in suspicious process list: stratum+tcp://'. What's the call?"
+  options:
+    - "Possible false positive — ask what they were running"
+    - "Definite miner — stratum+tcp is the mining pool protocol. Hard ban, offer data deletion."
+    - "Escalate to engineering for review"
+    - "Unban — the system makes mistakes"
+  correct: 1
+  explanation: "stratum+tcp:// is the protocol miners use to connect to mining pools. No ambiguity — confirmed miner. Use !confirmed-miner and offer data deletion."
+
+- question: "A banned user claims they were running dockur/windows (Docker-based Windows VM) and got flagged as a miner. What do you do?"
+  options:
+    - "Hard ban — VMs aren't allowed on the platform"
+    - "Unban immediately — VMs are always fine"
+    - "Check the ban details for actual mining indicators. If only VM processes (qemu/kvm) and no mining binaries, it's likely a false positive — verify and unban."
+    - "Escalate to legal"
+  correct: 2
+  explanation: "Running VMs can trigger mining detection due to high sustained CPU. If ban details only show VM processes and no mining indicators (stratum, xmrig, etc.), ask the user what they were doing. If plausible, unban."
+
+- question: "A user was banned for 'attempting too many phone numbers'. What does this mean?"
+  options:
+    - "They're using a phone number service — keep banned"
+    - "They got stuck in phone verification with their real number and retried too many times — verify and unban"
+    - "Their account was compromised — escalate to security"
+    - "Hard ban — too many attempts indicates fraud"
+  correct: 1
+  explanation: "This is NOT fraud. The user got stuck verifying their real phone number and hit a retry limit. Verify their account and phone number. Use the !attempting-multiple-phones shortcut."

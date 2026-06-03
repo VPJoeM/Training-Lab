@@ -94,22 +94,45 @@ When you log in, pay attention to:
 
 Lightning AI also offers a **hosted inference API** — users can call LLMs (Llama, DeepSeek, etc.) through our API without running their own infrastructure.
 
-**Free tier:** Every account gets **30 million free tokens per month**. After that, token usage is billed.
+**Free tier:** 15 credits ≈ **37 million tokens**. No subscription needed — pay-as-you-go with Lightning credits.
 
 **How users access it:**
 
 1. Go to [lightning.ai](https://lightning.ai) and navigate to the **Inference / Models** section
-2. Pick a model
+2. Pick a model (20+ available — ChatGPT, Claude, Llama, DeepSeek, etc.)
 3. Grab their API key from account settings
-4. Make API calls — the API is **OpenAI-compatible**, so users can use the OpenAI SDK by pointing it at our endpoint
+4. Make API calls — the API is **OpenAI-compatible**, so users can use the OpenAI SDK by pointing it at our endpoint:
+
+```python
+from openai import OpenAI
+client = OpenAI(
+    base_url="https://lightning.ai/api/v1",
+    api_key="YOUR_LIGHTNING_API_KEY/organization/teamspace"
+)
+```
+
+**Key details:**
+
+- **No markup** — we charge exactly what the underlying model provider charges
+- **Auto-retries and fallbacks** — if a model goes down, the system can retry or switch to a fallback model
+- **All models, one subscription** — no need for separate OpenAI/Anthropic accounts
+- Rate limits are managed per-org in the Lightning AI dashboard
+- Model pricing is listed at [lightning.ai/lightning-ai/models](https://lightning.ai/lightning-ai/models?section=allmodels&view=org)
 
 **Common support questions:**
 
-- **"What does 30M free tokens mean?"** — It's the inference API, not Studios/GPUs. Each API call to a hosted model consumes tokens. 30M tokens/month is the free allowance.
+- **"What does 30M free tokens mean?"** — It's the inference API, not Studios/GPUs. Each API call to a hosted model consumes tokens. 15 credits ≈ 37M tokens.
 - **"I ran out of tokens"** — Check if they've been making a lot of API calls. Tokens reset monthly.
-- **"How is this different from credits?"** — Credits are for **compute** (Studios, GPUs). Tokens are for the **inference API** (calling hosted models). They're separate systems.
+- **"How is this different from credits?"** — Credits are for **compute** (Studios, GPUs). Tokens are for the **inference API** (calling hosted models). They're paid with credits but tracked separately.
+- **"Does prompt caching work with Claude models?"** — This is an engineering question. Don't guess. Escalate to `#customer-support-plg` with the user's specific setup details.
 
 > **Key distinction for support:** Credits ≠ tokens. Don't confuse them. A user asking about tokens is talking about the inference API, not studio compute credits.
+
+### Bring Your Own Cloud (BYOC)
+
+Teams and Enterprise customers can connect their own AWS/GCP cloud account to Lightning AI. Their compute and data stay in their own VPC — we just provide the platform layer on top.
+
+This comes up when enterprise customers ask about data sovereignty or compliance. If a user asks about BYOC, route to the sales/enterprise team.
 
 ## Support Tools Overview
 

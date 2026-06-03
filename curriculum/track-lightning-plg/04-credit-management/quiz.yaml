@@ -42,3 +42,30 @@
     - "API rate limiting penalties"
   correct: 2
   explanation: "Pro and Teams users can disable autosleep, which means studios keep running and burning credits even when idle. Free tier users can't disable autosleep."
+
+- question: "A user has 0.5 credits left — not enough to start any studio. Their free credits won't refresh because 'previous period credits weren't used.' What do you do?"
+  options:
+    - "Send the !free-credits-balance shortcut explaining the refresh rule"
+    - "Tell them to wait until the 1st of next month"
+    - "Add 15 credits manually via ToolJet — they're in a deadlock"
+    - "Escalate to engineering to fix the refresh system"
+  correct: 2
+  explanation: "This is a credit deadlock. The user can't consume credits (too few to start anything) so the system never refreshes. Don't explain the refresh rule — they're stuck, not confused. Just add 15 credits."
+
+- question: "A user says their credits 'disappeared' after transferring them. What's most likely happening?"
+  options:
+    - "The credits were deleted by the system"
+    - "They landed in a different teamspace than the user expected"
+    - "The transfer failed and engineering needs to investigate"
+    - "Credits can't be transferred between teamspaces"
+  correct: 1
+  explanation: "Credits that 'disappeared' after transfer almost always landed in a different teamspace (often 'general'). Check ALL teamspaces for the user in ToolJet."
+
+- question: "In what order does Lightning consume credits?"
+  options:
+    - "Purchased first, then free, then subscription"
+    - "Free credits first, then purchased credits, then subscription credits"
+    - "All credits are pooled and consumed equally"
+    - "Subscription credits first, then free, then purchased"
+  correct: 1
+  explanation: "Free credits are consumed first. Once exhausted, purchased credits are used. Subscription-included credits stack with free credits."

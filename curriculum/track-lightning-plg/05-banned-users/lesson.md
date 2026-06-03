@@ -16,7 +16,7 @@ Navigate to [ToolJet](https://tooljet.lightning.ai/applications/7b6a09f5-f91a-44
 |-----------|--------------|-----------|
 | "manually banned before verification" | Domain or username flagged | Ask for identity (LinkedIn/Scholar/Student ID). If legit, unban. |
 | Domain name flagged | Used a temp email or unusual domain | Ask for a real email or verify identity |
-| Attempted too many phone numbers | Got stuck in phone verification and retried too many times — system auto-flagged them | Verify their account and phone number. Use the `!attempting-multiple-phones` shortcut. **This is NOT fraud** — they just hit a retry limit. |
+| Attempted too many phone numbers | A legit user got stuck verifying their **real** phone number and retried too many times — the system auto-flagged them. Does **not** mean they're using a phone-number service or committing fraud. | Verify the account first, **then** verify the phone number. Use the `!attempting-multiple-phones` shortcut. **This is NOT fraud by default** — too many retries is the usual cause, so don't keep them banned over it. |
 | Completed quests too fast | Auto-detected as potential bot (old threshold was 5 min, now 2 min) | Verify identity, then unban if legit |
 | Soft-blocked country | User is in a high-crypto-abuse country | Verify identity, then unban |
 
@@ -28,6 +28,22 @@ Navigate to [ToolJet](https://tooljet.lightning.ai/applications/7b6a09f5-f91a-44
 | Pornography / inappropriate content | Use `!suspicious-activity`. Offer data deletion only. |
 | Torrenting | Use `!suspicious-activity`. Offer data deletion only. |
 | Sanctioned country (hard block) | Cannot unban. Use the `hard-ban` Crisp shortcut (see below). |
+
+### Miner Chase (Automated Mining Detection)
+
+The "Miner chase" system auto-detects crypto mining. Ban details show the process that triggered it. Here's how to read them:
+
+**Definite miners — keep banned:**
+
+- `stratum+tcp://` — this is the mining pool protocol. 100% mining. Use `!confirmed-miner`.
+- `prl1p`, `xmrig`, `nbminer` — known miner process names. Use `!confirmed-miner`.
+
+**Possible false positives — investigate:**
+
+- `--enable-automation` — Chromium headless flag. Could be mining OR legitimate browser automation (Selenium, Playwright). Ask what they were running.
+- `qemu`, `kvm`, `dockur/windows` — VM processes. Running a Windows VM via Docker (e.g., dockur/windows) generates high sustained CPU that looks like mining. If the user explains the VM use case and the ban details only show VM processes (no mining binaries), it's likely a false positive. Unban with `!unban`.
+
+**When in doubt:** Check the ban details for actual mining indicators (`stratum`, pool addresses, miner binary names). If it's only VM/automation processes, ask the user what they were doing. If their explanation is plausible and there's no mining evidence, unban.
 
 ### Complex Bans
 

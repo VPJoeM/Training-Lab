@@ -61,6 +61,27 @@ https://www.loom.com/share/d8f0e28efaa04b1c97fd641998a9d3cf
 
 https://www.loom.com/share/618e3941f79c4a61880e68de57a8f648
 
+## How Credit Consumption Works
+
+Lightning follows a specific order when consuming credits:
+
+1. **Free credits are used first**
+2. Once free credits are gone, **purchased credits** are used
+3. Subscription-included credits (Pro/Teams) act like purchased credits and stack with free credits
+
+When a user runs out of all credits, Lightning will **gracefully shut down all running Studios and jobs** to prevent overuse. Users get warnings before this happens.
+
+## How to Transfer Credits (Self-Service)
+
+Users can move credits between teamspaces themselves:
+
+1. Click on their credits
+2. Hit **"Add Credits"**
+3. Then **"Transfer Credits"**
+4. Pick the destination teamspace from the dropdown
+
+> **"My credits disappeared after transfer"** — They almost certainly landed in a different teamspace than expected. Check ToolJet and look at ALL teamspaces for that user. The credits are there, just not where they're looking.
+
 ## Common Credit Scenarios
 
 ### "Where are my credits?"
@@ -68,38 +89,13 @@ https://www.loom.com/share/618e3941f79c4a61880e68de57a8f648
 1. Check if they have **multiple accounts** — credits may be in a different one
 2. Check which **teamspace** the credits were allocated to — users often look in the wrong one
 3. Verify the phone number isn't shared across accounts (credits only go to one)
+4. If they recently transferred credits, check ALL teamspaces — transfers sometimes land in "general" or a different teamspace than intended
 
 ### "I should have more credits"
 
 1. Explain the refresh rule (only replenishes what was used)
 2. Check if someone else spent their credits (transfer scenario above)
 3. Point them to the [billing FAQ](https://lightning.ai/docs/overview/faq/billing)
-
-### "I created a second account and my credits are missing"
-
-This comes up with academic pricing — user creates a new account with their `.edu` email for the discount, then can't find their credits from their original account.
-
-**What's actually happening:**
-
-- They have **two accounts** (e.g., one via GitHub, one via Magic Link with their `.edu` email)
-- Credits live in the **Pro account's personal org**, not the new one
-- Credits may be "unallocated" — sitting in the personal org but not assigned to any teamspace
-
-**How to fix it:**
-
-1. Check both accounts in ToolJet — find which one has the Pro subscription and the credits
-2. Tell the user their credits are in the Pro account and are "unallocated"
-3. Walk them through transferring: click on credits → "Add Credits" → "Transfer Credits" → pick the teamspace from the dropdown
-
-**Moving studios between accounts:**
-
-Users can't directly move studios between accounts. The workaround:
-
-1. Invite the second account as a **member** of the teamspace that has the studio
-2. **Share** the studio with that account
-3. The second account can then **clone** the studio into a different teamspace
-
-> **If you can't figure out which account has the credits**, escalate to Natalie Rand for impersonation. She can see the full picture across both accounts.
 
 ### "My credits are draining too fast"
 
@@ -114,6 +110,16 @@ If a user's monthly top-up didn't happen and there's no data showing why — i.e
 - **Add 15 credits manually via ToolJet** — this is standard practice for a missing monthly top-up
 - The "no data shown" case is the tell: if the platform has no record of the top-up happening, just grant the 15 and move on
 - No need to escalate for this, just add them and let the user know (canned reply: `!credits-added`)
+
+**Watch for the "not granted" message in ToolJet:** The Monthly Free Credits Check section will show `"not granted, free credits for previous billing period were not used"` — this means the system didn't top up because they didn't use enough last month. If the user has <1 credit left and genuinely can't use it (below minimum to start any studio), they're in a **deadlock** — just add 15 credits and move on.
+
+### Credit Deadlock
+
+This happens when a user has a tiny balance (like 0.88 credits) that's too small to run anything, so they can never consume it, so the system never refreshes their 15 credits. They're stuck.
+
+**Signs:** User has <1 credit, can't start any studio, credits won't refresh because "previous period credits weren't used."
+
+**Fix:** Don't send them the `!free-credits-balance` canned response — that just explains the refresh rule they already understand. **Add 15 credits directly.** They're stuck, not confused.
 
 ### When Users Want Credits Back
 

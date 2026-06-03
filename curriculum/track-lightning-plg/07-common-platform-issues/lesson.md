@@ -22,6 +22,21 @@ This is a frequent complaint. Here's your troubleshooting flow:
 
 If a studio is stuck saving or loading for an extended period, escalate to engineering with the studio name and user email.
 
+**When escalating stuck studios, always include:**
+
+- Account email and username
+- Teamspace name
+- Studio name
+- How long it's been stuck
+- Whether the user is free tier or paid (affects urgency and whether duplication is feasible due to storage limits)
+- Whether the user needs the whole studio or just specific files
+
+**Duplicate vs recover:** Suggesting "duplicate the studio" is the quick fix, but check the user's storage situation first. A free tier user with 50+ GB can't duplicate without hitting storage limits. In those cases, ask engineering to either unstick the studio or pull specific files directly.
+
+### Storage Size Not Updating After File Deletion
+
+A user deletes a large folder but the storage size doesn't recalculate, which can block the studio from starting (hits storage limit check against stale size). Escalate to engineering — they need to force a storage recalculation.
+
 ## Credit Depletion Confusion
 
 Users frequently don't understand why their credits are disappearing:
@@ -34,7 +49,7 @@ https://www.loom.com/share/61f5acb5abdf4bd589705f023e8e8ab2
 
 - **Machine switching** — Switching from CPU to GPU or between GPU types can trigger unexpected charges
 - **Machine costs** — Prices are as shown in the CPU/GPU machine selection menu (see [pricing](https://lightning.ai/pricing))
-- **Storage over 10GB** — Once you exceed 10GB, storage is billed by the second (same for all tiers). [Billing FAQ](https://lightning.ai/docs/overview/faq/billing)
+- **Storage over 10GB** — Once you exceed 10GB, storage is billed at **$0.10/GB/month** (billed daily). Same for all tiers. Data connections to external sources (S3, GCS) aren't billed — only data stored on Lightning Drive. [Billing FAQ](https://lightning.ai/docs/overview/faq/billing)
 - **Transferring to another cloud** — Costs credits that users didn't expect
 
 **Always check:** What machines are running, how long they've been running, and which teamspace is being charged.
@@ -92,6 +107,32 @@ Sometimes users report being billed for way more storage than they're actually u
 - Ask the user to run `du -sh /teamspace` to confirm current actual usage
 - Ask if they've checked for deleted-but-open files: `lsof | grep deleted`
 - Check which teamspace the charges are hitting in ToolJet
+
+## SSH Connection Issues
+
+Users connect to studios via SSH through `ssh.lightning.ai` (a bastion/gateway). SSH config looks like:
+
+```
+Host ssh.lightning.ai
+  IdentityFile ~/.ssh/lightning_rsa
+  IdentitiesOnly yes
+  ServerAliveInterval 15
+  ServerAliveCountMax 4
+  StrictHostKeyChecking no
+```
+
+To connect: `ssh s_<studio_id>@ssh.lightning.ai`
+
+Users can also use the CLI: `lightning studio ssh`
+
+### Common SSH Issues
+
+- **"Connection refused"** — If the user has verified it's not their network (test with `ssh github.com`), and especially if it fails from *inside the studio itself*, the SSH gateway/bastion is down for their teamspace. Straight escalation to `#customer-support-plg` — include the bastion IP, studio ID, and teamspace.
+- **"Setting things up" hangs in browser** — Same root cause. The studio is running but the SSH tunnel to the web IDE is broken.
+- **Key not working** — Have them run `lightning ssh configure` to check/reset their SSH config and key.
+- **Port 2222 reserved** — Users can't expose port 2222 via the SDK (it's reserved for internal sshd). They need to use a different port.
+
+> **You cannot fix SSH gateway issues.** If the bastion is refusing connections, that's infra-side. Escalate with full details and don't troubleshoot further.
 
 ## Working with GitHub in Studios
 

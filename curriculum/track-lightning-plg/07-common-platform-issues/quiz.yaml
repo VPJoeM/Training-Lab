@@ -7,14 +7,14 @@
   correct: 1
   explanation: "Free studios with large datasets (300GB+) should switch to a data prep machine to handle the volume."
 
-- question: "When should you attempt data recovery for a user who lost studio data?"
+- question: "A user reports lost studio data. What's the correct process?"
   options:
-    - "Always — data recovery is a standard operation"
-    - "Only if the user has paid at least $100 (check Stripe)"
-    - "Only for Enterprise customers"
-    - "Never — data loss is permanent"
+    - "Tell them data loss is permanent"
+    - "Post to #customer-support-plg, tag @oncall with username, free/paid status, and teamspace/studio name"
+    - "Run recovery commands yourself via SSH"
+    - "Only help Enterprise customers with data recovery"
   correct: 1
-  explanation: "Data recovery is an L2 operation. Only escalate if the user has paid at least $100. Otherwise, guide them to duplicate studios."
+  explanation: "Post to #customer-support-plg and tag @oncall with the user's details. If paid, check their total spend on Stripe. Don't try recovery commands yourself."
 
 - question: "A user asks for a static IP for their studio. What's the answer?"
   options:
@@ -42,3 +42,30 @@
     - "Ask the user to share their screen"
   correct: 2
   explanation: "Account impersonation is restricted and not available to the wider team. Escalate to Natalie Rand if you need it."
+
+- question: "A user reports SSH connection refused to their studio. They've confirmed it fails from inside the studio itself. What does this tell you?"
+  options:
+    - "The user's SSH key is wrong"
+    - "The studio isn't running"
+    - "The SSH gateway/bastion is down for their teamspace — escalate to engineering"
+    - "They need to upgrade to Pro for SSH access"
+  correct: 2
+  explanation: "If SSH fails from inside the studio itself, it's not client-side. The bastion/gateway is down or misrouted. Escalate to #customer-support-plg with full details."
+
+- question: "A free tier user's studio is stuck and you want to suggest duplicating it. What should you check first?"
+  options:
+    - "Their browser version"
+    - "Their storage usage — duplicating may push them over storage limits"
+    - "Whether they have a GitHub account linked"
+    - "Their subscription renewal date"
+  correct: 1
+  explanation: "Duplication creates a copy of all data. A free tier user with 50+ GB might hit storage limits. Check their usage first and consider asking engineering to unstick or recover specific files instead."
+
+- question: "Storage is billed at what rate once you exceed 10GB?"
+  options:
+    - "$1.00/GB/month"
+    - "$0.10/GB/month, billed daily"
+    - "$0.01/GB/hour"
+    - "Storage is free for all tiers"
+  correct: 1
+  explanation: "Storage over 10GB is billed at $0.10/GB/month, calculated daily. This is the same for all tiers. Data connections to external sources (S3, GCS) are not billed."
