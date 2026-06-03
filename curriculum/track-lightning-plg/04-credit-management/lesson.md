@@ -84,6 +84,18 @@ Users can move credits between teamspaces themselves:
 
 > **Known bug:** Transferring credits from an org directly to a personal account can get stuck in an infinite loading loop. Workaround: transfer to a teamspace instead. If the user needs it fixed, escalate to `#customer-support-plg`.
 
+### Teamspace Deletion & Credits
+
+When a user deletes a teamspace, **credits in that teamspace do NOT return to their personal account** — they're lost. Users sometimes delete teamspaces thinking it'll free up their credits, then wonder where they went.
+
+**How to handle it:**
+
+- Ask which account they want the credits added back to
+- Add the credits manually via ToolJet
+- No need to loop in engineering or try to restore the teamspace — just reimburse the credits
+
+> **Watch out for confusion:** If the user's balance goes up around the same time they deleted a teamspace, it's probably their monthly free credits refreshing — not credits returning from the deleted teamspace. Check the Monthly Free Credits section in ToolJet to confirm.
+
 ## Common Credit Scenarios
 
 ### University Email Domain Changed
