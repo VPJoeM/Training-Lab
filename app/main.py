@@ -391,16 +391,24 @@ async def search_lessons(q: str = ""):
     query = q.lower()
 
     for md_file in base.rglob("*.md"):
-        content = md_file.read_text()
+        # don't let one unreadable file (bad encoding, perms) kill the whole search
+        try:
+            content = md_file.read_text(encoding="utf-8", errors="ignore")
+        except Exception:
+            continue
         if query not in content.lower():
             continue
 
         # figure out which module this belongs to
         rel = md_file.relative_to(base)
         parts = list(rel.parts)
-        track_name = parts[0].replace("track-", "") if len(parts) > 0 else ""
-        module_id = parts[1] if len(parts) > 1 else ""
         file_name = parts[-1]
+
+        # a real track lives under a "track-<name>" folder; everything else
+        # (reference/, top-level md) links to the reference viewer instead
+        is_track = len(parts) > 0 and parts[0].startswith("track-")
+        track_name = parts[0][len("track-"):] if is_track else ""
+        module_id = parts[1] if is_track and len(parts) > 2 else ""
 
         # grab title from first heading
         title = file_name
@@ -418,7 +426,7 @@ async def search_lessons(q: str = ""):
                 if len(matches) >= 3:
                     break
 
-        url = f"/track/{track_name}/module/{module_id}" if track_name and module_id else f"/reference/{md_file.stem}"
+        url = f"/track/{track_name}/module/{module_id}" if (track_name and module_id) else f"/reference/{md_file.stem}"
 
         results.append({
             "title": title,

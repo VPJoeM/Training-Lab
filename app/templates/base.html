@@ -270,19 +270,24 @@
                 debounce = setTimeout(async () => {
                     try {
                         const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+                        if (!res.ok) throw new Error('search request failed: ' + res.status);
                         const data = await res.json();
-                        if (data.results.length === 0) {
+                        const items = (data && data.results) || [];
+                        if (items.length === 0) {
                             results.innerHTML = '<div class="p-3 text-sm text-gray-500">No results</div>';
                         } else {
-                            results.innerHTML = data.results.map(r =>
+                            results.innerHTML = items.map(r =>
                                 `<a href="${r.url}" class="block p-3 hover:bg-white/5 border-b border-gray-800 last:border-0">
                                     <div class="text-sm font-medium text-white">${r.title}</div>
-                                    ${r.matches.map(m => `<div class="text-xs text-gray-500 truncate mt-0.5">${m.text}</div>`).join('')}
+                                    ${(r.matches || []).map(m => `<div class="text-xs text-gray-500 truncate mt-0.5">${m.text}</div>`).join('')}
                                 </a>`
                             ).join('');
                         }
                         results.classList.remove('hidden');
-                    } catch(e) {}
+                    } catch(e) {
+                        results.innerHTML = '<div class="p-3 text-sm text-red-400">Search failed — try again</div>';
+                        results.classList.remove('hidden');
+                    }
                 }, 300);
             });
             input.addEventListener('blur', () => setTimeout(() => results.classList.add('hidden'), 200));
