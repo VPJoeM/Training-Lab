@@ -75,11 +75,19 @@ https://www.loom.com/share/618e3941f79c4a61880e68de57a8f648
 2. Check if someone else spent their credits (transfer scenario above)
 3. Point them to the [billing FAQ](https://lightning.ai/docs/overview/faq/billing)
 
-### "My credits are draining too fast"
+### "My credits are draining too fast" (or "I'm out of credits but I have a Pro sub")
 
-1. Ask what machine type they're running — GPU machines cost more
-2. Check if they have **idle studios running** — compute charges even when they're not actively coding
-3. Help them understand [compute costs](https://lightning.ai/pricing#compute) — prices are shown in the machine selection menu
+Often this isn't a bug — they've spent the cycle's credits on expensive compute. The top-tier GPUs (e.g. **H200**) burn credits fast: a single H200 running a few hours can eat **tens** of credits.
+
+1. **Pull their actual usage — this is the fastest way to settle it.** Impersonate the account and **download the usage CSV**. It breaks spend down per studio/agent run: machine type, duration, and credit cost. That shows you (and them) exactly where the credits went (e.g. "minor-peach ran ~8h on a 1×H200 ≈ 54 credits").
+2. Ask/confirm the **machine type** — GPU machines cost more, H200/top-tier most of all.
+3. Check for **idle studios left running** — compute charges even when they're not actively coding, so a GPU left on overnight drains credits.
+4. Help them understand [compute costs](https://lightning.ai/pricing#compute) — prices are shown in the machine selection menu.
+5. **Tips to make credits last:** use a smaller machine when a full GPU isn't needed, and **stop the studio when idle**.
+
+> **Note on impersonation:** read-only impersonation to *view usage and download the usage CSV* is fine for diagnosis. Impersonation for account access or taking actions on someone's account is restricted — escalate that to Natalie Rand.
+
+> **Customer-facing hygiene:** never mention impersonation, the usage CSV, or ToolJet in the reply. Tell the customer *what* used the credits (e.g. an H200 studio running for hours) and *what to do* (add credits / stop idle studios / smaller machine), not *how* you looked it up.
 
 ### "My studio stopped / went to sleep but I have credits"
 
