@@ -162,6 +162,27 @@ Rule out the legitimate reasons replenishment stops:
 
 If it's a single account and the user spent their own credits down to ~0, a balance-near-zero + "not used" row is a missed top-up — **grant 15 and move on**. If a transfer/multi-account explains it, don't grant; explain why.
 
+## Reading the usage CSV (where did the credits go?)
+
+You get this by impersonating the account (read-only) and downloading usage. The columns:
+
+- **Activity / Type** — the studio or agent run (Type = `Studio` or `Agent`).
+- **Start date / Duration** — when it ran and for how long. Long durations on GPU machines are the usual drain; a studio left running idle still bills.
+- **Cost** — credits that row consumed. **Sum the Cost column for total spend.**
+- **Teamspace / Member** — where it ran and who ran it.
+- **Machine** — the machine type. CPU is cheap; GPUs cost more; **H200 (top-tier) burns credits fast** — a few hours can be tens of credits.
+
+How to read it:
+
+1. **Sum Cost** → total credits used in the period.
+2. **Find the biggest rows** → that's where the credits went (usually one GPU studio).
+3. **Look for long / idle GPU runs** → coachable waste (stop studios when idle; smaller machine when a full GPU isn't needed).
+4. **Spot anomalies** → a run far larger than the rest, or a studio the user didn't expect to be running.
+
+Worked example: a row of `minor-peach | Studio | 1×H200 | 05:33 | 36.28` plus two more H200 runs (14.87 + 2.89) ≈ **54 credits in one day** — that's the drain, and it's expected for ~8h on an H200, not a bug.
+
+Then translate to the customer in plain English — *what* used the credits and *what to do* — never mention the CSV, impersonation, or ToolJet.
+
 <!-- crisp-shortcuts:start (auto-generated, do not edit) -->
 
 ## Crisp shortcuts (canned replies)
