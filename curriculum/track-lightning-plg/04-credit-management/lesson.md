@@ -61,63 +61,13 @@ https://www.loom.com/share/d8f0e28efaa04b1c97fd641998a9d3cf
 
 https://www.loom.com/share/618e3941f79c4a61880e68de57a8f648
 
-## How Credit Consumption Works
-
-Lightning follows a specific order when consuming credits:
-
-1. **Free credits are used first**
-2. Once free credits are gone, **purchased credits** are used
-3. Subscription-included credits (Pro/Teams) act like purchased credits and stack with free credits
-
-When a user runs out of all credits, Lightning will **gracefully shut down all running Studios and jobs** to prevent overuse. Users get warnings before this happens.
-
-## How to Transfer Credits (Self-Service)
-
-Users can move credits between teamspaces themselves:
-
-1. Click on their credits
-2. Hit **"Add Credits"**
-3. Then **"Transfer Credits"**
-4. Pick the destination teamspace from the dropdown
-
-> **"My credits disappeared after transfer"** — They almost certainly landed in a different teamspace than expected. Check ToolJet and look at ALL teamspaces for that user. The credits are there, just not where they're looking.
-
-> **Known bug:** Transferring credits from an org directly to a personal account can get stuck in an infinite loading loop. Workaround: transfer to a teamspace instead. If the user needs it fixed, escalate to `#customer-support-plg`.
-
-### Teamspace Deletion & Credits
-
-When a user deletes a teamspace, **credits in that teamspace do NOT return to their personal account** — they're lost. Users sometimes delete teamspaces thinking it'll free up their credits, then wonder where they went.
-
-**How to handle it:**
-
-- Ask which account they want the credits added back to
-- Add the credits manually via ToolJet
-- No need to loop in engineering or try to restore the teamspace — just reimburse the credits
-
-> **Watch out for confusion:** If the user's balance goes up around the same time they deleted a teamspace, it's probably their monthly free credits refreshing — not credits returning from the deleted teamspace. Check the Monthly Free Credits section in ToolJet to confirm.
-
 ## Common Credit Scenarios
-
-### University Email Domain Changed
-
-This comes up with academic users. A university changes its domain (e.g., `@daiict.ac.in` → `@dau.ac.in`) and the user ends up with two accounts — one per email. Credits refresh on the old account, the user can't see them on the new one.
-
-**ToolJet will show:** `"not granted, phone number already in use, account_rank: 2"` — meaning credits go to the older (rank 1) account.
-
-**How to fix (escalate to Natalie Rand):**
-
-1. Transfer credits from the old account to the new one
-2. Delete the old account
-3. Confirm the new account is now rank 1 for credit refresh
-
-You can't do this yourself — account deletion and rank changes require Natalie or admin access.
 
 ### "Where are my credits?"
 
 1. Check if they have **multiple accounts** — credits may be in a different one
 2. Check which **teamspace** the credits were allocated to — users often look in the wrong one
 3. Verify the phone number isn't shared across accounts (credits only go to one)
-4. If they recently transferred credits, check ALL teamspaces — transfers sometimes land in "general" or a different teamspace than intended
 
 ### "I should have more credits"
 
@@ -131,6 +81,15 @@ You can't do this yourself — account deletion and rank changes require Natalie
 2. Check if they have **idle studios running** — compute charges even when they're not actively coding
 3. Help them understand [compute costs](https://lightning.ai/pricing#compute) — prices are shown in the machine selection menu
 
+### "My studio stopped / went to sleep but I have credits"
+
+Credits are **per-teamspace**, and a studio only draws from the teamspace it runs in. So when a user says their studio paused/slept for lack of credits but insists they *have* credits, the credits are almost always in a **different teamspace** — or sitting in their **user wallet / org** — not the teamspace the studio lives in.
+
+- In ToolJet, check the **Teamspace / Org / User** tabs: find where the credits actually are vs which teamspace the studio runs in. A near-zero balance on the studio's teamspace (even though the account has credits elsewhere) is the tell.
+- **Fix:** move the credits into the studio's teamspace, or have them open the studio from the teamspace that already holds the credits, then restart it.
+- **Reassure them:** a credit pause / auto-sleep **preserves the studio** — no work is lost, it resumes once the teamspace is funded.
+- **Pro-plan note:** the $50/mo Pro plan includes 40 credits/month (a subscription) — that's different from buying 50 credits directly, and is a common point of confusion on these tickets.
+
 ### "My credits didn't refresh"
 
 If a user's monthly top-up didn't happen and there's no data showing why — i.e. you look them up in ToolJet and **nothing comes back / the balance and refresh fields are blank**, and there's no usage anomaly or multi-account issue to explain it:
@@ -138,16 +97,6 @@ If a user's monthly top-up didn't happen and there's no data showing why — i.e
 - **Add 15 credits manually via ToolJet** — this is standard practice for a missing monthly top-up
 - The "no data shown" case is the tell: if the platform has no record of the top-up happening, just grant the 15 and move on
 - No need to escalate for this, just add them and let the user know (canned reply: `!credits-added`)
-
-**Watch for the "not granted" message in ToolJet:** The Monthly Free Credits Check section will show `"not granted, free credits for previous billing period were not used"` — this means the system didn't top up because they didn't use enough last month. If the user has <1 credit left and genuinely can't use it (below minimum to start any studio), they're in a **deadlock** — just add 15 credits and move on.
-
-### Credit Deadlock
-
-This happens when a user has a tiny balance (like 0.88 credits) that's too small to run anything, so they can never consume it, so the system never refreshes their 15 credits. They're stuck.
-
-**Signs:** User has <1 credit, can't start any studio, credits won't refresh because "previous period credits weren't used."
-
-**Fix:** Don't send them the `!free-credits-balance` canned response — that just explains the refresh rule they already understand. **Add 15 credits directly.** They're stuck, not confused.
 
 ### When Users Want Credits Back
 
@@ -157,6 +106,53 @@ If a user claims they were incorrectly charged or want a goodwill credit:
 - Larger amounts: Check with Natalie Rand or the team lead before adding
 - Missing monthly top-up with no clear cause: Add 15 credits — it's a known edge case
 - Refunds for paid plans: That's a Stripe operation (see Module 06)
+
+## Reading ToolJet Credit Data (grant or not?)
+
+When you look a user up in ToolJet's Credit Management / "Monthly Free Credits Check" you get back a row of raw fields. Here's how to read them and decide whether a manual grant is warranted.
+
+### The fields you'll see
+
+A pasted row usually looks like:
+
+```
+glencarlosventura516@gmail.com          ← account email
+glencarlosventura516                    ← username
+random-forest-development-project       ← teamspace
+0.987887099999975324724                 ← current credit balance
+2026-03-27T05:37:37.967Z                ← timestamp(s): created / last refresh / refresh_date
+not granted, free credits for previous billing period were not used   ← grant status + reason
+```
+
+- **balance** — how many credits are left right now. Near **15** = barely used; near **0** = used almost everything.
+- **timestamps** — account created, last refresh, and/or next `refresh_date`. Free credits refresh every ~30 days from signup (not the 1st for these accounts). If the most recent refresh is **>30 days ago**, they're overdue.
+- **grant status / reason** — the system's explanation for the last top-up. Common one: *"not granted, free credits for previous billing period were not used."*
+- **free_credits_enabled** — if present and false, auto-refresh is off for this account.
+
+### The core rule (don't forget it)
+
+Free credits **only replenish what was actually used**, and they **don't roll over**. Use 4 → get 4 back. Use 0 → get 0 back. So "topped up nothing" is *correct* when they genuinely didn't use last period's credits.
+
+### Decision guide
+
+Read the **balance** against the **"not used" reason** — that's where the real signal is:
+
+| What you see | Read | Action |
+|---|---|---|
+| Balance near 15 + "previous period not used" | They genuinely didn't use them — nothing to replenish | **Don't grant.** Working as intended. Explain with `!how-do-credits-work` / `!free-credits-balance` |
+| **Balance near 0** + "previous period not used" | **Contradiction** — a near-empty balance means they DID burn through ~15. The "not used" flag is suspect | **Investigate, then usually grant.** Confirm single account + spend happened on THIS account → it's a missed top-up, add 15 (`!credits-added`) |
+| Blank / no data comes back | Failed top-up, no record | **Grant 15** — the no-data edge case (`!credits-added`) |
+| Last refresh > 30 days ago, balance low | Overdue refresh | Lean toward granting 15 once you've ruled out a transfer |
+| Credits were transferred in + spent by another account | Replenishment correctly stops for the owner | **Don't grant.** Explain the transfer rule (`!how-do-credits-work`) |
+
+### Before granting on a "contradiction" row
+
+Rule out the legitimate reasons replenishment stops:
+
+1. **Multiple accounts** — same person, credits sitting/spent on a different account (only one account per phone number gets credits).
+2. **Transfer** — credits were moved to this teamspace and spent by someone who isn't the owner; the owner's credits then won't refresh.
+
+If it's a single account and the user spent their own credits down to ~0, a balance-near-zero + "not used" row is a missed top-up — **grant 15 and move on**. If a transfer/multi-account explains it, don't grant; explain why.
 
 <!-- crisp-shortcuts:start (auto-generated, do not edit) -->
 
