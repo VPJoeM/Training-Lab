@@ -1,0 +1,107 @@
+- question: "Where do you find the CX compute dashboard for Lightning Cloud nodes?"
+  options:
+    - "ToolJet → Nodes"
+    - "Cloud Accounts → Lightning Cloud → Nodes"
+    - "Plain → Infrastructure"
+    - "The Jira Operations project"
+  correct: 1
+  explanation: "The node dashboard lives under Cloud Accounts → Lightning Cloud → Nodes on the lightning.ai platform."
+
+- question: "What do you need to access the dashboard?"
+  options:
+    - "Just any lightning.ai login"
+    - "A lightning.ai account with your @lightning.ai email, joined to the lightning-ai org"
+    - "A ToolJet admin account"
+    - "VPN access only"
+  correct: 1
+  explanation: "Create an account with your @lightning.ai email and join the lightning-ai org during onboarding. If you already have an account but no org access, get invited to lightning-ai."
+
+- question: "You find a node with a terminal issue. What's the FIRST thing you do?"
+  options:
+    - "Mark it for maintenance immediately"
+    - "Reboot the node"
+    - "Open the 3-dot menu and disable scheduling (cordon it)"
+    - "Switch it to VM mode"
+  correct: 2
+  explanation: "Disable scheduling first so no new resources land on the bad node. Do this as soon as you spot a problem node."
+
+- question: "Why can't you find the node action buttons?"
+  options:
+    - "You need admin rights you don't have"
+    - "The actions are in a separate Jira ticket"
+    - "The 3-dot menu only appears when you hover the node's row, not the name"
+    - "Actions only work in VM mode"
+  correct: 2
+  explanation: "Known UI quirk: the 3 dots are hidden and only show when you hover over the row where they should be — not the node name. It'll be added to the side panel later."
+
+- question: "What does 'Require Maintenance' do?"
+  options:
+    - "Reboots the node automatically"
+    - "Flags every resource running on that machine as requiring maintenance, shown across the entire system"
+    - "Deletes all workloads on the node"
+    - "Sends an email to the customer"
+  correct: 1
+  explanation: "Require Maintenance marks all resources on the node as requiring maintenance, and that status is displayed system-wide so everyone can see it."
+
+- question: "A node you've cordoned has several servers actively running on it. Can you go straight to maintenance?"
+  options:
+    - "Yes, maintenance forces everything off immediately"
+    - "No — it has to wait for the running workloads to be flushed out / migrated first"
+    - "Yes, but only in VM mode"
+    - "No, you must reboot it first"
+  correct: 1
+  explanation: "If workloads are running, the node waits for them to flush out before maintenance can proceed. Disable scheduling first so nothing new lands, then let the running work clear."
+
+- question: "A cordoned node has NOTHING running on it. What can you do?"
+  options:
+    - "Wait 24 hours regardless"
+    - "Mark it for maintenance right away — there's nothing to wait on"
+    - "Re-enable scheduling and leave it"
+    - "Escalate to DC Ops to check it's empty"
+  correct: 1
+  explanation: "With nothing running, you can disable scheduling and mark it for maintenance directly — no workloads to flush."
+
+- question: "After a node is healthy again, what do you do?"
+  options:
+    - "Leave it cordoned to be safe"
+    - "Delete and re-add it"
+    - "Re-enable scheduling so it returns to the pool"
+    - "Switch it to Baremetal mode"
+  correct: 2
+  explanation: "Re-enable scheduling to put the node back into rotation once it's healthy."
+
+- question: "What is the Baremetal ↔ VM mode switch used for?"
+  options:
+    - "Changing the customer's billing tier"
+    - "It's required to run node validation"
+    - "Disabling scheduling"
+    - "Resetting the node's IP address"
+  correct: 1
+  explanation: "The UI switch between Baremetal and VM mode is required to run node validation — flip the node to the right mode before validating it."
+
+- question: "CX accounts currently have admin permissions and nothing is gated on the dashboard. What does that mean for you?"
+  options:
+    - "You can test actions freely on any node"
+    - "Act carefully — you can disrupt live customer work, so only touch nodes you're actively working a ticket on"
+    - "It's read-only, so nothing you do matters"
+    - "Only managers can make changes"
+  correct: 1
+  explanation: "Admin + nothing gated means real impact. Only act on a node you're actually working, since you could disrupt live customer workloads. Permissions will be tightened later."
+
+- question: "What do the three summary buckets at the top of the dashboard show?"
+  options:
+    - "Open, Closed, and Pending tickets"
+    - "Usage, Cordoned, and Unreachable nodes"
+    - "Baremetal, VM, and Hybrid nodes"
+    - "US, EMEA, and SG regions"
+  correct: 1
+  explanation: "The top summarises the fleet as Usage (in-use + utilisation), Cordoned (scheduling disabled), and Unreachable (control plane can't reach)."
+
+- question: "DC Ops finished maintenance on a node. Before returning it to the customer, what should CX do?"
+  options:
+    - "Just re-enable scheduling and close the ticket"
+    - "Ping the node to confirm it's up"
+    - "Validate it — switch to the correct mode and run DCGMI r3+ diagnostics, then re-enable scheduling"
+    - "Ask the customer to test it first"
+  correct: 2
+  explanation: "Validate before returning a node: use the Baremetal/VM switch as needed and run DCGMI level 3+ via node-toolkit (from the triage module) to confirm health, then re-enable scheduling."
